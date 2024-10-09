@@ -101,7 +101,8 @@ class ProductCategoryController extends Controller
     public function create()
     {
         $categories = ProductCategory::all();
-        return view('product-categories.create' ,compact('categories'));
+        $formattedCategories = $this->buildCategoryOptions($categories);
+        return view('product-categories.create' ,compact('formattedCategories'));
     }
 
     /**
@@ -144,10 +145,22 @@ class ProductCategoryController extends Controller
             return redirect()->back()->with('error','Category Not Found');
         }
         $categories = ProductCategory::where('id', '!=', $category->id)->get();
-        return view('product-categories.edit', compact('category','categories'));
+        $formattedCategories = $this->buildCategoryOptions($categories);
+        return view('product-categories.edit', compact('category','formattedCategories'));
 
     }
-
+    private function buildCategoryOptions($categories, $parentId = null, $prefix = '')
+    {
+        $output = [];
+        
+        foreach ($categories->where('parent_category_id', $parentId) as $category) {
+            $output[] = ['id' => $category->id, 'name' => $prefix . $category->name];
+            $output = array_merge($output, $this->buildCategoryOptions($categories, $category->id, $prefix . '--'));
+        }
+    
+        return $output;
+    }
+    
     /**
      * Update the specified resource in storage.
      */

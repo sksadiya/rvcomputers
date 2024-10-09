@@ -6,6 +6,9 @@ use App\Http\Controllers\adminAuthController;
 use App\Http\Controllers\mailSettingsController;
 use App\Http\Controllers\settingController;
 use App\Http\Controllers\mediaController;
+use App\Http\Controllers\countryController;
+use App\Http\Controllers\stateController;
+use App\Http\Controllers\cityController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductCategoryController;
 
@@ -44,6 +47,35 @@ Route::post('/category/update/{id}', [ProductCategoryController::class, 'update'
 Route::delete('/categories/{id}', [ProductCategoryController::class, 'destroy'])->name('categories.destroy');
 Route::post('/category/status-change', [ProductCategoryController::class, 'changeStatus'])->name('category.changeStatus');
 
+//country
+Route::get('/country', [countryController::class, 'index'])->name('country.index');
+  Route::get('/country/create', [countryController::class, 'create'])->name('country.create');
+  Route::post('/country/store', [countryController::class, 'store'])->name('country.store');
+  Route::get('countries/data', [countryController::class, 'getData'])->name('countries.data');
+  Route::get('/country/edit/{id}', [countryController::class, 'edit'])->name('country.edit');
+  Route::post('/country/update/{id}', [countryController::class, 'update'])->name('country.update');
+Route::delete('/countries/{id}', [CountryController::class, 'destroy'])->name('countries.destroy');
+Route::post('/countries/status-change', [CountryController::class, 'changeStatus'])->name('countries.changeStatus');
+
+//state
+Route::get('/state', [stateController::class, 'index'])->name('state.index');
+  Route::get('/state/create', [stateController::class, 'create'])->name('state.create');
+  Route::post('/state/store', [stateController::class, 'store'])->name('state.store');
+  Route::get('states/data', [stateController::class, 'getData'])->name('states.data');
+  Route::get('/state/edit/{id}', [stateController::class, 'edit'])->name('state.edit');
+  Route::post('/state/update/{id}', [stateController::class, 'update'])->name('state.update');
+Route::delete('/states/{id}', [stateController::class, 'destroy'])->name('states.destroy');
+Route::post('/states/status-change', [stateController::class, 'changeStatus'])->name('states.changeStatus');
+
+//city
+Route::get('/city', [cityController::class, 'index'])->name('city.index');
+  Route::get('/city/create', [cityController::class, 'create'])->name('city.create');
+  Route::post('/city/store', [cityController::class, 'store'])->name('city.store');
+  Route::get('cities/data', [cityController::class, 'getData'])->name('cities.data');
+  Route::get('/city/edit/{id}', [cityController::class, 'edit'])->name('city.edit');
+  Route::post('/city/update/{id}', [cityController::class, 'update'])->name('city.update');
+Route::delete('/cities/{id}', [cityController::class, 'destroy'])->name('cities.destroy');
+Route::post('/city/status-change', [cityController::class, 'changeStatus'])->name('city.changeStatus');
 });
 
 Route::get('/admin/login', [adminAuthController::class, 'index'])->name('admin.login');

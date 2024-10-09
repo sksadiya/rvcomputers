@@ -14,13 +14,25 @@
                         <span key="t-yajra-datatable">Dashboard</span>
                     </a>
                 </li>
-                <li class="">
-                    <a href="javascript: void(0);" class="has-arrow waves-effect" aria-expanded="false">
-                        <i class="bx bx-list-ul"></i>
-                        <span>Product</span>
+                <li>
+                            <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                <i class="bx bx-list-ul"></i>
+                                <span>Product</span>
+                            </a>
+                            <ul class="sub-menu mm-collapse" aria-expanded="false">
+                                <li><a href="{{ route('category.index') }}">Category</a></li>
+                            </ul>
+                        </li>
+                        <li class="menu-title" key="t-apps">ADDRESS</li>
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                        <i class="bx bx-map"></i>
+                        <span>Address</span>
                     </a>
-                    <ul class="sub-menu mm-collapse" aria-expanded="false" style="height: 0px;">
-                        <li class=""><a href="{{ route('category.index') }}" class="">Category</a></li>
+                    <ul class="sub-menu mm-collapse" aria-expanded="false">
+                        <li><a href="{{ route('country.index') }}">Country</a></li>
+                        <li><a href="{{ route('state.index') }}">State</a></li>
+                        <li><a href="{{ route('city.index')}}">City</a></li>
                     </ul>
                 </li>
                 <li class="menu-title" key="t-apps">MEDIA</li>

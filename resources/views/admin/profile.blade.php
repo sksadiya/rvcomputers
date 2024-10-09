@@ -98,17 +98,7 @@
                                 @enderror
                             </div>
                         </div>
-                        <!-- <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="email" class="form-label">Profile Image</label>
-                                <input type="file" class="form-control @error('avatar') is-invalid @enderror" id="avatar" name="avatar">
-                                @error('avatar')
-                                <span class="invalid-feedback" role="alert">
-                                    {{ $message }}
-                                </span>
-                                @enderror
-                            </div>
-                        </div> -->
+                        
                         <div class="col-md-6">
                             <div class="mb-3">
                             <div class="img-div text-center btn-logo btn-select-logo" id="btn-select-logo" data-column="logo">
@@ -116,7 +106,7 @@
                                 <span id="btn-select-icon" data-column="logo">
                                 <img id="img-logo" src="{{ Auth::user()->avatar }}" title="Choose logo" class="logo-display mx-auto img-fluid">
                                 </span>
-                                <input type="hidden" name="avatar" id="logo" value="">
+                                <input type="hidden" name="avatar" id="logo" value="{{ Auth::user()->avatar }}">
                                 <button type="button" id="btn-remove-logo" data-column="logo" class="btn btn-sm btn-danger btn-rounded pull-right" title="Clear" style="display: none;"><i class="bx bx-trash-alt"></i></button>
                             </div>
                             </div>
@@ -124,7 +114,10 @@
                     </div>
                     <div class="col-lg-12">
                         <div class="text-end">
-                            <button type="submit" class="btn btn-success">Save</button>
+                        <button type="submit" id="saveProfileBtn" class="btn btn-success">
+                            <span id="saveSpinner" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>
+                            Save
+                        </button>
                         </div>
                     </div>
                 </form>
@@ -171,7 +164,10 @@
                     </div>
                     <div class="col-lg-12">
                         <div class="text-end">
-                            <button type="submit" class="btn btn-success">Change Password</button>
+                            <button type="submit" id="changePasswordBtn" class="btn btn-success">
+                                <span id="changeSpinner" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>
+                                Change Password
+                            </button>
                         </div>
                     </div>
                 </form>
@@ -184,4 +180,16 @@
 @endsection
 @section('script')
 <script src="{{ URL::asset('assets/libs/select2/js/select2.min.js') }}"></script>
+<script>
+    // Disable button and show spinner on form submit
+    document.querySelector('form[action="{{ route('update.profile', Auth::user()->id) }}"]').onsubmit = function() {
+        document.getElementById('saveProfileBtn').disabled = true;
+        document.getElementById('saveSpinner').style.display = 'inline-block'; // Show spinner
+    };
+
+    document.querySelector('form[action="{{ route('updatePassword', Auth::user()->id) }}"]').onsubmit = function() {
+        document.getElementById('changePasswordBtn').disabled = true;
+        document.getElementById('changeSpinner').style.display = 'inline-block'; // Show spinner
+    };
+</script>
 @endsection

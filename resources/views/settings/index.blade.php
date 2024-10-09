@@ -209,7 +209,10 @@
                     <div class="form-group row mb-3">
                         <label class="col-sm-2 col-form-label">&nbsp;</label>
                         <div class="col-sm-10">
-                            <button type="submit" id="btn-save" class="btn btn-primary">Save</button>
+                        <button type="submit" id="btn-save" class="btn btn-primary">
+                            <span class="spinner-border spinner-border-sm" id="btn-spinner" style="display: none;"></span>
+                            <span id="btn-text">Save</span>
+                        </button>
                         </div>
                     </div> 
                 </div>
@@ -219,9 +222,18 @@
 </div>
 
 @include('layout.session')
-
-
 @endsection
 @section('script')
-
+<script>
+     $(document).ready(function() {
+        $('form').on('submit', function() {
+            // Disable the submit button
+            $('#btn-save').prop('disabled', true);
+            
+            // Show spinner and change button text
+            $('#btn-spinner').show();
+            $('#btn-text').text('Saving...');
+        });
+    });
+</script>
 @endsection
