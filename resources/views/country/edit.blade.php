@@ -14,7 +14,7 @@
                     </div>
 <div class="row">
     <div class="col-lg-12">
-        <form action="{{ route('country.update',$country->id) }}" id="form-add-country" class="form-horizontal" method="post" autocomplete="off" enctype="multipart/form-data">
+        <form action="{{ route('country.update',$country->id) }}" id="form-edit-country" class="form-horizontal" method="post" autocomplete="off" enctype="multipart/form-data">
            @csrf
         <div class="card">
                 <div class="card-body">
@@ -55,7 +55,10 @@
                     <div class="form-group row mb-3">
                         <label class="col-sm-2 col-form-label">&nbsp;</label>
                         <div class="col-sm-10">
-                            <button type="submit" id="btn-save" class="btn btn-primary">Update</button>
+                        <button type="submit" id="btn-save" class="btn btn-primary">
+                            <span class="spinner-border spinner-border-sm" id="btn-spinner" style="display: none;"></span>
+                            <span id="btn-text">Save</span>
+                            </button>
                         </div>
                     </div> 
                 </div>
@@ -69,6 +72,15 @@
 <script>
 $(document).ready(function () {
     $('#country_status').select2();
+
+    $('#form-edit-country').on('submit', function () {
+         // Disable the submit button
+         $('#btn-save').prop('disabled', true);
+            
+            // Show spinner and change button text
+            $('#btn-spinner').show();
+            $('#btn-text').text('Saving...');
+    });
 });
 </script>
 @endsection
