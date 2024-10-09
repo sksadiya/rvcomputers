@@ -14,7 +14,15 @@
                         <span key="t-yajra-datatable">Dashboard</span>
                     </a>
                 </li>
-                
+                <li class="">
+                    <a href="javascript: void(0);" class="has-arrow waves-effect" aria-expanded="false">
+                        <i class="bx bx-list-ul"></i>
+                        <span>Product</span>
+                    </a>
+                    <ul class="sub-menu mm-collapse" aria-expanded="false" style="height: 0px;">
+                        <li class=""><a href="{{ route('category.index') }}" class="">Category</a></li>
+                    </ul>
+                </li>
                 <li class="menu-title" key="t-apps">MEDIA</li>
                 <li>
                     <a href="{{ route('media.index')}}" class="waves-effect">

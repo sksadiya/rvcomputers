@@ -7,6 +7,7 @@ use App\Http\Controllers\mailSettingsController;
 use App\Http\Controllers\settingController;
 use App\Http\Controllers\mediaController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProductCategoryController;
 
 Route::get('/', [HomeController::class, 'index'])->name('welcome');
 
@@ -32,6 +33,17 @@ Route::get('/media/{id}', [mediaController::class, 'getMedia'])->name('get.media
 Route::post('/media', [mediaController::class, 'update'])->name('media.update');
 Route::delete('/media/{id}', [mediaController::class, 'destroy'])->name('media.delete');
 Route::post('/media/load', [mediaController::class, 'handleDisplay'])->name('media.load');
+
+//product category
+Route::get('/category', [ProductCategoryController::class, 'index'])->name('category.index');
+Route::get('/category/create', [ProductCategoryController::class, 'create'])->name('category.create');
+Route::post('/category/store', [ProductCategoryController::class, 'store'])->name('category.store');
+Route::get('categories/data', [ProductCategoryController::class, 'getData'])->name('categories.data');
+Route::get('/category/edit/{id}', [ProductCategoryController::class, 'edit'])->name('category.edit');
+Route::post('/category/update/{id}', [ProductCategoryController::class, 'update'])->name('category.update');
+Route::delete('/categories/{id}', [ProductCategoryController::class, 'destroy'])->name('categories.destroy');
+Route::post('/category/status-change', [ProductCategoryController::class, 'changeStatus'])->name('category.changeStatus');
+
 });
 
 Route::get('/admin/login', [adminAuthController::class, 'index'])->name('admin.login');
