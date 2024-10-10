@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\ColorController;
+use App\Http\Controllers\CouponController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\adminController;
 use App\Http\Controllers\adminAuthController;
@@ -79,6 +80,16 @@ Route::get('/tax/edit/{id}', [TaxController::class, 'edit'])->name('tax.edit');
 Route::post('/tax/update/{id}', [TaxController::class, 'update'])->name('tax.update');
 Route::delete('/taxes/{id}', [TaxController::class, 'destroy'])->name('taxes.destroy');
 Route::post('/tax/status-change', [TaxController::class, 'changeStatus'])->name('tax.changeStatus');
+
+//coupons 
+Route::get('/coupon', [CouponController::class, 'index'])->name('coupon.index');
+Route::get('/coupon/create', [CouponController::class, 'create'])->name('coupon.create');
+Route::post('/coupon/store', [CouponController::class, 'store'])->name('coupon.store');
+Route::get('coupons/data', [CouponController::class, 'getData'])->name('coupons.data');
+Route::get('/coupon/edit/{id}', [CouponController::class, 'edit'])->name('coupon.edit');
+Route::post('/coupon/update/{id}', [CouponController::class, 'update'])->name('coupon.update');
+Route::delete('/coupons/{id}', [CouponController::class, 'destroy'])->name('coupons.destroy');
+Route::post('/coupon/status-change', [CouponController::class, 'changeStatus'])->name('coupon.changeStatus');
 
 //country
 Route::get('/country', [countryController::class, 'index'])->name('country.index');
