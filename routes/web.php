@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\attributeController;
+use App\Http\Controllers\AttributeValue;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\ColorController;
 use App\Http\Controllers\CouponController;
@@ -90,6 +92,26 @@ Route::get('/coupon/edit/{id}', [CouponController::class, 'edit'])->name('coupon
 Route::post('/coupon/update/{id}', [CouponController::class, 'update'])->name('coupon.update');
 Route::delete('/coupons/{id}', [CouponController::class, 'destroy'])->name('coupons.destroy');
 Route::post('/coupon/status-change', [CouponController::class, 'changeStatus'])->name('coupon.changeStatus');
+
+//attributes 
+Route::get('/attribute', [attributeController::class, 'index'])->name('attribute.index');
+Route::get('/attribute/create', [attributeController::class, 'create'])->name('attribute.create');
+Route::post('/attribute/store', [attributeController::class, 'store'])->name('attribute.store');
+Route::get('attributes/data', [attributeController::class, 'getData'])->name('attributes.data');
+Route::get('/attribute/edit/{id}', [attributeController::class, 'edit'])->name('attribute.edit');
+Route::post('/attribute/update/{id}', [attributeController::class, 'update'])->name('attribute.update');
+Route::delete('/attributes/{id}', [attributeController::class, 'destroy'])->name('attributes.destroy');
+Route::post('/attribute/status-change', [attributeController::class, 'changeStatus'])->name('attribute.changeStatus');
+
+//attributes values
+Route::get('/attributeValue', [AttributeValue::class, 'index'])->name('attributeValue.index');
+Route::get('/attributeValue/create', [AttributeValue::class, 'create'])->name('attributeValue.create');
+Route::post('/attributeValue/store', [AttributeValue::class, 'store'])->name('attributeValue.store');
+Route::get('attributeValues/data', [AttributeValue::class, 'getData'])->name('attributeValues.data');
+Route::get('/attributeValue/edit/{id}', [AttributeValue::class, 'edit'])->name('attributeValue.edit');
+Route::post('/attributeValue/update/{id}', [AttributeValue::class, 'update'])->name('attributeValue.update');
+Route::delete('/attributeValues/{id}', [AttributeValue::class, 'destroy'])->name('attributeValues.destroy');
+Route::post('/attributeValue/status-change', [AttributeValue::class, 'changeStatus'])->name('attributeValue.changeStatus');
 
 //country
 Route::get('/country', [countryController::class, 'index'])->name('country.index');
