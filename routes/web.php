@@ -13,6 +13,7 @@ use App\Http\Controllers\stateController;
 use App\Http\Controllers\cityController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductCategoryController;
+use App\Http\Controllers\TaxController;
 
 Route::get('/', [HomeController::class, 'index'])->name('welcome');
 
@@ -68,6 +69,16 @@ Route::get('/color/edit/{id}', [ColorController::class, 'edit'])->name('color.ed
 Route::post('/color/update/{id}', [ColorController::class, 'update'])->name('color.update');
 Route::delete('/colors/{id}', [ColorController::class, 'destroy'])->name('colors.destroy');
 Route::post('/color/status-change', [ColorController::class, 'changeStatus'])->name('color.changeStatus');
+
+//tax group
+Route::get('/tax', [TaxController::class, 'index'])->name('tax.index');
+Route::get('/tax/create', [TaxController::class, 'create'])->name('tax.create');
+Route::post('/tax/store', [TaxController::class, 'store'])->name('tax.store');
+Route::get('taxes/data', [TaxController::class, 'getData'])->name('taxes.data');
+Route::get('/tax/edit/{id}', [TaxController::class, 'edit'])->name('tax.edit');
+Route::post('/tax/update/{id}', [TaxController::class, 'update'])->name('tax.update');
+Route::delete('/taxes/{id}', [TaxController::class, 'destroy'])->name('taxes.destroy');
+Route::post('/tax/status-change', [TaxController::class, 'changeStatus'])->name('tax.changeStatus');
 
 //country
 Route::get('/country', [countryController::class, 'index'])->name('country.index');

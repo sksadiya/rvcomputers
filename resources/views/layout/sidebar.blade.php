@@ -23,6 +23,7 @@
                                 <li><a href="{{ route('category.index') }}">Category</a></li>
                                 <li><a href="{{ route('brand.index') }}">Brand</a></li>
                                 <li><a href="{{ route('color.index') }}">Color</a></li>
+                                <li><a href="{{ route('tax.index') }}">Tax Group</a></li>
                             </ul>
                         </li>
                         <li class="menu-title" key="t-apps">ADDRESS</li>
