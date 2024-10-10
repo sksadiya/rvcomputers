@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\BrandController;
+use App\Http\Controllers\ColorController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\adminController;
 use App\Http\Controllers\adminAuthController;
@@ -46,6 +48,26 @@ Route::get('/category/edit/{id}', [ProductCategoryController::class, 'edit'])->n
 Route::post('/category/update/{id}', [ProductCategoryController::class, 'update'])->name('category.update');
 Route::delete('/categories/{id}', [ProductCategoryController::class, 'destroy'])->name('categories.destroy');
 Route::post('/category/status-change', [ProductCategoryController::class, 'changeStatus'])->name('category.changeStatus');
+
+//product brand
+Route::get('/brand', [BrandController::class, 'index'])->name('brand.index');
+Route::get('/brand/create', [BrandController::class, 'create'])->name('brand.create');
+Route::post('/brand/store', [BrandController::class, 'store'])->name('brand.store');
+Route::get('brands/data', [BrandController::class, 'getData'])->name('brands.data');
+Route::get('/brand/edit/{id}', [BrandController::class, 'edit'])->name('brand.edit');
+Route::post('/brand/update/{id}', [BrandController::class, 'update'])->name('brand.update');
+Route::delete('/brands/{id}', [BrandController::class, 'destroy'])->name('brands.destroy');
+Route::post('/brand/status-change', [BrandController::class, 'changeStatus'])->name('brand.changeStatus');
+
+//color swatch
+Route::get('/color', [ColorController::class, 'index'])->name('color.index');
+Route::get('/color/create', [ColorController::class, 'create'])->name('color.create');
+Route::post('/color/store', [ColorController::class, 'store'])->name('color.store');
+Route::get('colors/data', [ColorController::class, 'getData'])->name('colors.data');
+Route::get('/color/edit/{id}', [ColorController::class, 'edit'])->name('color.edit');
+Route::post('/color/update/{id}', [ColorController::class, 'update'])->name('color.update');
+Route::delete('/colors/{id}', [ColorController::class, 'destroy'])->name('colors.destroy');
+Route::post('/color/status-change', [ColorController::class, 'changeStatus'])->name('color.changeStatus');
 
 //country
 Route::get('/country', [countryController::class, 'index'])->name('country.index');

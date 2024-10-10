@@ -21,6 +21,8 @@
                             </a>
                             <ul class="sub-menu mm-collapse" aria-expanded="false">
                                 <li><a href="{{ route('category.index') }}">Category</a></li>
+                                <li><a href="{{ route('brand.index') }}">Brand</a></li>
+                                <li><a href="{{ route('color.index') }}">Color</a></li>
                             </ul>
                         </li>
                         <li class="menu-title" key="t-apps">ADDRESS</li>

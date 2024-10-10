@@ -22,17 +22,17 @@
 <div class="row">
     <div class="col-12">
         <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-            <h4 class="mb-sm-0 font-size-18">Add New Category</h4>
+            <h4 class="mb-sm-0 font-size-18">Add New Brand</h4>
         </div>
     </div>
 </div>
 <div class="row">
     <div class="col-lg-12">
-        <form action="{{ route('category.store' )}}" method="post" id="form-add-category" autocomplete="off" enctype="multipart/form-data">
+        <form action="{{ route('brand.store' )}}" id="form-add-brand" method="post" autocomplete="off" enctype="multipart/form-data">
             @csrf
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title mb-4">Add New Category</h4>
+                    <h4 class="card-title mb-4">Add New Brand</h4>
                     
                     <div class="form-group row mb-3">
                         <label class="col-sm-2 col-form-label">Logo</label>
@@ -58,25 +58,6 @@
                             @enderror
                         </div>
                     </div>   
-                    <div class="form-group row mb-3">
-                        <label class="col-sm-2 col-form-label">Parent Category <small class="text-danger">*</small></label>
-                        <div class="col-sm-10">
-                            <select name="parent_id" id="parent_id" class="form-control @error('parent_id') is-invalid @enderror" >
-                                <option value="">None</option>
-                                @foreach ($formattedCategories as $cat)
-                                    <option value="{{ $cat['id'] }}">
-                                        {{ $cat['name'] }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            @error('parent_id')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                            @enderror
-                        </div>
-                    </div>   
-                    
 
                     <div class="form-group row mb-3">
                         <label class="col-sm-2 col-form-label">Meta Title</label>
@@ -103,7 +84,7 @@
                     <div class="form-group row mb-3">
                         <label class="col-sm-2 col-form-label">Status <small class="text-danger">*</small></label>
                         <div class="col-sm-10">
-                        <select name="status" id="category_status" class="form-control @error('status') is-invalid @enderror" style="width: 100%;" >
+                        <select name="status" id="brand-status" class="form-control @error('status') is-invalid @enderror" style="width: 100%;" >
                             <option value="1">Active</option>
                             <option value="0">In-Active</option>
                         </select>
@@ -137,10 +118,9 @@
 <script src="{{ URL::asset('assets/libs/select2/js/select2.min.js') }}"></script>
 <script>
     $(document).ready(function() {
-        $('#parent_id').select2();
-        $('#category_status').select2();
+        $('#brand-status').select2();
 
-        $('#form-add-category').on('submit', function() {
+        $('#form-add-brand').on('submit', function() {
             // Disable the submit button
             $('#btn-save').prop('disabled', true);
             

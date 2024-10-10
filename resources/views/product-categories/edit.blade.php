@@ -28,7 +28,7 @@
 </div>
 <div class="row">
     <div class="col-lg-12">
-        <form action="{{ route('category.update' ,$category->id )}}" method="post" autocomplete="off" enctype="multipart/form-data">
+        <form action="{{ route('category.update' ,$category->id )}}" id="form-edit-category" method="post" autocomplete="off" enctype="multipart/form-data">
             @csrf
             <div class="card">
                 <div class="card-body">
@@ -140,7 +140,7 @@
     $(document).ready(function() {
         $('#parent_id').select2();
         $('#category_status').select2();
-        $('form').on('submit', function() {
+        $('#form-edit-category').on('submit', function() {
             // Disable the submit button
             $('#btn-save').prop('disabled', true);
             
