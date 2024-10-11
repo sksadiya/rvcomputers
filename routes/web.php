@@ -18,6 +18,7 @@ use App\Http\Controllers\cityController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\TaxController;
+use App\Http\Controllers\productController;
 
 Route::get('/', [HomeController::class, 'index'])->name('welcome');
 
@@ -113,6 +114,10 @@ Route::get('/attributeValue/edit/{id}', [AttributeVal::class, 'edit'])->name('at
 Route::post('/attributeValue/update/{id}', [AttributeVal::class, 'update'])->name('attributeValue.update');
 Route::delete('/attributeValues/{id}', [AttributeVal::class, 'destroy'])->name('attributeValues.destroy');
 Route::post('/attributeValue/status-change', [AttributeVal::class, 'changeStatus'])->name('attributeValue.changeStatus');
+
+//product
+Route::get('/product/create', [productController::class, 'create'])->name('product.create');
+Route::post('/product/store', [productController::class, 'store'])->name('product.store');
 
 //country
 Route::get('/country', [countryController::class, 'index'])->name('country.index');

@@ -28,4 +28,24 @@ class ProductCategory extends Model
     {
         return $this->hasMany(ProductCategory::class, 'parent_category_id');
     }
+
+    /**
+     * Build category options recursively with parent-child hierarchy.
+     *
+     * @param \Illuminate\Support\Collection $categories
+     * @param int|null $parentId
+     * @param string $prefix
+     * @return array
+     */
+    public function buildCategoryOptions($categories, $parentId = null, $prefix = '')
+    {
+        $output = [];
+
+        foreach ($categories->where('parent_category_id', $parentId) as $category) {
+            $output[] = ['id' => $category->id, 'name' => $prefix . $category->name];
+            $output = array_merge($output, $this->buildCategoryOptions($categories, $category->id, $prefix . '--'));
+        }
+
+        return $output;
+    }
 }
