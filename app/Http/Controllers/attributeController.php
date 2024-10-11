@@ -67,7 +67,10 @@ class attributeController extends Controller
             $actions .= '<a href="'.route('attribute.edit',$attribute->id).'" name="btn-edit" class="btn btn-info me-2" title="Edit"><i class="fas fa-edit"></i></a>';
         }
         if (Auth::user()->hasRole('Super Admin')) {
-            $actions .= '<button type="button" name="btn-delete" class="btn btn-danger" data-id="'. $attribute->id .'" title="Delete"><i class="fas fa-trash"></i></button>';
+            $actions .= '<button type="button" name="btn-delete" class="btn btn-danger me-2" data-id="'. $attribute->id .'" title="Delete"><i class="fas fa-trash"></i></button>';
+        }
+        if (Auth::user()->hasRole('Super Admin')) {
+            $actions .= '<a href="'.route('attributeValue.index' ,$attribute->id).'" name="btn-attribute-value" data-id="'. $attribute->id .'"  class="btn btn-primary me-2" title="attribute">Attribute Values</a>';
         }
         return $actions ? '<div class="">' . $actions . '</div>' : '';
     }
