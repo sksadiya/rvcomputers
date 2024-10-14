@@ -103,7 +103,6 @@ Route::get('attributes/data', [attributeController::class, 'getData'])->name('at
 Route::get('/attribute/edit/{id}', [attributeController::class, 'edit'])->name('attribute.edit');
 Route::post('/attribute/update/{id}', [attributeController::class, 'update'])->name('attribute.update');
 Route::delete('/attributes/{id}', [attributeController::class, 'destroy'])->name('attributes.destroy');
-Route::post('/attribute/status-change', [attributeController::class, 'changeStatus'])->name('attribute.changeStatus');
 
 //attributes values
 Route::get('/attributeValue/{id}', [AttributeVal::class, 'index'])->name('attributeValue.index');
@@ -113,7 +112,7 @@ Route::get('attributeValues/data/{id}', [AttributeVal::class, 'getData'])->name(
 Route::get('/attributeValue/edit/{id}', [AttributeVal::class, 'edit'])->name('attributeValue.edit');
 Route::post('/attributeValue/update/{id}', [AttributeVal::class, 'update'])->name('attributeValue.update');
 Route::delete('/attributeValues/{id}', [AttributeVal::class, 'destroy'])->name('attributeValues.destroy');
-Route::post('/attributeValue/status-change', [AttributeVal::class, 'changeStatus'])->name('attributeValue.changeStatus');
+Route::get('/get-attribute-values/{attributeId}', [AttributeVal::class, 'getAttributeValues'])->name('getAttributeValues');
 
 //product
 Route::get('/product/create', [productController::class, 'create'])->name('product.create');

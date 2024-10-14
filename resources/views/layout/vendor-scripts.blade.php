@@ -60,6 +60,7 @@ $(document).ready(function () {
         loadMediaList(start, selectable_type, false, column_name); // Load media items
         $("#modal-select-media").modal('show'); // Show the modal
     });
+    
     $('#btn-select-banner').click(function() { 
         column_name = $(this).attr('data-column'); // Get the column name from the button
         start = 0; // Reset starting index
@@ -68,6 +69,14 @@ $(document).ready(function () {
         loadMediaList(start, selectable_type, false, column_name); // Load media items
         $("#modal-select-media").modal('show'); // Show the modal
     });
+    $("body").on("click", ".btn-select-variantimage", function() {
+            column_name = $(this).attr('data-column');
+            start = index = 0;
+            selectable_type = 'radio';
+            $("#search_media").val("");
+            loadMediaList(start, selectable_type, false, column_name);
+            $("#modal-select-media").modal('show');
+        });
     
 
     $('#btn-select-gallery-image').click(function() {

@@ -13,8 +13,13 @@ return new class extends Migration
     {
         Schema::create('product_tag', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id')->constrained()->onDelete('cascade'); 
-            $table->foreignId('tag_id')->constrained()->onDelete('cascade');
+            $table->unsignedBigInteger('product_id'); 
+            $table->unsignedBigInteger('tag_id'); 
+            
+            // Foreign key constraints
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+            $table->foreign('tag_id')->references('id')->on('tags')->onDelete('cascade');
+
             $table->timestamps();
         });
     }
