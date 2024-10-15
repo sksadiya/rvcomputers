@@ -25,8 +25,10 @@ class productController extends Controller
     $attributes = Attribute::all();
         return view('product.create',compact('categoryOptions','brands','colors','attributes'));
     }
+   
+    
     public function store(Request $request) {
-        // dd($request->all());
+        dd($request->all());
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'brand' => 'nullable|integer|exists:brands,id',
@@ -38,94 +40,58 @@ class productController extends Controller
             'unit_price' => 'nullable|numeric',
             'discount' => 'nullable|numeric',
             'discount_type' => 'in:fixed,percentage',
-            'current_stock' => 'nullable|integer',
+            'current_stock' => 'required|integer',
             'sku' => 'nullable|string|unique:products,sku',
             'short_description' => 'nullable|string',
             'description' => 'nullable|string',
             'low_stock_quantity' => 'nullable|integer',
-            'image_url' => 'nullable|url',
+            'image_url' => 'nullable',
             'category' => 'required|array',
-            'tags' => 'nullable|string', // Assuming tags are a comma-separated string
+            'tags' => 'nullable|string', 
             'variant_name' => 'nullable|array',
             'variant_price' => 'nullable|array',
             'variant_sku' => 'nullable|array',
             'variant_qty' => 'nullable|array',
             'variant_image_url' => 'nullable|array',
+            'gallery_image_url' => 'nullable|array', 
+            'colors' => 'nullable|array', 
+            'attributes' => 'nullable|array',
         ]);
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
-        $product = Product::create([
-            'name' => $request->name,
-            'brand_id' => $request->brand,
-            'unit' => $request->unit,
-            'weight' => $request->weight,
-            'min_qty' => $request->min_qty,
-            'video_provider' => $request->video_provider,
-            'video_link' => $request->video_link,
-            'unit_price' => $request->unit_price,
-            'discount' => $request->discount,
-            'discount_type' => $request->discount_type,
-            'current_stock' => $request->current_stock,
-            'sku' => $request->sku,
-            'short_description' => $request->short_description,
-            'description' => $request->description,
-            'low_stock_quantity' => $request->low_stock_quantity,
-            'image' => $request->image_url,
-        ]);
-        if ($request->has('category')) {
-            $product->categories()->attach($request->category);
+        $product = new Product();
+        $product->name = $request->name;
+        $product->brand_id = $request->brand;
+        $product->unit = $request->unit;
+        $product->weight = $request->weight;
+        $product->min_qty = $request->min_qty;
+        $product->video_provider = $request->video_provider;
+        $product->video_link = $request->video_link;
+        $product->unit_price = $request->unit_price;
+        $product->discount = $request->discount;
+        $product->discount_type = $request->discount_type;
+        $product->current_stock = $request->current_stock;
+        $product->sku = $request->sku;
+        $product->short_description = $request->short_description;
+        $product->description = $request->description;
+        $product->low_stock_quantity = $request->low_stock_quantity;
+        $product->image = $request->image_url;
+        $product->save();
+        if($request->category) {
+            $product->categories()->sync($request->category);
         }
-
+        if($request->colors) {
+            $product->colors()->sync($request->colors);
+        }
         if ($request->tags) {
             $tagIds = $this->createOrGetTags($request->tags);
             // Debugging line
             \Log::info('Tag IDs:', $tagIds);
             $product->tags()->attach($tagIds);
         }
-        // Store colors
-        if ($request->has('colors')) {
-            $product->colors()->attach($request->colors);
-        }
-        // Store product variants if they exist
-        if ($request->has('variant_name')) {
-            foreach ($request->variant_name as $index => $variantName) {
-                // Debugging line
-                \Log::info('Creating variant:', [
-                    'product_id' => $product->id,
-                    'variant_name' => $variantName,
-                    'variant_price' => $request->variant_price[$index] ?? null,
-                    'variant_sku' => $request->variant_sku[$index] ?? null,
-                    'variant_qty' => $request->variant_qty[$index] ?? null,
-                    'variant_image' => $request->variant_image_url[$index] ?? null,
-                ]);
-                
-                ProductVariant::create([
-                    'product_id' => $product->id,
-                    'variant_name' => $variantName,
-                    'variant_price' => $request->variant_price[$index] ?? null,
-                    'variant_sku' => $request->variant_sku[$index] ?? null,
-                    'variant_qty' => $request->variant_qty[$index] ?? null,
-                    'variant_image' => $request->variant_image_url[$index] ?? null,
-                ]);
-            }
-            if ($request->has('attributes') && $request->has('choice')) {
-                $attributesData = $request->attributes;
-                $attributeValuesData = $request->choice;
-        
-                $attributes = $this->createOrGetAttributes($attributesData, $attributeValuesData);
-        
-                foreach ($attributes as $attribute) {
-                    DB::table('product_attribute')->insert([
-                        'product_id' => $product->id,
-                        'attribute_id' => $attribute['attribute_id'],
-                        'attribute_value_id' => $attribute['attribute_value_id']
-                    ]);
-                }
-            }
-        return redirect()->back()->with('success','product created successfully');
+        return redirect()->back()->with('success' ,'created');
 
-    }
 }
 
     protected function createOrGetTags(string $tagsString): array
@@ -134,15 +100,11 @@ class productController extends Controller
         $tagIds = [];
 
         foreach ($tags as $tagName) {
-            $tagName = trim($tagName); // Trim whitespace
-
-            // Check if the tag already exists by name or slug
+            $tagName = trim($tagName); 
             $tag = Tag::firstOrCreate([
                 'name' => $tagName,
                 'slug' => \Str::slug($tagName), // Create slug from name
             ]);
-
-            // Store the tag ID
             $tagIds[] = $tag->id;
         }
 

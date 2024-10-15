@@ -55,7 +55,6 @@
                     </label>
                     <div class="col-md-8">
                     <select class="form-control select2 @error('category') is-invalid @enderror" multiple name="category[]" id="category">
-                        <option value="">Select a Category</option>
                         @foreach($categoryOptions as $option)
                             <option value="{{ $option['id'] }}">{{ $option['name'] }}</option>
                         @endforeach

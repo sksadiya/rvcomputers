@@ -62,9 +62,8 @@
                         <label class="col-sm-2 col-form-label">Parent Category <small class="text-danger">*</small></label>
                         <div class="col-sm-10">
                             <select name="parent_id" id="parent_id" class="form-control @error('parent_id') is-invalid @enderror" >
-                                <option value="">None</option>
                                 @foreach ($formattedCategories as $cat)
-                                    <option value="{{ $cat['id'] }}">
+                                    <option  value="{{ $cat['id'] }}">
                                         {{ $cat['name'] }}
                                     </option>
                                 @endforeach
@@ -123,7 +122,6 @@
                             <span class="spinner-border spinner-border-sm" id="btn-spinner" style="display: none;"></span>
                             <span id="btn-text">Save</span>
                             </button>
-
                         </div>
                     </div> 
                 </div>

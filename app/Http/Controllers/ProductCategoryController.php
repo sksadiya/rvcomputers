@@ -79,7 +79,12 @@ class ProductCategoryController extends Controller
     }
     private function generateOptions($category)
     {
-      $actions = '';
+        $isUncategorized = $category->slug === 'uncategorized';
+
+         $actions = '';
+        if ($isUncategorized) {
+            return $actions ? '<div class="">' . $actions . '</div>' : '';
+        }
       $actions .= '<a href="' . route('category.edit', $category->id) . '" name="btn-edit" class="btn btn-info me-2" data-id="' . $category->id . '" title="Edit"><i class="fas fa-edit"></i></a>';
       $actions .= '<button type="button" name="btn-delete" class="btn btn-danger" data-id="' . $category->id . '" title="Delete"><i class="fas fa-trash"></i></button>';
       return $actions ? '<div class="">' . $actions . '</div>' : '';
@@ -87,7 +92,11 @@ class ProductCategoryController extends Controller
     public function getStatusBadge($category)
     {
       $isChecked = $category->status == 1 ? 'checked' : '';
-  
+      $isUncategorized = $category->slug === 'uncategorized';
+
+     if ($isUncategorized) {
+       return '';
+     }
       return '
             <div class="form-check form-switch form-switch-md">
                 <input class="form-check-input category_status_change" type="checkbox" data-id="' . $category->id . '" ' . $isChecked . '>
@@ -112,7 +121,7 @@ class ProductCategoryController extends Controller
     {
         // dd($request->all());
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string',
+            'name' => 'required|string|unique:product_categories,name',
             'meta_title' => 'nullable|string',
             'meta_description' => 'nullable|string',
             'parent_id' => 'nullable|exists:product_categories,id',
@@ -124,6 +133,7 @@ class ProductCategoryController extends Controller
         }
         $category = new ProductCategory();
         $category->name = $request->input('name');
+        $category->slug = ProductCategory::generateSlug($request->input('name')); 
         $category->logo = $request->input('logo');
         $category->parent_category_id = $request->input('parent_id');
         $category->meta_title = $request->input('meta_title');
@@ -171,7 +181,7 @@ class ProductCategoryController extends Controller
             return redirect()->back()->with('error','Category Not Found');
         }
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string',
+            'name' => 'required|string|unique:product_categories,name,' . $category->id,
             'meta_title' => 'nullable|string',
             'meta_description' => 'nullable|string',
             'parent_id' => 'nullable|exists:product_categories,id',
@@ -182,6 +192,9 @@ class ProductCategoryController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
         $category->name = $request->input('name');
+        if ($category->isDirty('name')) { // Check if the name has changed
+            $category->slug = ProductCategory::generateSlug($request->input('name')); 
+        }
         $category->logo = $request->input('logo');
         $category->parent_category_id = $request->input('parent_id');
         $category->meta_title = $request->input('meta_title');

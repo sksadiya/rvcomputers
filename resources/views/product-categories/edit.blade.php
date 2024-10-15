@@ -62,7 +62,6 @@
                         <label class="col-sm-2 col-form-label">Parent Category <small class="text-danger">*</small></label>
                         <div class="col-sm-10">
                             <select name="parent_id" id="parent_id" class="form-control @error('parent_id') is-invalid @enderror" >
-                                <option value="">None</option>
                                 @foreach ($formattedCategories as $cat)
                                     <option {{ $category->parent_category_id == $cat['id'] ? 'selected' : '' }} value="{{ $cat['id'] }}">
                                         {{ $cat['name'] }}

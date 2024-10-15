@@ -93,7 +93,7 @@ class BrandController extends Controller
         // dd($request->all());
         $validator = Validator::make($request->all() ,[
             'logo' => 'nullable|string',
-            'name' => 'required|string',
+            'name' => 'required|string|unique:brands,name',
             'meta_title' => 'nullable|string',
             'meta_description' => 'nullable|string',
             'status' => 'required|boolean',
@@ -107,6 +107,8 @@ class BrandController extends Controller
         $brand->meta_title = $request->input('meta_title');
         $brand->meta_description = $request->input('meta_description');
         $brand->status = $request->input('status');
+        // Generate and set the slug
+        $brand->slug = Brand::generateSlug($request->input('name'));
         $brand->save();
         $success = true ;
         if($success) {
@@ -129,7 +131,7 @@ class BrandController extends Controller
         }
         $validator = Validator::make($request->all() ,[
             'logo' => 'nullable|string',
-            'name' => 'required|string',
+            'name' => 'required|string|unique:brands,name,' . $brand->id,
             'meta_title' => 'nullable|string',
             'meta_description' => 'nullable|string',
             'status' => 'required|boolean',
@@ -138,6 +140,10 @@ class BrandController extends Controller
             return redirect()->back()->withErrors($validator);
         }
         $brand->name = $request->input('name');
+        if ($brand->isDirty('name')) { // Check if the name has changed
+            $brand->slug = Brand::generateSlug($request->input('name')); 
+        }
+        
         $brand->logo = $request->input('logo');
         $brand->meta_title = $request->input('meta_title');
         $brand->meta_description = $request->input('meta_description');
