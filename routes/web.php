@@ -112,11 +112,13 @@ Route::get('attributeValues/data/{id}', [AttributeVal::class, 'getData'])->name(
 Route::get('/attributeValue/edit/{id}', [AttributeVal::class, 'edit'])->name('attributeValue.edit');
 Route::post('/attributeValue/update/{id}', [AttributeVal::class, 'update'])->name('attributeValue.update');
 Route::delete('/attributeValues/{id}', [AttributeVal::class, 'destroy'])->name('attributeValues.destroy');
-Route::get('/get-attribute-values/{attributeId}', [AttributeVal::class, 'getAttributeValues'])->name('getAttributeValues');
+
 
 //product
 Route::get('/product/create', [productController::class, 'create'])->name('product.create');
 Route::post('/product/store', [productController::class, 'store'])->name('product.store');
+Route::post('/product/add-more-choice-option', [productController::class, 'getChoiceOptions'])->name('product.add_more_choice_option');
+Route::post('/product/combination', [productController::class, 'combination'])->name('product.combination');
 
 //country
 Route::get('/country', [countryController::class, 'index'])->name('country.index');

@@ -143,12 +143,5 @@ class AttributeVal extends Controller
             return response()->json(['error' => 'Failed to delete the attribute vaue!'], 422);
         }
     }
-    public function getAttributeValues($attributeId)
-{
-    // Fetch attribute values based on the attribute ID
-    $attributeValues = AttributeValue::where('attribute_id', $attributeId)->get();
-
-    // Return them as JSON
-    return response()->json($attributeValues);
-}
+    
 }

@@ -190,16 +190,15 @@
                         <input type="text" class="form-control" name="attribute" value="Attributes" disabled="">
                     </div>
                     <div class="col-md-8">
-                        <select name="attributes[]" id="attributes" multiple class="form-control select2 @error('attributes') is-invalid @enderror">
+                        <select name="choice_attributes[]" id="choice_attributes" multiple class="form-control select2 @error('choice_attributes') is-invalid @enderror">
                             @foreach($attributes as $attribute)
                             <option value="{{ $attribute->id }}" data-attribute-name="{{ $attribute->name }}">{{ $attribute->name }}</option>
                             @endforeach
                         </select>
                     </div>
                 </div>
-                <div id="customer_choice_options_container">
-            <!-- Dynamic customer choice options will be added here -->
-        </div>
+                <div class="customer_choice_options" id="customer_choice_options"></div>
+                <div class="sku_combination" id="sku_combination"></div>
             </div>
         </div>
         <div class="card">
@@ -264,24 +263,7 @@
                         <input type="text" class="form-control" name="sku">
                     </div>
                 </div>
-                <div class="row mb-3">
-                    <div id="sku_combination_container" class="d-none">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Variant</th>
-                                    <th>Variant Price</th>
-                                    <th>SKU</th>
-                                    <th>Quantity</th>
-                                    <th>Photo</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- Dynamically populated rows will go here -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                
             </div>
         </div>
         <div class="card">
@@ -407,7 +389,11 @@
 <script type='text/javascript' src={{ URL::asset('assets/libs/choices.js/public/assets/scripts/choices.min.js') }}></script>
 <script>
 $(document).ready(function() {
-    // Disable save button and show spinner on form submission
+     $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}' // Wrap the token in quotes
+        }
+    });
     $('#form-add-product').on('submit', function() {
         $('#btn-save').prop('disabled', true);
         $('#btn-spinner').show();
@@ -436,163 +422,64 @@ $(document).ready(function() {
         })
         .catch(error => console.error(error));
 
-    // Show variant table
-    function showVariantTable() {
-        $('#sku_combination_container').removeClass('d-none');
-    }
-
-    // Hide variant table
-    function hideVariantTable() {
-        $('#sku_combination_container').addClass('d-none');
-    }
-
-    // Append variant row
-    function appendVariantRow(name, id, type) {
-    // Generate a unique identifier for the variant image
-    const uniqueId = `${type}_${id}_${new Date().getTime()}`;
-
-    return `
-        <tr class="variant" id="sku_combination_${type}_${id}" data-id="${id}" data-type="${type}">
-            <td>
-                <label class="control-label">${name}</label>
-                <input type="hidden" name="variant_name[]" value="${name}">
-            </td>
-            <td>
-                <input type="number" lang="en" name="variant_price[]" value="" min="0" step="0.01" class="form-control">
-            </td>
-            <td>
-                <input type="text" name="variant_sku[]" value="" class="form-control">
-            </td>
-            <td>
-                <input type="number" lang="en" name="variant_qty[]" value="10" min="0" step="1" class="form-control">
-            </td>
-            <td>
-               <div class="img-div text-center btn-variantimage btn-select-variantimage" id="btn-select-variantimage-${uniqueId}" data-column="variantimage${uniqueId}">
-                    <span class="text-blue cursor-pointer img-logo" style="display: none;">Choose logo</span>
-                    <span id="btn-select-variantimage-${uniqueId}" data-column="variantimage${uniqueId}">
-                        <img id="img-variantimage${uniqueId}" src="{{ asset('assets/images/avatar.webp') }}" title="Choose logo" class="logo-display mx-auto img-fluid">
-                    </span>
-                    <input type="hidden" name="variant_image_url[]" id="variantimage${uniqueId}">
-                    <button type="button" id="btn-remove-variantimage${uniqueId}" data-column="variantimage${uniqueId}" class="btn btn-sm btn-danger btn-rounded pull-right btn-remove-variantimage" title="Clear" style="display: none;"><i class="bx bx-trash-alt"></i></button>
-                </div>
-            </td>
-        </tr>`;
+        $('#choice_attributes').on('change', function() {
+        $('#customer_choice_options').html(null);
+        $.each($("#choice_attributes option:selected"), function(){
+            add_more_customer_choice_option($(this).val(), $(this).text());
+        });
+        update_sku();
+    });
+    $('#colors').on('change', function() {
+    update_sku();
+});
+$('body').on("change", ".attribute_choice", function() {
+    update_sku();
+});
+$(document).on('click', '.btn-delete-variant', function() {
+        var variantIndex = $(this).data('id');
+        var confirmation = confirm("Are you sure you want to delete this variant?");
+        if (confirmation) {
+            $('.variant' + variantIndex).remove();
+        }
+    });
+function update_sku() {
+    $.ajax({
+        type: "POST",
+        url: '{{ route('product.combination') }}',
+        data: $('#form-add-product').serialize(),
+        success: function(data) {
+            $('#sku_combination').html(data.html);
+            if (data.length > 1) {
+                $('#show-hide-div').hide();
+            } else {
+                $('#show-hide-div').show();
+            }
+        }
+    });
 }
 
 
-    // Handle color changes
-    $('#colors').on('change', function() {
-        const selectedColors = $(this).find('option:selected');
-        const variantTableBody = $('#sku_combination_container tbody');
-
-        // Track current color IDs
-        const currentColorIds = selectedColors.map(function() {
-            return $(this).val();
-        }).get();
-
-        // Remove rows for unselected colors
-        variantTableBody.find('.variant[data-type="color"]').each(function() {
-            const colorId = $(this).data('id');
-            if (!currentColorIds.includes(colorId.toString())) {
-                $(this).remove();
-            }
-        });
-
-        // Add new rows for newly selected colors
-        selectedColors.each(function() {
-            const colorName = $(this).data('color-name');
-            const colorId = $(this).val();
-            if (!$(`#sku_combination_color_${colorId}`).length) {
-                variantTableBody.append(appendVariantRow(colorName, colorId, 'color'));
-            }
-        });
-
-        // Show or hide the table based on the presence of variant rows
-        if (variantTableBody.find('.variant').length > 0) {
-            showVariantTable();
-        } else {
-            hideVariantTable();
-        }
+    function add_more_customer_choice_option(i, name) {
+    $.post('{{ route('product.add_more_choice_option') }}', { attribute_id: i }, function(result) {
+        var obj = result; // The HTML string returned from the server
+        $('#customer_choice_options').append(`
+            <div class="row mb-3">
+                <div class="col-md-3">
+                    <input type="hidden" name="choice_no[]" value="${i}">
+                    <input type="text" class="form-control" name="choice[]" value="${name}" placeholder="Choice Title" readonly>
+                </div>
+                <div class="col-md-8">
+                    <select class="form-control my-select2 attribute_choice" name="choice_options_${i}[]" multiple="multiple">
+                        ${obj} <!-- Append the options HTML here -->
+                    </select>
+                </div>
+            </div>
+        `);
+        $(".my-select2").select2(); // Reinitialize select2 for new elements
     });
+}
 
-    // Handle attribute changes
-    $('#attributes').on('change', function() {
-        const selectedAttributes = $(this).find('option:selected');
-        const customerChoiceContainer = $('#customer_choice_options_container');
-
-        // Clear the container for attributes
-        customerChoiceContainer.empty();
-
-        selectedAttributes.each(function() {
-            const attributeName = $(this).data('attribute-name');
-            const attributeId = $(this).val();
-            const url = '{{ route("getAttributeValues", ":id") }}'.replace(':id', attributeId);
-
-            // Fetch attribute values via AJAX
-            $.ajax({
-                url: url,
-                type: 'GET',
-                success: function(attributeValues) {
-                    let optionsHtml = '';
-                    attributeValues.forEach(function(val) {
-                        optionsHtml += `<option value="${val.id}" data-value-name="${val.value}">${val.value}</option>`;
-                    });
-
-                    // Add the attribute input with fetched values
-                    const attributeHtml = `
-                        <div class="customer_choice_options" id="customer_choice_options_${attributeId}">
-                            <div class="row mb-3">
-                                <div class="col-md-3">
-                                    <input type="hidden" name="choice_no[]" value="${attributeId}">
-                                    <input type="text" class="form-control" name="choice[]" value="${attributeName}" readonly>
-                                </div>
-                                <div class="col-md-8">
-                                    <select class="form-control select2 attribute_choice" name="choice_options_${attributeId}[]" multiple>
-                                        ${optionsHtml}
-                                    </select>
-                                </div>
-                            </div>
-                        </div>`;
-
-                    customerChoiceContainer.append(attributeHtml);
-                    $('.select2').select2();
-
-                    // Handle changes in attribute value
-                    $(`.attribute_choice`).on('change', function() {
-                        const selectedValues = $(this).find('option:selected');
-                        const variantTable = $('#sku_combination_container tbody');
-
-                        // Remove rows for unselected attribute values
-                        variantTable.find('.variant[data-type="attribute"]').each(function() {
-                            const attrId = $(this).data('id');
-                            if (!selectedValues.map(function() { return $(this).val(); }).get().includes(attrId.toString())) {
-                                $(this).remove();
-                            }
-                        });
-
-                        // Add rows for newly selected attribute values
-                        selectedValues.each(function() {
-                            const valueName = $(this).data('value-name');
-                            const valueId = $(this).val();
-                            if (!$(`#sku_combination_attribute_${valueId}`).length) {
-                                variantTable.append(appendVariantRow(valueName, valueId, 'attribute'));
-                            }
-                        });
-
-                        // Show or hide the table based on the presence of variant rows
-                        if (variantTable.find('.variant').length > 0) {
-                            showVariantTable();
-                        } else {
-                            hideVariantTable();
-                        }
-                    });
-                },
-                error: function(xhr) {
-                    console.log("Error fetching attribute values.");
-                }
-            });
-        });
-    });
+    
 });
 </script>
 @endsection
