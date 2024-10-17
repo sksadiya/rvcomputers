@@ -207,7 +207,45 @@
                         </select>
                     </div>
                 </div>
-                <div class="customer_choice_options" id="customer_choice_options"></div>
+                <div class="customer_choice_options" id="customer_choice_options">
+    @php
+        // Group attributes by attribute_id
+        $groupedAttributes = $attributes->groupBy('id');
+    @endphp
+
+    @foreach($groupedAttributes as $attributeId => $attributeGroup)
+        @php
+            // Get the first attribute in the group to display the name
+            $attribute = $attributeGroup->first();
+            // Check if the product has this specific attribute
+            $selectedOptions = $product->attributes
+                ->where('attribute_id', $attributeId)
+                ->pluck('attribute_value_id')
+                ->toArray();
+        @endphp
+
+        @if (!empty($selectedOptions)) {{-- Only show if there are selected options for this attribute --}}
+            <div class="row mb-3">
+                <div class="col-md-3">
+                    <input type="hidden" name="choice_no[]" value="{{ $attributeId }}">
+                    <input type="text" class="form-control" name="choice[]" value="{{ $attribute->name }}" placeholder="Choice Title" readonly>
+                </div>
+                <div class="col-md-8">
+                    <select class="form-control my-select2 select2 attribute_choice" name="choice_options_{{ $attributeId }}[]" multiple="multiple">
+                        @foreach($attribute->options as $option)
+                            <option value="{{ $option->id }}" 
+                                {{ in_array($option->id, $selectedOptions) ? 'selected' : '' }}>
+                                {{ $option->value }} 
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+        @endif
+    @endforeach
+</div>
+
+
                 <div class="sku_combination" id="sku_combination"></div>
             </div>
         </div>
