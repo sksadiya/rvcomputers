@@ -115,10 +115,16 @@ Route::delete('/attributeValues/{id}', [AttributeVal::class, 'destroy'])->name('
 
 
 //product
+Route::get('/product', [productController::class, 'index'])->name('product.index');
 Route::get('/product/create', [productController::class, 'create'])->name('product.create');
 Route::post('/product/store', [productController::class, 'store'])->name('product.store');
+Route::get('products/data', [productController::class, 'getData'])->name('products.data');
+Route::get('/product/edit/{id}', [productController::class, 'edit'])->name('product.edit');
+Route::post('/product/update/{id}', [productController::class, 'update'])->name('product.update');
 Route::post('/product/add-more-choice-option', [productController::class, 'getChoiceOptions'])->name('product.add_more_choice_option');
 Route::post('/product/combination', [productController::class, 'combination'])->name('product.combination');
+Route::delete('/products/{id}', [productController::class, 'destroy'])->name('products.destroy');
+Route::post('/product/status-change', [productController::class, 'changeStatus'])->name('product.changeStatus');
 
 //country
 Route::get('/country', [countryController::class, 'index'])->name('country.index');

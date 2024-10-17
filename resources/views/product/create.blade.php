@@ -129,6 +129,16 @@
                         @enderror
                     </div>
                 </div>
+                <div class="row mb-3">
+                    <label class="col-md-3 col-form-label">Status <span class="text-danger">*</span>
+                    </label>
+                    <div class="col-md-8">
+                    <select name="status" id="product_status" class="form-select select2" style="width: 100%;" required="required"  tabindex="-1" aria-hidden="true">
+                            <option value="1">Active</option>
+                            <option value="0">In-Active</option>
+                    </select>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="card">
@@ -252,7 +262,12 @@
                         </label>
                     </div>
                     <div class="col-md-8">
-                        <input type="number" class="form-control" name="current_stock">
+                        <input type="number" class="form-control @error('current_stock') is-invalid @enderror" name="current_stock">
+                        @error('current_stock')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                        @enderror
                     </div>
                 </div>
                 <div class="row mb-3">
@@ -260,7 +275,12 @@
                         <label class="col-form-label">SKU</label>
                     </div>
                     <div class="col-md-8">
-                        <input type="text" class="form-control" name="sku">
+                        <input type="text" class="form-control  @error('sku') is-invalid @enderror" name="sku">
+                        @error('sku')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                        @enderror
                     </div>
                 </div>
                 

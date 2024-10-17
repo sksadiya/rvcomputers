@@ -26,10 +26,11 @@ class Product extends Model
         'description',
         'low_stock_quantity',
         'image',
+        'status',
     ];
     public function variants()
     {
-        return $this->hasMany(ProductVariant::class); 
+        return $this->hasMany(ProductVariant::class ,'product_id'); 
     }
     public function categories()
     {
@@ -49,5 +50,9 @@ class Product extends Model
     public function images()
     {
         return $this->hasMany(ProductImage::class ,'product_id');
+    }
+
+    public function attributes() {
+        return $this->hasMany(productAttribute::class , 'product_id');
     }
 }

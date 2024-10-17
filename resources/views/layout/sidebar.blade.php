@@ -21,6 +21,7 @@
                             </a>
                             <ul class="sub-menu mm-collapse" aria-expanded="false">
                                 <li><a href="{{ route('product.create') }}">Add Product</a></li>
+                                <li><a href="{{ route('product.index') }}">Product</a></li>
                                 <li><a href="{{ route('category.index') }}">Category</a></li>
                                 <li><a href="{{ route('brand.index') }}">Brand</a></li>
                                 <li><a href="{{ route('color.index') }}">Color</a></li>
