@@ -230,7 +230,7 @@ class productController extends Controller
                 ]);
             }
         }
-        return redirect()->back()->with('success', 'created');
+        return redirect()->route('product.index')->with('success', 'product created successfully');
     }
     public function edit($id) {
         $product = Product::find($id);
@@ -245,11 +245,128 @@ class productController extends Controller
         return view('product.edit' , compact('product','categoryOptions','brands','colors','attributes'));
     }
     public function update(Request $request ,$id) {
-        dd($request->all());
+        // dd($request->all());
         $product = Product::find($id);
         if(!$product) {
             return redirect()->back()->with('error' ,'Product not found');
         }
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'brand' => 'nullable|integer|exists:brands,id',
+            'unit' => 'nullable|string|max:50',
+            'weight' => 'nullable|numeric',
+            'min_qty' => 'nullable|integer|min:1',
+            'video_provider' => 'nullable|string|max:50',
+            'video_link' => 'nullable|string|max:255',
+            'unit_price' => 'nullable|numeric',
+            'discount' => 'nullable|numeric',
+            'discount_type' => 'in:fixed,percentage',
+            'current_stock' => 'required|integer',
+            'sku' => 'nullable|string|unique:products,sku',
+            'short_description' => 'nullable|string',
+            'description' => 'nullable|string',
+            'low_stock_quantity' => 'nullable|integer',
+            'image_url' => 'nullable',
+            'category' => 'required|array',
+            'tags' => 'nullable|string',
+            'variant_name' => 'nullable|array',
+            'variant_price' => 'nullable|array',
+            'variant_sku' => 'nullable|array',
+            'variant_qty' => 'nullable|array',
+            'variant_image_url' => 'nullable|array',
+            'gallery_image_url' => 'nullable|array',
+            'colors' => 'nullable|array',
+            'choice_attributes' => 'nullable|array',
+            'status' => 'required|boolean'
+        ]);
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+        $product->name = $request->name;
+        $product->brand_id = $request->brand;
+        $product->unit = $request->unit;
+        $product->weight = $request->weight;
+        $product->min_qty = $request->min_qty;
+        $product->video_provider = $request->video_provider;
+        $product->video_link = $request->video_link;
+        $product->unit_price = $request->unit_price;
+        $product->discount = $request->discount;
+        $product->discount_type = $request->discount_type;
+        $product->current_stock = $request->current_stock;
+        $product->sku = $request->sku;
+        $product->short_description = $request->short_description;
+        $product->description = $request->description;
+        $product->low_stock_quantity = $request->low_stock_quantity;
+        $product->image = $request->image_url;
+        $product->status = $request->status;
+        $product->save();
+
+        if ($request->category) {
+            $product->categories()->sync($request->category);
+        }
+        if ($request->colors) {
+            $product->colors()->sync($request->colors);
+        }
+        if ($request->tags) {
+            $tagIds = $this->createOrGetTags($request->tags);
+            // Debugging line
+            \Log::info('Tag IDs:', $tagIds);
+            $product->tags()->sync($tagIds); 
+        }
+        if ($request->choice_attributes) {
+            // Clear existing choice attributes
+            $product->attributes()->delete(); // Delete old attributes
+    
+            foreach ($request->choice_attributes as $key => $attributeId) {
+                $choiceIndex = $request->choice_no[$key];
+                $choiceOptionsKey = 'choice_options_' . $choiceIndex;
+                $values = $request->input($choiceOptionsKey);
+    
+                if (is_array($values)) {
+                    foreach ($values as $value) {
+                        // Save new attributes
+                        $product->attributes()->create([
+                            'attribute_id' => $attributeId,
+                            'attribute_value_id' => $value,
+                        ]);
+                    }
+                } else {
+                    $product->attributes()->create([
+                        'attribute_id' => $attributeId,
+                        'attribute_value_id' => $values,
+                    ]);
+                }
+            }
+        }
+        // Handle variants
+        if ($request->variant_name) {
+            // Clear existing variants
+            $product->variants()->delete(); // Delete old variants
+    
+            foreach ($request->variant_name as $index => $variantName) {
+                ProductVariant::create([
+                    'product_id' => $product->id,
+                    'variant_name' => $variantName,
+                    'variant_price' => $request->variant_price[$index],
+                    'variant_sku' => $request->variant_sku[$index],
+                    'variant_qty' => $request->variant_qty[$index],
+                    'variant_image' => $request->variant_image_url[$index],
+                ]);
+            }
+        }
+        // Handle gallery images
+        if ($request->has('gallery_image_url')) {
+            // Clear existing gallery images
+            $product->images()->delete(); // Delete old gallery images
+    
+            foreach ($request->gallery_image_url as $imageUrl) {
+                ProductImage::create([
+                    'product_id' => $product->id,
+                    'image_url' => $imageUrl,
+                ]);
+            }
+        }
+        return redirect()->route('product.index')->with('success', 'product updated successfully');
     }
     protected function createOrGetTags(string $tagsString): array
     {
@@ -459,6 +576,17 @@ class productController extends Controller
         return response()->json([
             'status' => $product->status,
             'message' => 'product status updated successfully.',
+        ]);
+    }
+    public function deleteVariant(Request $request) {
+        $variant = ProductVariant::find($request->variant_id);
+        if(!$variant) { 
+            return redirect()->back()->with('error','variant Not Found');
+        }
+        $variant->delete();
+        return response()->json([
+            'success' => true,
+            'message' => 'variant deleted successfully.',
         ]);
     }
 }

@@ -56,7 +56,10 @@
                     <div class="col-md-8">
                     <select class="form-control select2 @error('category') is-invalid @enderror" multiple name="category[]" id="category">
                         @foreach($categoryOptions as $option)
-                            <option value="{{ $option['id'] }}">{{ $option['name'] }}</option>
+                            <option value="{{ $option['id'] }}" 
+                                @if(in_array($option['id'], $product->categories->pluck('id')->toArray())) selected @endif>
+                                {{ $option['name'] }}
+                            </option>
                         @endforeach
                     </select>
                     @error('category')
@@ -121,7 +124,7 @@
                     <label class="col-md-3 col-form-label">Tags <span class="text-danger">*</span>
                     </label>
                     <div class="col-md-8">
-                        <input type="text" class="form-control @error('tags') is-invalid @enderror" name="tags" id="product-tags" placeholder="Add tags" value="{{ old('tags') }}" >
+                        <input type="text" class="form-control @error('tags') is-invalid @enderror" name="tags" id="product-tags" placeholder="Add tags" value="{{ $product->tags->pluck('name')->implode(', ') }}" >
                         @error('tags')
                         <span class="invalid-feedback" role="alert">
                             {{ $message }}
@@ -208,45 +211,89 @@
                     </div>
                 </div>
                 <div class="customer_choice_options" id="customer_choice_options">
-    @php
-        // Group attributes by attribute_id
-        $groupedAttributes = $attributes->groupBy('id');
-    @endphp
+                    @php
+                        // Group attributes by attribute_id
+                        $groupedAttributes = $attributes->groupBy('id');
+                    @endphp
 
-    @foreach($groupedAttributes as $attributeId => $attributeGroup)
-        @php
-            // Get the first attribute in the group to display the name
-            $attribute = $attributeGroup->first();
-            // Check if the product has this specific attribute
-            $selectedOptions = $product->attributes
-                ->where('attribute_id', $attributeId)
-                ->pluck('attribute_value_id')
-                ->toArray();
-        @endphp
+                    @foreach($groupedAttributes as $attributeId => $attributeGroup)
+                        @php
+                            $attribute = $attributeGroup->first();
+                            $selectedOptions = $product->attributes
+                                ->where('attribute_id', $attributeId)
+                                ->pluck('attribute_value_id')
+                                ->toArray();
+                        @endphp
 
-        @if (!empty($selectedOptions)) {{-- Only show if there are selected options for this attribute --}}
-            <div class="row mb-3">
-                <div class="col-md-3">
-                    <input type="hidden" name="choice_no[]" value="{{ $attributeId }}">
-                    <input type="text" class="form-control" name="choice[]" value="{{ $attribute->name }}" placeholder="Choice Title" readonly>
+                        @if (!empty($selectedOptions)) 
+                            <div class="row mb-3">
+                                <div class="col-md-3">
+                                    <input type="hidden" name="choice_no[]" value="{{ $attributeId }}">
+                                    <input type="text" class="form-control" name="choice[]" value="{{ $attribute->name }}" placeholder="Choice Title" readonly>
+                                </div>
+                                <div class="col-md-8">
+                                    <select class="form-control my-select2 select2 attribute_choice" name="choice_options_{{ $attributeId }}[]" multiple="multiple">
+                                        @foreach($attribute->options as $option)
+                                            <option value="{{ $option->id }}" 
+                                                {{ in_array($option->id, $selectedOptions) ? 'selected' : '' }}>
+                                                {{ $option->value }} 
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        @endif
+                    @endforeach
                 </div>
-                <div class="col-md-8">
-                    <select class="form-control my-select2 select2 attribute_choice" name="choice_options_{{ $attributeId }}[]" multiple="multiple">
-                        @foreach($attribute->options as $option)
-                            <option value="{{ $option->id }}" 
-                                {{ in_array($option->id, $selectedOptions) ? 'selected' : '' }}>
-                                {{ $option->value }} 
-                            </option>
-                        @endforeach
-                    </select>
+                <div class="sku_combination" id="sku_combination">
+                    @if($product->variants->isNotEmpty())
+                        <input type="hidden" name="variant_product" value="{{ $product->id }}">
+                        <table width="100%" class="table table-bordered table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th width="30%">Variant Name</th>
+                                    <th width="15%">Variant Price <small class="text-danger">*</small></th>
+                                    <th width="15%">SKU</th>
+                                    <th width="15%">Quantity <small class="text-danger">*</small></th>
+                                    <th width="25%">Photo</th>
+                                    <th width="5%">#</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($product->variants as $index => $variant)
+                                <tr class="variant' {{ $index }} '" id="variant-row-{{ $variant->id }}">
+                                    <td>
+                                        <label for="" class="control-label">{{ $variant->variant_name }}</label>
+                                    </td>
+                                    <td>
+                                        <input type="hidden" name="variant_name[]" value="{{ $variant->variant_name }}">
+                                        <input type="number" name="variant_price[]" value="{{ $variant->variant_price }}" min="0" step="0.01" class="form-control" placeholder="Price" required>
+                                    </td>
+                                    <td>
+                                        <input type="text" name="variant_sku[]" value="{{ $variant->variant_sku }}" class="form-control">
+                                    </td>
+                                    <td>
+                                        <input type="number" name="variant_qty[]" value="{{ $variant->variant_qty }}" min="0" step="1" class="form-control" placeholder="Quantity" required>
+                                    </td>
+                                    <td>
+                                        <div class="img-div text-center btn-variantimage btn-select-variantimage" id="btn-select-variantimage-{{ $index }}" data-column="variantimage{{ $index }}">
+                                            <span class="text-blue cursor-pointer img-logo" style="display: none;">Choose logo</span>
+                                            <span id="btn-select-variantimage-{{ $index }}" data-column="variantimage{{ $index }}">
+                                            <img id="img-variantimage{{ $index }}" src="{{ $variant->variant_image ? $variant->variant_image : asset('assets/images/avatar.webp') }}" class="logo-display img-fluid" />
+                                            </span>
+                                            <input type="hidden" name="variant_image_url[]" id="variantimage{{ $index }}">
+                                            <button type="button" id="btn-remove-variantimage-{{ $index }}" data-column="variantimage{{ $index }}" class="btn btn-sm btn-danger btn-rounded pull-right btn-remove-variantimage" title="Clear" style="display: none;"><i class="bx bx-trash-alt"></i></button>
+                                        </div>
+                                    </td>
+                                    <td>
+                                    <button type="button" class="btn btn-sm btn-danger btn-rounded pull-right btn-delete-databse-variant" data-id="{{ $variant->id }}" title="Delete"><i class="bx bx-trash-alt"></i></button>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    @endif
                 </div>
-            </div>
-        @endif
-    @endforeach
-</div>
-
-
-                <div class="sku_combination" id="sku_combination"></div>
             </div>
         </div>
         <div class="card">
@@ -395,7 +442,7 @@
                     <div class="img-div text-center btn-logo" id="btn-select-logo" data-column="logo"> 
                             <span class="text-blue cursor-pointer img-logo" style="display: none;">Choose logo</span>
                         <span id="btn-select-icon" data-column="logo">
-                        <img id="img-logo" src="{{ $product->image }}" title="Choose logo" class="logo-display mx-auto img-fluid">
+                        <img id="img-logo" src="{{ $product->image ? $product->image : asset('assets/images/avatar.webp') }}" title="Choose logo" class="logo-display mx-auto img-fluid">
                         </span>
                         <input type="hidden" name="image_url" id="logo" value="{{ $product->image }}">
                         <button type="button" id="btn-remove-logo" data-column="logo" class="btn btn-sm btn-danger btn-rounded pull-right" title="Clear" style="display: none;"><i class="bx bx-trash-alt"></i></button>
@@ -506,7 +553,36 @@ $(document).ready(function() {
 $('body').on("change", ".attribute_choice", function() {
     update_sku();
 });
-$(document).on('click', '.btn-delete-variant', function() {
+$(document).on('click', '.btn-delete-databse-variant', function() {
+    var variantId = $(this).data('id');
+        var confirmation = confirm("Are you sure you want to delete this variant?");
+        var row = $('#variant-row-' + variantId);
+        if (confirmation) {
+            $.ajax({
+                url: "{{ route('variants.delete') }}", // Your delete route URL
+                type: 'POST',
+                data: {
+                    variant_id: variantId,
+                    _token: '{{ csrf_token() }}' // Pass the CSRF token for security
+                },
+                success: function(response) {
+                    if (response.success) {
+                        // Remove the variant row from the table
+                        row.remove();
+                        alert("Variant deleted successfully.");
+                    } else {
+                        alert("Error deleting variant.");
+                    }
+                },
+                error: function(xhr) {
+                    console.log(xhr.responseText);
+                    alert("Something went wrong. Please try again.");
+                }
+            });
+        }
+    });
+
+    $(document).on('click', '.btn-delete-variant', function() {
         var variantIndex = $(this).data('id');
         var confirmation = confirm("Are you sure you want to delete this variant?");
         if (confirmation) {

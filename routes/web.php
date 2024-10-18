@@ -125,6 +125,7 @@ Route::post('/product/add-more-choice-option', [productController::class, 'getCh
 Route::post('/product/combination', [productController::class, 'combination'])->name('product.combination');
 Route::delete('/products/{id}', [productController::class, 'destroy'])->name('products.destroy');
 Route::post('/product/status-change', [productController::class, 'changeStatus'])->name('product.changeStatus');
+Route::post('/variants/delete', [productController::class, 'deleteVariant'])->name('variants.delete');
 
 //country
 Route::get('/country', [countryController::class, 'index'])->name('country.index');
