@@ -64,6 +64,12 @@
                     </a>
                 </li>
                 <li>
+                    <a href="{{ route('review.index')}}" class="waves-effect">
+                        <i class="bx bx-star"></i>
+                        <span>Google reviews</span>
+                    </a>
+                </li>
+                <li>
                     <a href="{{ route('payment.index')}}" class="waves-effect">
                         <i class="bx bx-rupee"></i>
                         <span>Payment</span>
