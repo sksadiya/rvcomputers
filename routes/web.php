@@ -6,6 +6,7 @@ use App\Http\Controllers\AttributeValue;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\ColorController;
 use App\Http\Controllers\CouponController;
+use App\Http\Controllers\paymentSettingController;
 use App\Http\Controllers\sliderController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\adminController;
@@ -37,6 +38,10 @@ Route::group(['middleware' => ['admin']], function () {
     //company settings
     Route::get('/company/settings', [settingController::class, 'index'])->name('company.index');
     Route::post('/company/settings', [settingController::class, 'saveSettings'])->name('company.update');
+
+    //payment settings
+    Route::get('/payment/settings', [paymentSettingController::class, 'index'])->name('payment.index');
+    Route::post('/payment/settings', [paymentSettingController::class, 'saveSettings'])->name('payment.update');
 
     //media
 Route::get('/media', [mediaController::class, 'index'])->name('media.index');

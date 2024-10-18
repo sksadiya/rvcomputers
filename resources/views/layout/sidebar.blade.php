@@ -64,6 +64,12 @@
                     </a>
                 </li>
                 <li>
+                    <a href="{{ route('payment.index')}}" class="waves-effect">
+                        <i class="bx bx-rupee"></i>
+                        <span>Payment</span>
+                    </a>
+                </li>
+                <li>
                     <a href="{{ route('company.index')}}" class="waves-effect">
                         <i class="bx bx-store"></i>
                         <span>Company</span>
