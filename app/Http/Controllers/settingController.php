@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Setting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 
@@ -61,5 +62,16 @@ class settingController extends Controller
         }
         return redirect()->back()->with('success', 'Company settings updated successfully.');
 
+    }
+
+    public function clearCache()
+    {
+        // Clear all caches
+        Artisan::call('cache:clear');
+        Artisan::call('config:clear');
+        Artisan::call('route:clear');
+        Artisan::call('view:clear');
+
+        return redirect()->back()->with('success' , 'cache clear successfully');
     }
 }

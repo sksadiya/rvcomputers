@@ -39,6 +39,7 @@ Route::group(['middleware' => ['admin']], function () {
     //company settings
     Route::get('/company/settings', [settingController::class, 'index'])->name('company.index');
     Route::post('/company/settings', [settingController::class, 'saveSettings'])->name('company.update');
+    Route::get('/clear-cache', [settingController::class, 'clearCache'])->name('clear.cache');
 
     //payment settings
     Route::get('/payment/settings', [paymentSettingController::class, 'index'])->name('payment.index');

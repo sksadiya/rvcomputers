@@ -58,6 +58,12 @@
                     </a>
                 </li>
                 <li>
+                    <a href="{{ route('clear.cache')}}" class="waves-effect">
+                        <i class="bx bx-brush"></i>
+                        <span>Clear cache</span>
+                    </a>
+                </li>
+                <li>
                     <a href="{{ route('mail.index')}}" class="waves-effect">
                         <i class="bx bx-envelope"></i>
                         <span>Mail</span>
