@@ -6,6 +6,7 @@ use App\Http\Controllers\AttributeValue;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\ColorController;
 use App\Http\Controllers\CouponController;
+use App\Http\Controllers\sliderController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\adminController;
 use App\Http\Controllers\adminAuthController;
@@ -126,6 +127,16 @@ Route::post('/product/combination', [productController::class, 'combination'])->
 Route::delete('/products/{id}', [productController::class, 'destroy'])->name('products.destroy');
 Route::post('/product/status-change', [productController::class, 'changeStatus'])->name('product.changeStatus');
 Route::post('/variants/delete', [productController::class, 'deleteVariant'])->name('variants.delete');
+
+//slider
+Route::get('/slider', [sliderController::class, 'index'])->name('slider.index');
+  Route::get('/slider/create', [sliderController::class, 'create'])->name('slider.create');
+  Route::post('/slider/store', [sliderController::class, 'store'])->name('slider.store');
+  Route::get('sliders/data', [sliderController::class, 'getData'])->name('sliders.data');
+  Route::get('/slider/edit/{id}', [sliderController::class, 'edit'])->name('slider.edit');
+  Route::post('/slider/update/{id}', [sliderController::class, 'update'])->name('slider.update');
+Route::delete('/sliders/{id}', [sliderController::class, 'destroy'])->name('sliders.destroy');
+Route::post('/sliders/status-change', [sliderController::class, 'changeStatus'])->name('sliders.changeStatus');
 
 //country
 Route::get('/country', [countryController::class, 'index'])->name('country.index');

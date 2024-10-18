@@ -52,6 +52,12 @@
                 
                 <li class="menu-title" key="t-apps">SETTINGS</li>
                 <li>
+                    <a href="{{ route('slider.index')}}" class="waves-effect">
+                        <i class="bx bx-images"></i>
+                        <span>Slider</span>
+                    </a>
+                </li>
+                <li>
                     <a href="{{ route('mail.index')}}" class="waves-effect">
                         <i class="bx bx-envelope"></i>
                         <span>Mail</span>
@@ -63,6 +69,7 @@
                         <span>Company</span>
                     </a>
                 </li>
+               
             </ul>
         </div>
         <!-- Sidebar -->
