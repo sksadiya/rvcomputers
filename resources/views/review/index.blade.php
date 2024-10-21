@@ -1,20 +1,7 @@
 @extends('layout.master')
 
-@section('title') Payment  @endsection
-@section('css')
-<style>
-    .img-div {
-    max-height: 90px;
-    border: 1px dashed #ddd;
-    border-radius: 4px;
-    padding: 10px;
-}
-.logo-display {
-    max-height: 70px;
-    display: inline-block;
-}
-</style>
-@endsection
+@section('title') Google Reviews  @endsection
+
 @section('content')
 <div class="row">
     <div class="col-12">

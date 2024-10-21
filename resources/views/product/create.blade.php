@@ -218,13 +218,25 @@
             <hr>
             <div class="card-body">
                 <div class="row mb-3">
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <label class="col-form-label">Unit Price <span class="text-danger">*</span>
                         </label>
                     </div>
-                    <div class="col-md-8">
-                        <input type="number" class="form-control @error('unit_price') is-invalid @enderror" name="unit_price" >
+                    <div class="col-md-4">
+                        <input type="number" class="form-control @error('unit_price') is-invalid @enderror" name="unit_price" min="1">
                         @error('unit_price')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                        @enderror
+                    </div>
+                    <div class="col-md-2">
+                        <label class="col-form-label">Old Price
+                        </label>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="number" class="form-control @error('old_price') is-invalid @enderror" name="old_price" min="1">
+                        @error('old_price')
                         <div class="invalid-feedback">
                             {{ $message }}
                         </div>
@@ -232,11 +244,11 @@
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <label class="col-form-label">Discount <span class="text-danger">*</span>
                         </label>
                     </div>
-                    <div class="col-md-5">
+                    <div class="col-md-6">
                         <input type="number" class="form-control @error('discount') is-invalid @enderror" name="discount">
                         @error('discount')
                         <div class="invalid-feedback">
@@ -244,7 +256,7 @@
                         </div>
                         @enderror
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <select name="discount_type" id="discount_type" class="form-control select2  @error('discount_type') is-invalid @enderror" >
                             <option value="fixed">Flat</option>
                             <option value="percentage">Percentage</option>
@@ -257,11 +269,11 @@
                 </div>
                 </div>
                 <div class="row mb-3">
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <label class="col-form-label">Quantity <span class="text-danger">*</span>
                         </label>
                     </div>
-                    <div class="col-md-8">
+                    <div class="col-md-10">
                         <input type="number" class="form-control @error('current_stock') is-invalid @enderror" name="current_stock">
                         @error('current_stock')
                         <div class="invalid-feedback">
@@ -271,10 +283,10 @@
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <label class="col-form-label">SKU</label>
                     </div>
-                    <div class="col-md-8">
+                    <div class="col-md-10">
                         <input type="text" class="form-control  @error('sku') is-invalid @enderror" name="sku">
                         @error('sku')
                         <div class="invalid-feedback">

@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\Product;
+use App\Models\ProductCategory;
+use App\Models\Slider;
 use Illuminate\Support\ServiceProvider;
 use App\Models\mailSetting;
 use App\Models\Setting;
@@ -38,5 +41,12 @@ class AppServiceProvider extends ServiceProvider
         view()->share('companySettings', $companySettings);
         $tempImages = media::orderBy('created_at', 'desc')->get();
         view()->share('tempImages', $tempImages);
+        // $categories = ProductCategory::where('parent_category_id', '!=', null)->get();
+        $categories = ProductCategory::all();
+        view()->share('categories', $categories);
+        $sliders = Slider::all();
+        view()->share('sliders', $sliders);
+        $products = Product::all();
+        view()->share('products', $products);
     }
 }

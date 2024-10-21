@@ -46,7 +46,7 @@ $(document).ready(function () {
 		
     // Variables for tracking state
     var start = 0;
-    var limit = 2; 
+    var limit = 23; 
     var index = 0; 
     var selectable_type = '';
     var column_name = '';

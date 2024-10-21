@@ -119,6 +119,7 @@ class productController extends Controller
             'video_provider' => 'nullable|string|max:50',
             'video_link' => 'nullable|string|max:255',
             'unit_price' => 'nullable|numeric',
+            'old_price' => 'nullable|numeric',
             'discount' => 'nullable|numeric',
             'discount_type' => 'in:fixed,percentage',
             'current_stock' => 'required|integer',
@@ -151,6 +152,7 @@ class productController extends Controller
         $product->video_provider = $request->video_provider;
         $product->video_link = $request->video_link;
         $product->unit_price = $request->unit_price;
+        $product->old_price = $request->old_price;
         $product->discount = $request->discount;
         $product->discount_type = $request->discount_type;
         $product->current_stock = $request->current_stock;
@@ -259,6 +261,7 @@ class productController extends Controller
             'video_provider' => 'nullable|string|max:50',
             'video_link' => 'nullable|string|max:255',
             'unit_price' => 'nullable|numeric',
+            'old_price' => 'nullable|numeric',
             'discount' => 'nullable|numeric',
             'discount_type' => 'in:fixed,percentage',
             'current_stock' => 'required|integer',
@@ -290,6 +293,7 @@ class productController extends Controller
         $product->video_provider = $request->video_provider;
         $product->video_link = $request->video_link;
         $product->unit_price = $request->unit_price;
+        $product->old_price = $request->old_price;
         $product->discount = $request->discount;
         $product->discount_type = $request->discount_type;
         $product->current_stock = $request->current_stock;

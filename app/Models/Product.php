@@ -27,6 +27,7 @@ class Product extends Model
         'low_stock_quantity',
         'image',
         'status',
+        'old_price'
     ];
     public function variants()
     {
