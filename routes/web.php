@@ -6,6 +6,7 @@ use App\Http\Controllers\AttributeValue;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\ColorController;
 use App\Http\Controllers\CouponController;
+use App\Http\Controllers\customerCrud;
 use App\Http\Controllers\googleReviewController;
 use App\Http\Controllers\paymentSettingController;
 use App\Http\Controllers\sliderController;
@@ -148,6 +149,16 @@ Route::get('/slider', [sliderController::class, 'index'])->name('slider.index');
   Route::post('/slider/update/{id}', [sliderController::class, 'update'])->name('slider.update');
 Route::delete('/sliders/{id}', [sliderController::class, 'destroy'])->name('sliders.destroy');
 Route::post('/sliders/status-change', [sliderController::class, 'changeStatus'])->name('sliders.changeStatus');
+
+//customer
+Route::get('/customer', [customerCrud::class, 'index'])->name('customer.index');
+  Route::get('/customer/create', [customerCrud::class, 'create'])->name('customer.create');
+  Route::post('/customer/store', [customerCrud::class, 'store'])->name('customer.store');
+  Route::get('customers/data', [customerCrud::class, 'getData'])->name('customers.data');
+  Route::get('/customer/edit/{id}', [customerCrud::class, 'edit'])->name('customer.edit');
+  Route::post('/customer/update/{id}', [customerCrud::class, 'update'])->name('customer.update');
+Route::delete('/customers/{id}', [customerCrud::class, 'destroy'])->name('customers.destroy');
+Route::post('/customer/status-change', [customerCrud::class, 'changeStatus'])->name('customer.changeStatus');
 
 //country
 Route::get('/country', [countryController::class, 'index'])->name('country.index');
