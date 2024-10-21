@@ -226,7 +226,7 @@
 @section('script')
 <script>
      $(document).ready(function() {
-        $('form').on('submit', function() {
+        $('#form-update-company').on('submit', function() {
             // Disable the submit button
             $('#btn-save').prop('disabled', true);
             

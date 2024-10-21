@@ -9,9 +9,9 @@
     <meta name="description" content="Index page">
     <meta name="keywords" content="index, page">
     <meta name="author" content="">
-    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets/front/assets/imgs/template/favicon.svg') }}">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ $companySettings['app_fevicon'] }}">
     <link href="{{ asset('assets/front/assets/css/style.css?v=3.0.0') }}" rel="stylesheet">
-    <title>Home 5 - Ecom Marketplace Template</title>
+    <title>{{ $companySettings['organization_name'] }}</title>
     <meta name="_token" content="{{ csrf_token() }}">
     @include('front.layouts.head-css')
   </head>
