@@ -201,8 +201,10 @@ Route::group(['middleware' => ['customer']], function () {
   Route::get('/customer/dashboard', [registerController::class, 'index'])->name('customer.dashboard');
   Route::get('/customer/logout', [registerController::class, 'logout'])->name('customer.logout');
   Route::get('/customer/address', [accountController::class, 'address'])->name('customer.address');
+  Route::post('/customer/address', [accountController::class, 'updateAddress'])->name('update.address');
   Route::get('/customer/orders', [accountController::class, 'orders'])->name('customer.orders');
   Route::get('/customer/profile', [accountController::class, 'settings'])->name('customer.settings');
+  Route::post('/customer/profile', [accountController::class, 'updateProfile'])->name('update.settings');
 });
 //customer auth
 

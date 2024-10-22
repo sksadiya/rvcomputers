@@ -25,8 +25,8 @@
                     </li>
                     <!-- Settings Button -->
                     <li class="nav-link">
-                        <a class="btn w-100 btn-sidebar fw-bold fs-5 {{ request()->routeIs('customer.dashboard') ? 'active' : '' }}" 
-                           href="{{ route('customer.dashboard') }}">
+                        <a class="btn w-100 btn-sidebar fw-bold fs-5 {{ request()->routeIs('customer.settings') ? 'active' : '' }}" 
+                           href="{{ route('customer.settings') }}">
                             <i class="fas fa-user me-2"></i> Account Settings
                         </a>
                     </li>
