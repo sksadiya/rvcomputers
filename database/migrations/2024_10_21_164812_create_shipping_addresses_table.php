@@ -20,6 +20,7 @@ return new class extends Migration
             $table->unsignedBigInteger('state_id')->nullable();
             $table->unsignedBigInteger('country_id')->nullable();
             $table->string('postal_code')->nullable(); 
+            $table->string('contact')->nullable(); 
             $table->timestamps();
         });
     }

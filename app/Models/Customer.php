@@ -23,11 +23,11 @@ class Customer extends Model
     ];
     public function billingAddresses()
     {
-        return $this->hasMany(BillingAddress::class);
+        return $this->hasOne(BillingAddress::class);
     }
 
     public function shippingAddresses()
     {
-        return $this->hasMany(ShippingAddress::class);
+        return $this->hasOne(ShippingAddress::class);
     }
 }

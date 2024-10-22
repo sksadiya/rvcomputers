@@ -17,6 +17,7 @@ class BillingAddress extends Model
         'state_id',
         'postal_code',
         'country_id',
+        'contact'
     ];
     public function customer()
     {

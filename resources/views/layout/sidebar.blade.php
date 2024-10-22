@@ -42,6 +42,13 @@
                         <li><a href="{{ route('city.index')}}">City</a></li>
                     </ul>
                 </li>
+                <li class="menu-title" key="t-apps">CUSTOMERS</li>
+                <li>
+                    <a href="{{ route('customer.index')}}" class="waves-effect">
+                        <i class="bx bx-user"></i>
+                        <span>Customer</span>
+                    </a>
+                </li>
                 <li class="menu-title" key="t-apps">MEDIA</li>
                 <li>
                     <a href="{{ route('media.index')}}" class="waves-effect">

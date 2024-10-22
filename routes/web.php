@@ -194,3 +194,9 @@ Route::post('/city/status-change', [cityController::class, 'changeStatus'])->nam
 Route::get('/admin/login', [adminAuthController::class, 'index'])->name('admin.login');
 Route::post('/admin/login', [adminAuthController::class, 'processLogin'])->name('admin.processLogin');
 Route::get('/send-test-email', [mailSettingsController::class, 'sendTestEmail']);
+
+// Fetch states based on country ID
+Route::get('/states/{countryId}', [countryController::class, 'getStates'])->name('states.fetch');
+
+// Fetch cities based on state ID
+Route::get('/cities/{stateId}', [countryController::class, 'getCities'])->name('cities.fetch');
