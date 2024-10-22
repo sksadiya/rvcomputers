@@ -79,8 +79,8 @@
                         <div class="form-register mt-30 mb-20">
                             <div class="form-group">
                             <label class="mb-2 font-sm text-black">Email*</label>
-                            <input class="form-control @error('login-email') is-invalid @enderror" type="email" name="login-email" id="login-email" placeholder="stevenjob@gmail.com" required>
-                            @error('login-email')
+                            <input class="form-control @error('email') is-invalid @enderror" type="email" name="email" id="email" placeholder="stevenjob@gmail.com" required>
+                            @error('email')
                                 <span class="invalid-feedback" role="alert">
                                     {{ $message }}
                                 </span>
@@ -88,8 +88,8 @@
                             </div>
                             <div class="form-group">
                             <label class="mb-2 font-sm text-black">Password *</label>
-                            <input class="form-control @error('login-password') is-invalid @enderror" type="password" name="login-password" id="login-password" placeholder="******************" required>
-                            @error('login-password')
+                            <input class="form-control @error('password') is-invalid @enderror" type="password" name="password" id="password" placeholder="******************" required>
+                            @error('password')
                                 <span class="invalid-feedback" role="alert">
                                     {{ $message }}
                                 </span>
