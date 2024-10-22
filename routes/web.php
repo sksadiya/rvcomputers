@@ -3,6 +3,7 @@
 use App\Http\Controllers\attributeController;
 use App\Http\Controllers\AttributeVal;
 use App\Http\Controllers\AttributeValue;
+use App\Http\Controllers\Auth\registerController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\ColorController;
 use App\Http\Controllers\CouponController;
@@ -194,6 +195,17 @@ Route::post('/city/status-change', [cityController::class, 'changeStatus'])->nam
 Route::get('/admin/login', [adminAuthController::class, 'index'])->name('admin.login');
 Route::post('/admin/login', [adminAuthController::class, 'processLogin'])->name('admin.processLogin');
 Route::get('/send-test-email', [mailSettingsController::class, 'sendTestEmail']);
+
+Route::group(['middleware' => ['customer']], function () { 
+  Route::get('/customer/dashboard', [registerController::class, 'index'])->name('customer.dashboard');
+});
+//customer auth
+
+Route::get('/account/register', [registerController::class, 'showRegisterForm'])->name('customer.register');
+Route::post('/account/register', [registerController::class, 'processRegister'])->name('customer.processRegister');
+Route::get('/account/login', [registerController::class, 'login'])->name('customer.login');
+Route::post('/account/login', [registerController::class, 'processLogin'])->name('customer.processLogin');
+Route::get('/customer/activate/{token}', [registerController::class, 'activateAccount'])->name('customer.activate');
 
 // Fetch states based on country ID
 Route::get('/states/{countryId}', [countryController::class, 'getStates'])->name('states.fetch');
