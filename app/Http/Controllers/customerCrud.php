@@ -164,7 +164,7 @@ class customerCrud extends Controller
         }
     }
     public function edit($id) {
-        $customer = Customer::with('billingAddresses','shippingAddresses')->find($id);
+        $customer = Customer::with('billingAddress','shippingAddress')->find($id);
         if(!$customer) {
             return redirect()->route('customer.index')->with('error','Customer not found');
         }
@@ -174,6 +174,7 @@ class customerCrud extends Controller
         return view('custome.edit',compact('countries','states','cities','customer'));
     }
     public function update(Request $request,$id) {
+        // dd($request->all());
         $customer = Customer::find($id);
         if(!$customer) {
             return redirect()->route('customer.index')->with('error','Customer Not Found');
@@ -207,64 +208,37 @@ class customerCrud extends Controller
         $customer->contact = $request->mobile_number;
         $customer->status = $request->status;
         $customer->avatar = $request->avatar;
-        $customer->save();
-
         if ($request->filled('password')) {
             $customer->password = Hash::make($request->input('password')); 
         }
-        $customer->save();
-
-        $billing = $customer->billingAddresses()->first();
-        if ($billing) {
-            // Update existing billing address
-            $billing->address_line_1 = $request->billing_address;
-            $billing->country_id = $request->billing_country;
-            $billing->state_id = $request->billing_state;
-            $billing->city_id = $request->billing_city;
-            $billing->postal_code = $request->billing_postal;
-            $billing->contact = $request->billing_phone;
-            $billing->save();
+        if ($customer->save()) {
+            // Uncomment this to handle billing and shipping addresses
+            $customer->billingAddress()->updateOrCreate(
+                ['customer_id' => $customer->id],
+                [
+                    'address_line_1' => $request->billing_address,
+                    'country_id' => $request->billing_country,
+                    'state_id' => $request->billing_state,
+                    'city_id' => $request->billing_city,
+                    'postal_code' => $request->billing_postal,
+                    'contact' => $request->billing_phone,
+                ]
+            );
+            $customer->shippingAddress()->updateOrCreate(
+                ['customer_id' => $customer->id],
+                [
+                    'address_line_1' => $request->shipping_address,
+                    'country_id' => $request->shipping_country,
+                    'state_id' => $request->shipping_state,
+                    'city_id' => $request->shipping_city,
+                    'postal_code' => $request->shipping_postal,
+                    'contact' => $request->shipping_phone,
+                ]
+            );
+    
+            return redirect()->route('customer.index')->with('success', 'Customer updated successfully');
         } else {
-            // Create a new billing address if none exists
-            $billing = new BillingAddress();
-            $billing->customer_id = $customer->id;
-            $billing->address_line_1 = $request->billing_address;
-            $billing->country_id = $request->billing_country;
-            $billing->state_id = $request->billing_state;
-            $billing->city_id = $request->billing_city;
-            $billing->postal_code = $request->billing_postal;
-            $billing->contact = $request->billing_phone;
-            $billing->save();
-        }
-
-        $shipping = $customer->shippingAddresses()->first();
-        if ($shipping) {
-            // Update existing shipping address
-            $shipping->address_line_1 = $request->shipping_address;
-            $shipping->country_id = $request->shipping_country;
-            $shipping->state_id = $request->shipping_state;
-            $shipping->city_id = $request->shipping_city;
-            $shipping->postal_code = $request->shipping_postal;
-            $shipping->contact = $request->shipping_phone;
-            $shipping->save();
-        } else {
-            // Create a new shipping address if none exists
-            $shipping = new ShippingAddress();
-            $shipping->customer_id = $customer->id;
-            $shipping->address_line_1 = $request->shipping_address;
-            $shipping->country_id = $request->shipping_country;
-            $shipping->state_id = $request->shipping_state;
-            $shipping->city_id = $request->shipping_city;
-            $shipping->postal_code = $request->shipping_postal;
-            $shipping->contact = $request->shipping_phone;
-            $shipping->save();
-        }
-        $success = true;
-
-        if($success) {
-            return redirect()->route('customer.index')->with('success','Customer updated successfully');
-            } else {
-                return redirect()->back()->with('error','Customer creation failed');
+            return redirect()->back()->with('error', 'Customer update failed');
         }
     }
     public function destroy($id) {

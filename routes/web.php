@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\accountController;
 use App\Http\Controllers\attributeController;
 use App\Http\Controllers\AttributeVal;
 use App\Http\Controllers\AttributeValue;
@@ -198,6 +199,10 @@ Route::get('/send-test-email', [mailSettingsController::class, 'sendTestEmail'])
 
 Route::group(['middleware' => ['customer']], function () { 
   Route::get('/customer/dashboard', [registerController::class, 'index'])->name('customer.dashboard');
+  Route::get('/customer/logout', [registerController::class, 'logout'])->name('customer.logout');
+  Route::get('/customer/address', [accountController::class, 'address'])->name('customer.address');
+  Route::get('/customer/orders', [accountController::class, 'orders'])->name('customer.orders');
+  Route::get('/customer/profile', [accountController::class, 'settings'])->name('customer.settings');
 });
 //customer auth
 

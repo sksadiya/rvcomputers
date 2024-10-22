@@ -24,13 +24,14 @@ class Customer extends Authenticatable
     protected $hidden = [
         'password',
     ];
-    public function billingAddresses()
+    public function billingAddress()
     {
         return $this->hasOne(BillingAddress::class);
     }
-
-    public function shippingAddresses()
+    
+    public function shippingAddress()
     {
         return $this->hasOne(ShippingAddress::class);
     }
+    
 }

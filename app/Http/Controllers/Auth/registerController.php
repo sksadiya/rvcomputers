@@ -113,4 +113,10 @@ class registerController extends Controller
         }
         return view('Auth.login');
     }
+
+    public function logout()
+    {
+        Auth::guard('customer')->logout();
+        return redirect()->route('customer.login');
+    }
 }

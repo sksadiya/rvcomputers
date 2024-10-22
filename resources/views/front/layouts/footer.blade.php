@@ -44,10 +44,10 @@
             <div class="col-lg-3 width-16 mb-30">
               <h4 class="mb-30 text-white">My account</h4>
               <ul class="menu-footer p-0">
-                <li><a href="#" class="text-white"><i class="bx bx-chevron-right me-2"></i>Register</a></li>
-                <li><a href="#" class="text-white"><i class="bx bx-chevron-right me-2"></i>Login</a></li>
-                <li><a href="#" class="text-white"><i class="bx bx-chevron-right me-2"></i>Cart</a></li>
-                <li><a href="#" class="text-white"><i class="bx bx-chevron-right me-2"></i>Orders</a></li>
+                <li><a href="{{ route('customer.register' )}}" class="text-white"><i class="bx bx-chevron-right me-2"></i>Register</a></li>
+                <li><a href="{{ route('customer.login')}}" class="text-white"><i class="bx bx-chevron-right me-2"></i>Login</a></li>
+                <li><a href="{{ route('welcome') }}" class="text-white"><i class="bx bx-chevron-right me-2"></i>Home</a></li>
+                <li><a href="#" class="text-white"><i class="bx bx-chevron-right me-2"></i>Shop</a></li>
               </ul>
             </div>
             <div class="col-lg-3 width-23">

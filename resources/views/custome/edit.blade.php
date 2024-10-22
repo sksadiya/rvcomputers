@@ -129,151 +129,137 @@
             </div>
 
             <div class="card">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-sm-9">
-                            <h4 class="card-title mb-4">Billing Address</h4>
-                        </div>
-                        <div class="col-sm-3 text-end">
-                        </div>
-                    </div>
-                    <div class="form-group row mb-3">
-                        <label class="col-sm-2 col-form-label">Address</label>
-                        <div class="col-sm-10">
-                            <textarea name="billing_address" id="billing_address"  class="form-control @error('billing_address') is-invalid @enderror" placeholder="billing address" >
-                            {!! old('billing_address', $customer->billingAddresses->first()->address_line_1 ?? '') !!}
-                            </textarea>
-                            @error('billing_address')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="form-group row mb-3">
-                        <label class="col-sm-2 col-form-label">Phone
-                        </label>
-                        <div class="col-sm-10">
-                            <input type="number" name="billing_phone" id="billing_phone" value="{{ old('billing_phone', $customer->billingAddresses->first()->contact ?? '') }}" class="form-control @error('billing_phone') is-invalid @enderror" placeholder="Mobile No."  >
-                            @error('billing_phone')
-                            <span class="invalid-feedback" role="alert">
-                                {{ $message }}
-                            </span>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="form-group row mb-3">
-                        <label class="col-sm-2 col-form-label">Country</label>
-                        <div class="col-sm-4">
-                        <select name="billing_country" id="billing_country" class="form-select country_id" style="width: 100%;"  >
-                            <option value="">Select Country</option>
-                            @foreach ($countries as $country)
-                                <option {{ $customer->billingAddresses->first()->country_id == $country->id ? 'selected' : '' }} value="{{ $country->id }}">{{ $country->name }}</option>
-                            @endforeach
-                        </select>
-                        </div>
-                        <label class="col-sm-2 col-form-label">State</label>
-                        <div class="col-sm-4 state-dropdown">
-                        <select name="billing_state" id="billing_state" class="form-select state_id" style="width: 100%;" >
-                        <option value="" >Select State</option>
-                        </select>
-                        </div>
-                    </div>
-                    <div class="form-group row mb-3">
-                        <label class="col-sm-2 col-form-label">City</label>
-                        <div class="col-sm-4 city-dropdown">
-                        <select name="billing_city" id="billing_city" class="form-select city_id" style="width: 100%;" >
-                        <option value="" >Select City</option>
-                        </select>
-                        </div>
-                        <label class="col-sm-2 col-form-label">postal</label>
-                        <div class="col-sm-4">
-                                <input type="text" name="billing_postal" id="billing_postal" value="{{ $customer->billingAddresses->first()->postal_code}}" class="form-control @error('billing_postal') is-invalid @enderror" placeholder="postal" value="" >
-                                @error('billing_postal')
-                                <div class="invalid-feedback">
-                                {{ $message }}
-                                </div>
-                                @enderror
-                        </div>
-                    </div>
-                </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm-9">
+                <h4 class="card-title mb-4">Billing Address</h4>
             </div>
-            <div class="card">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-sm-9">
-                            <h4 class="card-title mb-4">Shipping Address</h4>
-                        </div>
-                        <div class="col-sm-3 text-end">
-                        </div>
-                    </div>
-                    <div class="form-group row mb-3">
-                        <div class="col-sm-10 offset-sm-2">
-                            <input type="checkbox" id="same_as_billing" name="same_as_billing">
-                            <label for="same_as_billing">Same as Billing Address</label>
-                        </div>
-                    </div>
-                    <div class="form-group row mb-3">
-                        <label class="col-sm-2 col-form-label">Address</label>
-                        <div class="col-sm-10">
-                            <textarea name="shipping_address" id="shipping_address" class="form-control @error('shipping_address') is-invalid @enderror" placeholder="shipping address" >
-                                {{ $customer->shippingAddresses->first()->address_line_1 }}
-                            </textarea>
-                            @error('shipping_address')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="form-group row mb-3">
-                        <label class="col-sm-2 col-form-label">Phone
-                        </label>
-                        <div class="col-sm-10">
-                            <input type="number" name="shipping_phone" value="{{ $customer->shippingAddresses->first()->contact}}" id="shipping_phone" class="form-control @error('shipping_phone') is-invalid @enderror" placeholder="Mobile No."  >
-                            @error('shipping_phone')
-                            <span class="invalid-feedback" role="alert">
-                                {{ $message }}
-                            </span>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="form-group row mb-3">
-                        <label class="col-sm-2 col-form-label">Country</label>
-                        <div class="col-sm-4">
-                        <select name="shipping_country" id="shipping_country" class="form-select country_id" style="width: 100%;"  >
-                            <option value="">Select Country</option>
-                            @foreach ($countries as $country)
-                                <option {{ $customer->shippingAddresses->first()->country_id == $country->id ? 'selected' : '' }} value="{{ $country->id }}">{{ $country->name }}</option>
-                            @endforeach
-                        </select>
-                        </div>
-                        <label class="col-sm-2 col-form-label">State</label>
-                        <div class="col-sm-4 state-dropdown">
-                        <select name="shipping_state" id="shipping_state" class="form-select state_id" style="width: 100%;" >
-                        <option value="" >Select State</option>
-                        </select>
-                        </div>
-                    </div>
-                    <div class="form-group row mb-3">
-                        <label class="col-sm-2 col-form-label">City</label>
-                        <div class="col-sm-4 city-dropdown">
-                        <select name="shipping_city" id="shipping_city" class="form-select city_id" style="width: 100%;" >
-                        <option value="" >Select City</option>
-                        </select>
-                        </div>
-                        <label class="col-sm-2 col-form-label">postal</label>
-                        <div class="col-sm-4">
-                                <input type="text" name="shipping_postal" value="{{ $customer->shippingAddresses->first()->postal_code}}" id="shipping_postal" class="form-control @error('shipping_postal') is-invalid @enderror" placeholder="postal" value="" >
-                                @error('shipping_postal')
-                                <div class="invalid-feedback">
-                                {{ $message }}
-                                </div>
-                                @enderror
-                        </div>
-                    </div>
-                </div>
+            <div class="col-sm-3 text-end">
             </div>
+        </div>
+        <div class="form-group row mb-3">
+            <label class="col-sm-2 col-form-label">Address</label>
+            <div class="col-sm-10">
+                <textarea name="billing_address" id="billing_address" class="form-control @error('billing_address') is-invalid @enderror" placeholder="billing address">{{ old('billing_address', $customer->billingAddress->address_line_1 ?? '') }}</textarea>
+                @error('billing_address')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                @enderror
+            </div>
+        </div>
+        <div class="form-group row mb-3">
+            <label class="col-sm-2 col-form-label">Phone</label>
+            <div class="col-sm-10">
+                <input type="number" name="billing_phone" id="billing_phone" value="{{ old('billing_phone', $customer->billingAddress->contact ?? '') }}" class="form-control @error('billing_phone') is-invalid @enderror" placeholder="Mobile No.">
+                @error('billing_phone')
+                    <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                @enderror
+            </div>
+        </div>
+        <div class="form-group row mb-3">
+            <label class="col-sm-2 col-form-label">Country</label>
+            <div class="col-sm-4">
+                <select name="billing_country" id="billing_country" class="form-select country_id" style="width: 100%;">
+                    <option value="">Select Country</option>
+                    @foreach ($countries as $country)
+                        <option {{ isset($customer->billingAddress) && $customer->billingAddress->country_id == $country->id ? 'selected' : '' }} value="{{ $country->id }}">{{ $country->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <label class="col-sm-2 col-form-label">State</label>
+            <div class="col-sm-4 state-dropdown">
+                <select name="billing_state" id="billing_state" class="form-select state_id" style="width: 100%;">
+                    <option value="">Select State</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group row mb-3">
+            <label class="col-sm-2 col-form-label">City</label>
+            <div class="col-sm-4 city-dropdown">
+                <select name="billing_city" id="billing_city" class="form-select city_id" style="width: 100%;">
+                    <option value="">Select City</option>
+                </select>
+            </div>
+            <label class="col-sm-2 col-form-label">Postal</label>
+            <div class="col-sm-4">
+                <input type="text" name="billing_postal" id="billing_postal" value="{{ old('billing_postal', $customer->billingAddress->postal_code ?? '') }}" class="form-control @error('billing_postal') is-invalid @enderror" placeholder="Postal">
+                @error('billing_postal')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Shipping Address Section -->
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm-9">
+                <h4 class="card-title mb-4">Shipping Address</h4>
+            </div>
+            <div class="col-sm-3 text-end"></div>
+        </div>
+        <div class="form-group row mb-3">
+            <div class="col-sm-10 offset-sm-2">
+                <input type="checkbox" id="same_as_billing" name="same_as_billing">
+                <label for="same_as_billing">Same as Billing Address</label>
+            </div>
+        </div>
+        <div class="form-group row mb-3">
+            <label class="col-sm-2 col-form-label">Address</label>
+            <div class="col-sm-10">
+                <textarea name="shipping_address" id="shipping_address" class="form-control @error('shipping_address') is-invalid @enderror" placeholder="shipping address">{{ old('shipping_address', $customer->shippingAddress->address_line_1 ?? '') }}</textarea>
+                @error('shipping_address')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+        </div>
+        <div class="form-group row mb-3">
+            <label class="col-sm-2 col-form-label">Phone</label>
+            <div class="col-sm-10">
+                <input type="number" name="shipping_phone" value="{{ old('shipping_phone', $customer->shippingAddress->contact ?? '') }}" id="shipping_phone" class="form-control @error('shipping_phone') is-invalid @enderror" placeholder="Mobile No.">
+                @error('shipping_phone')
+                    <span class="invalid-feedback">{{ $message }}</span>
+                @enderror
+            </div>
+        </div>
+        <div class="form-group row mb-3">
+            <label class="col-sm-2 col-form-label">Country</label>
+            <div class="col-sm-4">
+                <select name="shipping_country" id="shipping_country" class="form-select country_id" style="width: 100%;">
+                    <option value="">Select Country</option>
+                    @foreach ($countries as $country)
+                        <option {{ isset($customer->shippingAddress) && $customer->shippingAddress->country_id == $country->id ? 'selected' : '' }} value="{{ $country->id }}">{{ $country->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <label class="col-sm-2 col-form-label">State</label>
+            <div class="col-sm-4 state-dropdown">
+                <select name="shipping_state" id="shipping_state" class="form-select state_id" style="width: 100%;">
+                    <option value="">Select State</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group row mb-3">
+            <label class="col-sm-2 col-form-label">City</label>
+            <div class="col-sm-4 city-dropdown">
+                <select name="shipping_city" id="shipping_city" class="form-select city_id" style="width: 100%;">
+                    <option value="">Select City</option>
+                </select>
+            </div>
+            <label class="col-sm-2 col-form-label">Postal</label>
+            <div class="col-sm-4">
+                <input type="text" name="shipping_postal" value="{{ old('shipping_postal', $customer->shippingAddress->postal_code ?? '') }}" id="shipping_postal" class="form-control @error('shipping_postal') is-invalid @enderror" placeholder="Postal">
+                @error('shipping_postal')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+        </div>
+    </div>
+</div>
+
                     <div class="form-group text-center mb-3">
                         <div class="col-sm-12">
                         <button type="submit" id="btn-save" class="btn btn-primary">
@@ -320,7 +306,9 @@ $(document).ready(function () {
                         $.each(data.states, function (key, state) {
                             $('#billing_state').append('<option value="' + key + '">' + state + '</option>');
                         });
-                        $('#billing_state').val({{ $customer->billingAddresses->first()->state_id }}).trigger('change');
+                        @if(isset($customer->billingAddress) && isset($customer->billingAddress->state_id))
+                            $('#billing_state').val({{ $customer->billingAddress->state_id }}).trigger('change');
+                        @endif
                     },
                     error: function (xhr) {
                         console.error('AJAX Error:', xhr.responseText); // Debugging statement
@@ -344,7 +332,10 @@ $(document).ready(function () {
                         $.each(data.cities, function (key, city) {
                             $('#billing_city').append('<option value="' + key + '">' + city + '</option>');
                         });
-                        $('#billing_city').val({{ $customer->billingAddresses->first()->city_id }});
+                        @if(isset($customer->billingAddress) && isset($customer->billingAddress->city_id))
+                            $('#billing_city').val({{ $customer->billingAddress->city_id }}); 
+                        @endif
+
                     },
                     error: function (xhr) {
                         console.error('AJAX Error:', xhr.responseText); // Debugging statement
@@ -353,7 +344,10 @@ $(document).ready(function () {
             }
         });
 
-        $('#billing_country').val({{ $customer->billingAddresses->first()->country_id }}).trigger('change');
+        @if(isset($customer->billingAddress) && isset($customer->billingAddress->country_id))
+            $('#billing_country').val({{ $customer->billingAddress->country_id }}).trigger('change');
+        @endif
+
 
         $('#shipping_country').change(function () {
             var countryId = $(this).val();
@@ -371,7 +365,10 @@ $(document).ready(function () {
                         $.each(data.states, function (key, state) {
                             $('#shipping_state').append('<option value="' + key + '">' + state + '</option>');
                         });
-                        $('#shipping_state').val({{ $customer->shippingAddresses->first()->state_id }}).trigger('change');
+                        @if(isset($customer->shippingAddress) && isset($customer->shippingAddress->state_id))
+                            $('#shipping_state').val({{ $customer->shippingAddress->state_id }}).trigger('change');
+                        @endif
+
                     },
                     error: function (xhr) {
                         console.error('AJAX Error:', xhr.responseText); // Debugging statement
@@ -395,7 +392,10 @@ $(document).ready(function () {
                         $.each(data.cities, function (key, city) {
                             $('#shipping_city').append('<option value="' + key + '">' + city + '</option>');
                         });
-                        $('#shipping_city').val({{ $customer->shippingAddresses->first()->city_id }});
+                        @if(isset($customer->shippingAddress) && isset($customer->shippingAddress->city_id))
+                            $('#shipping_city').val({{ $customer->shippingAddress->city_id }});
+                        @endif
+
                     },
                     error: function (xhr) {
                         console.error('AJAX Error:', xhr.responseText); // Debugging statement
@@ -430,7 +430,10 @@ $(document).ready(function () {
         }
     });
 
-    $('#shipping_country').val({{ $customer->shippingAddresses->first()->country_id }}).trigger('change');
+    @if(isset($customer->shippingAddress) && isset($customer->shippingAddress->country_id))
+    $('#shipping_country').val({{ $customer->shippingAddress->country_id }}).trigger('change');
+@endif
+
 });
 </script>
 @endsection
