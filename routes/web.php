@@ -9,6 +9,8 @@ use App\Http\Controllers\BrandController;
 use App\Http\Controllers\ColorController;
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\customerCrud;
+use App\Http\Controllers\CustomerForgotPasswordController;
+use App\Http\Controllers\CustomerResetPasswordController;
 use App\Http\Controllers\googleReviewController;
 use App\Http\Controllers\paymentSettingController;
 use App\Http\Controllers\sliderController;
@@ -207,6 +209,13 @@ Route::group(['middleware' => ['customer']], function () {
   Route::post('/customer/profile', [accountController::class, 'updateProfile'])->name('update.settings');
 });
 //customer auth
+// Forgot Password
+Route::get('customer/password/reset', [CustomerForgotPasswordController::class, 'showLinkRequestForm'])->name('customer.password.request');
+Route::post('customer/password/email', [CustomerForgotPasswordController::class, 'sendResetLinkEmail'])->name('customer.password.email');
+
+// Reset Password
+Route::get('customer/password/reset/{token}', [CustomerResetPasswordController::class, 'showResetForm'])->name('password.reset');
+Route::post('customer/password/reset', [CustomerResetPasswordController::class, 'reset'])->name('password.update');
 
 Route::get('/account/register', [registerController::class, 'showRegisterForm'])->name('customer.register');
 Route::post('/account/register', [registerController::class, 'processRegister'])->name('customer.processRegister');

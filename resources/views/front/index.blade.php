@@ -10,7 +10,19 @@
     width: 20%;
     /* Makes each category take up 20% of the row */
   }
-
+  @media (min-width: 766px) and (max-width: 1024px) {
+  .banner-slide {
+    min-height: 290px !important;
+  }
+}
+@media (max-width: 500px) {
+    .banner-slide {
+        min-height: 163px !important;
+    }
+    .swiper-pagination-bullet {
+      display: none !important;
+    }
+}
   @media (max-width: 768px) {
     .custom-col {
       width: 50%;
@@ -60,7 +72,7 @@
         <div class="swiper-wrapper">
           @foreach ($sliders as $slider)
         <div class="swiper-slide">
-        <div class="banner-slide" style="background: url('{{ $slider->image }}') no-repeat top center;">
+        <div class="banner-slide" style="background: url('{{ $slider->image }}') ; ">
           <!-- <div class="banner-desc">
       <label class="lbl-newarrival">Slide {{ $loop->index + 1 }}</label> 
       <h1 class="color-gray-1000 mb-10">{{ $slider->title }}</h1>
@@ -83,10 +95,10 @@
   </div>
 </section>
 <section class="section-box d-block border-0 m-0 ">
-  <div class="container p-5">
+  <div class="container-fluid p-5">
     <div class="row justify-content-center align-items-center mb-3">
       @foreach ($categories as $category)
-      <div class="col custom-col">
+      <div class="col-lg-2 col-md-4 col-6">
       <div class="card card-category p-3 bg-white border-0">
         <div class="card-img image-box">
         <img src="{{ $category->logo }}" alt="{{ $category->name }}" class="img-fluid">
@@ -101,14 +113,14 @@
 <section class="section-box d-block border-0 m-0 bg-black">
   <div class="container-fluid p-3">
     <div class="row justify-content-center align-items-center">
-      <div class="col-md-3 p-3 justify-content-center align-items-center text-white">
+      <div class="col-lg-4  col-12 p-3 justify-content-center align-items-center text-white">
         <h2 class="mb-3 fw-bold">Don't Wait , Shop Now</h2>
         <ul class="list-nav-arrow ms-2">
           <li class="fs-4"><i class="bx bxs-right-arrow me-2 "></i>Best Sellers</li>
           <li class="fs-4"><i class="bx bxs-right-arrow me-2"></i>New Arrivals</li>
         </ul>
       </div>
-      <div class="col-md-8 p-3 justify-content-center align-items-center ">
+      <div class="col-lg-8 p-3 justify-content-center align-items-center ">
         <!-- <div class="container">
           <div class="head-main border-0">
             <div class="box-button-slider text-white">
@@ -150,10 +162,10 @@
 
 </section>
 <section class="section-box d-block border-0 m-0 ">
-  <div class="container p-5">
+  <div class="container-fluid p-5">
     <div class="row justify-content-center align-items-center mb-3">
       @foreach ($brands as $brand)
-      <div class="col custom-col">
+      <div class="col-lg-2 col-md-4 col-6">
       <div class="card card-category p-3 bg-white border-0">
         <div class="card-img image-box">
         <img src="{{ $brand->logo }}" alt="{{ $brand->name }}" class="img-fluid">
@@ -174,7 +186,7 @@
       </div>
 
       <div class="col-md-6 mb-5">
-        <h1 class="mb-5">1</h1>
+        <h1 class="mb-5" style="color: transparent;">1</h1>
         <select class="form-select p-2 mt-2 fs-4 rounded-pill ms-2" aria-label="Default select example">
           <option class="text-muted px-2" selected>Select Price Range</option>
           <option value="1">One</option>
@@ -187,12 +199,12 @@
   </div>
 </section>
 <section class="section-box d-block border-0 m-0">
-  <div class="container p-5">
+  <div class="container-fluid p-5">
     <div class="row mb-3 text-center ">
       <h2 class="fw-bolder text-black fs-1 ">Reasons, You can’t Say No to RV</h2>
     </div>
-    <div class="row">
-      <div class="col custom-col">
+    <div class="row justify-content-center align-items-center">
+      <div class="col-lg-2 col-md-4 col-6">
         <div class="card card-category p-3 bg-white border-0">
           <div class="card-img-top image-box d-flex justify-content-center align-items-center">
             <img src="{{  asset('assets/front/assets/imgs/scratchless.webp') }}" alt="Scratchless" class="img-fluid">
@@ -200,7 +212,7 @@
           <h5 class="text-center m-2 fw-bold text-dark">Scratchless</h5>
         </div>
       </div>
-      <div class="col custom-col">
+      <div class="col-lg-2 col-md-4 col-6">
         <div class="card card-category p-3 bg-white border-0">
           <div class="card-img-top image-box d-flex justify-content-center align-items-center">
             <img src="{{  asset('assets/front/assets/imgs/lowest-price.webp') }}" alt="Lowest Price" class="img-fluid">
@@ -208,7 +220,7 @@
           <h5 class="text-center m-2 fw-bold text-dark">Lowest Price</h5>
         </div>
       </div>
-      <div class="col custom-col">
+      <div class="col-lg-2 col-md-4 col-6">
         <div class="card card-category p-3 bg-white border-0">
           <div class="card-img-top image-box d-flex justify-content-center align-items-center">
             <img src="{{  asset('assets/front/assets/imgs/buyback.webp') }}" alt="Buy Back" class="img-fluid">
@@ -216,7 +228,7 @@
           <h5 class="text-center m-2 fw-bold text-dark">Lifetime Buyback</h5>
         </div>
       </div>
-      <div class="col custom-col">
+      <div class="col-lg-2 col-md-4 col-6">
         <div class="card card-category p-3 bg-white border-0">
           <div class="card-img-top image-box d-flex justify-content-center align-items-center">
             <img src="{{  asset('assets/front/assets/imgs/bag.webp') }}" alt="Bag" class="img-fluid">
@@ -224,7 +236,7 @@
           <h5 class="text-center m-2 fw-bold text-dark">With 4 Accesories</h5>
         </div>
       </div>
-      <div class="col custom-col p-3">
+      <div class="col-lg-2 col-md-4 col-6 p-3">
         <div class="card card-category p-3 bg-white border-0">
           <div class="card-img-top image-box d-flex justify-content-center align-items-center">
             <img src="{{  asset('assets/front/assets/imgs/1-Year-Warranty.webp') }}" alt="1 Year Warranty"
@@ -252,7 +264,7 @@
         Most Popular Products
       </div>
     </div>
-    <div class="row">
+    <div class="row justify-content-center align-items-center">
       @foreach ($products as $product)
       <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
         <div class="card-grid-style-1 bg-white p-4 card" style="border-radius: 20px; overflow: hidden;">
@@ -310,6 +322,20 @@
       el: '.swiper-pagination',
       clickable: true,
     },
+    breakpoints: {
+      // When the screen is >= 1024px (laptop)
+      1024: {
+        slidesPerView: 3,  // Show 3 slides on large screens (default)
+      },
+      // When the screen is >= 768px (tablet)
+      768: {
+        slidesPerView: 2,  // Show 2 slides on tablet
+      },
+      // When the screen is < 768px (mobile)
+      0: {
+        slidesPerView: 1,  // Show 1 slide on mobile
+      },
+    }
   });
 </script>
 @endsection

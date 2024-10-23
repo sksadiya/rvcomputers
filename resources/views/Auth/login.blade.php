@@ -48,7 +48,7 @@
                                 
                             </div>
                             <div class="col-lg-6 text-end">
-                                <div class="form-group"><a class="font-xs color-gray-500" href="#">Forgot your password?</a></div>
+                                <div class="form-group"><a class="font-xs color-gray-500" href="{{ route('customer.password.request')}}">Forgot your password?</a></div>
                             </div>
                             </div>
                             <div class="form-group">
