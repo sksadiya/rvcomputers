@@ -32,7 +32,7 @@
             @elseif(auth()->check() && auth()->user()->hasRole('Super Admin'))
                 {{ route('root') }}
             @else
-                {{ route('login') }}
+                {{ route('customer.login') }}
             @endif
         ">
         </a>

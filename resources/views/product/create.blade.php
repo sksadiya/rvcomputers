@@ -139,6 +139,38 @@
                     </select>
                     </div>
                 </div>
+                <div class="form-group row mb-3">
+                    <label class="col-md-3 col-form-label">Meta Title</label>
+                    <div class="col-md-8">
+                        <input type="text" value="{{ old('meta_title')}}" class="form-control @error('meta_title') is-invalid @enderror" name="meta_title" placeholder="Meta Title">
+                        @error('meta_title')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+                </div>   
+                <div class="form-group row mb-3">
+                    <label class="col-md-3 col-form-label">Meta Description</label>
+                    <div class="col-md-8">
+                        <textarea type="text"  class="form-control @error('meta_description') is-invalid @enderror" name="meta_description" placeholder="Meta Description">{{ old('meta_description')}}</textarea>
+                        @error('meta_description')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+                </div>   
+                <div class="row mb-3">
+                    <label class="col-md-3 col-form-label">Status <span class="text-danger">*</span>
+                    </label>
+                    <div class="col-md-8">
+                    <select name="status" id="product_status" class="form-select select2" style="width: 100%;" required="required"  tabindex="-1" aria-hidden="true">
+                            <option value="1">Active</option>
+                            <option value="0">In-Active</option>
+                    </select>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="card">

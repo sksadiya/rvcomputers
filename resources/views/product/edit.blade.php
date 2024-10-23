@@ -132,6 +132,28 @@
                         @enderror
                     </div>
                 </div>
+                <div class="form-group row mb-3">
+                    <label class="col-md-3 col-form-label">Meta Title</label>
+                    <div class="col-md-8">
+                        <input type="text" value="{{ $product->meta_title }}" class="form-control @error('meta_title') is-invalid @enderror" name="meta_title" placeholder="Meta Title">
+                        @error('meta_title')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+                </div>   
+                <div class="form-group row mb-3">
+                    <label class="col-md-3 col-form-label">Meta Description</label>
+                    <div class="col-md-8">
+                        <textarea type="text"  class="form-control @error('meta_description') is-invalid @enderror" name="meta_description" placeholder="Meta Description">{{ $product->meta_description}}</textarea>
+                        @error('meta_description')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+                </div>  
                 <div class="row mb-3">
                     <label class="col-md-3 col-form-label">Status <span class="text-danger">*</span>
                     </label>

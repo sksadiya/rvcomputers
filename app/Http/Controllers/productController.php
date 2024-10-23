@@ -138,7 +138,9 @@ class productController extends Controller
             'gallery_image_url' => 'nullable|array',
             'colors' => 'nullable|array',
             'choice_attributes' => 'nullable|array',
-            'status' => 'required|boolean'
+            'status' => 'required|boolean',
+            'meta_title' => 'nullable|string',
+            'meta_description' => 'nullable|string',
         ]);
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
@@ -162,6 +164,9 @@ class productController extends Controller
         $product->low_stock_quantity = $request->low_stock_quantity;
         $product->image = $request->image_url;
         $product->status = $request->status;
+        $product->meta_title = $request->meta_title;
+        $product->meta_description = $request->meta_description;
+
         $product->save();
         if ($request->category) {
             $product->categories()->sync($request->category);
@@ -280,7 +285,9 @@ class productController extends Controller
             'gallery_image_url' => 'nullable|array',
             'colors' => 'nullable|array',
             'choice_attributes' => 'nullable|array',
-            'status' => 'required|boolean'
+            'status' => 'required|boolean',
+            'meta_title' => 'nullable|string',
+            'meta_description' => 'nullable|string',
         ]);
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
@@ -303,6 +310,9 @@ class productController extends Controller
         $product->low_stock_quantity = $request->low_stock_quantity;
         $product->image = $request->image_url;
         $product->status = $request->status;
+        $product->meta_title = $request->meta_title;
+        $product->meta_description = $request->meta_description;
+
         $product->save();
 
         if ($request->category) {
