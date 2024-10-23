@@ -189,7 +189,7 @@ input[type="number"]::-webkit-inner-spin-button,
 </section>
 
 <section class="section-box d-block border-0 m-0">
-  <div class="container py-3" style="max-width: 1400px;"> 
+  <div class="container p-3" style="max-width: 1400px;"> 
     <div class="row justify-content-center align-items-stretch"> 
       <div class="col-lg-2 col-md-4 col-6 mb-4"> 
         <div class="card card-category p-3 bg-white border-0">
@@ -236,8 +236,8 @@ input[type="number"]::-webkit-inner-spin-button,
 </section>
 
 <section class="section-box shop-template">
-        <div class="container p-4" style="max-width: 1430px;">
-          <div class="pt-30 mb-10 p-5">
+        <div class="container" style="max-width: 1430px;">
+          <div class="pt-30 mb-10">
             <ul class="nav nav-tabs nav-tabs-product" role="tablist">
             @if(!empty($product->description))
                     <li class="text-black">
@@ -251,9 +251,9 @@ input[type="number"]::-webkit-inner-spin-button,
                     </li>
                 @endif
             </ul>
-            <div class="tab-content">
+            <div class="tab-content px-2">
             @if(!empty($product->description))
-              <div class="tab-pane p-5 fade {{ empty($product->description) ? '' : 'active show' }}" id="tab-specification" role="tabpanel" aria-labelledby="tab-specification">
+              <div class="tab-pane px-2  fade {{ empty($product->description) ? '' : 'active show' }}" id="tab-specification" role="tabpanel" aria-labelledby="tab-specification">
                 <div class="card p-5">
                   <div class="justify-content-center align-items-center">
                   <h3 class="mb-25 fs-1 fw-bolder text-black text-center">Product Specification</h3>
@@ -266,7 +266,7 @@ input[type="number"]::-webkit-inner-spin-button,
               </div>
               @endif
               @if($product->colors->isNotEmpty() || !empty($groupedAttributes))
-              <div class="tab-pane p-5 fade {{ empty($product->description) ? 'active show' : '' }}" id="tab-additional" role="tabpanel" aria-labelledby="tab-additional">
+              <div class="tab-pane  fade {{ empty($product->description) ? 'active show' : '' }}" id="tab-additional" role="tabpanel" aria-labelledby="tab-additional">
               <div class="card p-5">
               <div class="justify-content-center align-items-center">
                   <h3 class="mb-25 fs-1 fw-bolder text-black text-center">Additional Information</h3>
@@ -320,9 +320,9 @@ input[type="number"]::-webkit-inner-spin-button,
         You may also like
       </div>
     </div>
-    <div class="row px-5">
+    <div class="row px-lg-5">
       @foreach ($products as $product)
-      <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
+      <div class="col-12 col-md-6 col-lg-3 mb-4">
       <div class="card-grid-style-3 bg-white p-4 card" style="border-radius: 20px; overflow: hidden;">
         <div class="card-grid-inner border-0">
       <div class="tools">
