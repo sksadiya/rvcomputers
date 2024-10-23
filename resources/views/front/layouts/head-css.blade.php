@@ -13,7 +13,7 @@ body {
   background-image: none !important;
   font-size: 30px;
 }
-.header .main-header .header-left .header-shop .icon-account {
+.header .main-header .header-left .header-shop .bx {
   background-image: none !important;
   font-size: 30px;
 }

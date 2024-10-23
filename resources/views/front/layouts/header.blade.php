@@ -26,19 +26,16 @@
               class="burger-icon-mid"></span><span class="burger-icon-bottom"></span></div>
         <!-- </div> -->
         <div class="header-shop me-5">
-          <div class="d-inline-block box-dropdown-cart"><span
-              class="font-lg icon-list icon-account bx bx-user text-white"><span>Account</span></span>
-            <div class="dropdown-account">
-              <ul>
-                <li><a href="page-account.html">My Account</a></li>
-                <li><a href="page-account.html">Order Tracking</a></li>
-                <li><a href="page-account.html">My Orders</a></li>
-                <li><a href="page-account.html">My Wishlist</a></li>
-                <li><a href="page-account.html">Setting</a></li>
-                <li><a href="page-login.html">Sign out</a></li>
-              </ul>
-            </div>
-          </div>
+        <a class="font-lg icon-list bx bx-user text-white" href="
+            @if(auth()->guard('customer')->check())
+                {{ route('customer.dashboard') }}
+            @elseif(auth()->check() && auth()->user()->hasRole('Super Admin'))
+                {{ route('root') }}
+            @else
+                {{ route('login') }}
+            @endif
+        ">
+        </a>
           <div class="d-inline-block box-dropdown-cart"><span class="font-lg icon-list icon-cart bx bx-cart text-white"><span>Cart</span><span
                 class="number-item font-xs">2</span></span>
             <div class="dropdown-cart">
