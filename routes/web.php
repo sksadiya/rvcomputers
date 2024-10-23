@@ -228,3 +228,5 @@ Route::get('/states/{countryId}', [countryController::class, 'getStates'])->name
 
 // Fetch cities based on state ID
 Route::get('/cities/{stateId}', [countryController::class, 'getCities'])->name('cities.fetch');
+
+Route::get('product/show/{slug}', [productController::class, 'show'])->name('product.show');

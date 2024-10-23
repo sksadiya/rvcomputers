@@ -66,7 +66,7 @@ class productController extends Controller
             return [
                 'id' => $index + 1, // Using $index + 1 to start from 1 instead of 0
                 'image' => $product->image ? '<img src="'. asset($product->image ).'" alt="'. $product->name .'" class="avatar-md rounded material-shadow">' : null, 
-                'name' => $product->name,
+                'name' =>'<a href="'.route('product.show', $product->slug).'">'.$product->name.'</a>',
                 'category' => $product->categories->pluck('name')->implode(', '), 
                 'price' => $product->unit_price,
                 'status' => $this->getStatusBadge($product),
@@ -147,6 +147,7 @@ class productController extends Controller
         }
         $product = new Product();
         $product->name = $request->name;
+        $product->slug = Product::generateSlug($request->input('name'));
         $product->brand_id = $request->brand;
         $product->unit = $request->unit;
         $product->weight = $request->weight;
@@ -293,6 +294,9 @@ class productController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
         $product->name = $request->name;
+        if ($product->isDirty('name')) { // Check if the name has changed
+            $product->slug = Product::generateSlug($request->input('name')); 
+        }
         $product->brand_id = $request->brand;
         $product->unit = $request->unit;
         $product->weight = $request->weight;
@@ -603,4 +607,38 @@ class productController extends Controller
             'message' => 'variant deleted successfully.',
         ]);
     }
+
+    public function show($slug)
+{
+    $product = Product::where('slug', $slug)
+    ->with('images') 
+    ->firstOrFail(); 
+    if (!$product->status) { 
+        return redirect()->back()->with('error', 'You have to publish the equipment.'); 
+    }
+    $allImages = $product->images->pluck('image_url')->toArray(); // Ensure 'image_url' is the correct field
+
+    // Check if the product has any variants
+    if ($product->variants->isNotEmpty()) {
+        foreach ($product->variants as $variant) {
+            // Access the images relationship correctly
+            if ($variant->variant_image) { // Check if the variant image exists
+                $allImages[] = $variant->variant_image; // Directly add the variant image to the array
+            }
+        }
+    }
+
+ $groupedAttributes = [];
+
+    foreach ($product->attributes as $productAttribute) {
+        // Group attribute values under their attribute name
+        $attributeName = $productAttribute->attribute->name;
+        $attributeValue = $productAttribute->attributeValue->value;
+
+        $groupedAttributes[$attributeName][] = $attributeValue;
+    }
+
+
+    return view('product.show', compact('product' ,'allImages' ,'groupedAttributes'));
+}
 }

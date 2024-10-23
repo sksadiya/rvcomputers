@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Product extends Model
 {
@@ -11,6 +12,9 @@ class Product extends Model
     protected $table = 'products';
     protected $fillable = [
         'name',
+        'slug',
+        'meta_title',
+        'meta_description',
         'brand_id',
         'unit',
         'weight',
@@ -55,5 +59,19 @@ class Product extends Model
 
     public function attributes() {
         return $this->hasMany(productAttribute::class , 'product_id');
+    }
+    public static function generateSlug($name)
+    {
+        $slug = Str::slug($name);
+        $originalSlug = $slug;
+        $count = 1;
+
+        // Check if the slug already exists in the database
+        while (self::where('slug', $slug)->exists()) {
+            $slug = $originalSlug . '-' . $count;
+            $count++;
+        }
+
+        return $slug;
     }
 }
