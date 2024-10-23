@@ -323,7 +323,11 @@ input[type="number"]::-webkit-inner-spin-button,
     <div class="row px-5">
       @foreach ($products as $product)
       <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
-      <div class="card-grid-style-1 bg-white p-4 card" style="border-radius: 20px; overflow: hidden;">
+      <div class="card-grid-style-3 bg-white p-4 card" style="border-radius: 20px; overflow: hidden;">
+        <div class="card-grid-inner border-0">
+      <div class="tools">
+        <a class="btn btn-wishlist btn-tooltip mb-10" href="shop-wishlist.html" aria-label="Add To Cart"></a>
+      </div>
         <div class="image-box card-img-top">
         <img src="{{ $product->image }}" alt="Ecom" class="img-fluid">
         </div>
@@ -343,6 +347,7 @@ input[type="number"]::-webkit-inner-spin-button,
           @endif
         </span>
         </div>
+      </div>
       </div>
       </div>
     @endforeach
