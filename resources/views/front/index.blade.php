@@ -99,7 +99,7 @@
 </section>
 
 <section class="section-box d-block border-0 m-0 ">
-  <div class="container p-5">
+  <div class="container p-lg-5 p-4">
     <div class="row justify-content-center align-items-center mb-3">
       @foreach ($categories as $category)
       <div class="col-lg-2 col-md-4 col-6">
@@ -168,7 +168,7 @@
 </section>
 
 <section class="section-box d-block border-0 m-0 ">
-  <div class="container p-5">
+  <div class="container p-lg-5 p-4">
     <div class="row justify-content-center align-items-center mb-3">
       @foreach ($brands as $brand)
       <div class="col-lg-2 col-md-4 col-6">
@@ -208,7 +208,7 @@
 </section>
 
 <section class="section-box d-block border-0 m-0">
-  <div class="container p-5">
+  <div class="container p-lg-5 p-4">
     <div class="row mb-3 text-center ">
       <h2 class="fw-bolder text-black fs-1 ">Reasons, You can’t Say No to RV</h2>
     </div>

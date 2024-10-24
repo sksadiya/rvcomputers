@@ -13,6 +13,7 @@ use App\Http\Controllers\CustomerForgotPasswordController;
 use App\Http\Controllers\CustomerResetPasswordController;
 use App\Http\Controllers\googleReviewController;
 use App\Http\Controllers\paymentSettingController;
+use App\Http\Controllers\shopController;
 use App\Http\Controllers\sliderController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\adminController;
@@ -230,3 +231,4 @@ Route::get('/states/{countryId}', [countryController::class, 'getStates'])->name
 Route::get('/cities/{stateId}', [countryController::class, 'getCities'])->name('cities.fetch');
 
 Route::get('product/show/{slug}', [productController::class, 'show'])->name('product.show');
+Route::get('product/shop', [shopController::class, 'index'])->name('product.shop');

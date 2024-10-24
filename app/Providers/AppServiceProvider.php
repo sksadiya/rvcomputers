@@ -6,6 +6,7 @@ use App\Models\Brand;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\Slider;
+use App\Models\Tag;
 use Illuminate\Support\ServiceProvider;
 use App\Models\mailSetting;
 use App\Models\Setting;
@@ -48,7 +49,9 @@ class AppServiceProvider extends ServiceProvider
         view()->share('sliders', $sliders);
         $products = Product::all();
         view()->share('products', $products);
-        $brands = Brand::all();
+        $brands = Brand::withCount('products')->get();
         view()->share('brands', value: $brands);
+        $tags = Tag::all();
+        view()->share('tags', $tags);
     }
 }
