@@ -87,6 +87,7 @@
     </div>
   </div>
 </section>
+
 <section class="section-box d-block border-0 m-0">
   <div class="container-fluid bg-primary p-3">
     <div class="text-center">
@@ -94,6 +95,7 @@
     </div>
   </div>
 </section>
+
 <section class="section-box d-block border-0 m-0 ">
   <div class="container-fluid p-5">
     <div class="row justify-content-center align-items-center mb-3">
@@ -110,6 +112,7 @@
     </div>
   </div>
 </section>
+
 <section class="section-box d-block border-0 m-0 bg-black">
   <div class="container-fluid p-3">
     <div class="row justify-content-center align-items-center">
@@ -161,6 +164,7 @@
   </div>
 
 </section>
+
 <section class="section-box d-block border-0 m-0 ">
   <div class="container-fluid p-5">
     <div class="row justify-content-center align-items-center mb-3">
@@ -176,16 +180,17 @@
     </div>
   </div>
 </section>
+
 <section class="section-box d-block border-0 m-0 "
-  style="background:url('{{ asset('assets/front/assets/imgs/RV-down-banners.png')}}')">
+  style="background-image:url('{{ asset('assets/front/assets/imgs/RV-down-banners.png')}}'); background-position: center; background-repeat: no-repeat; ">
   <div class="container-fluid px-5 py-5">
-    <div class="row align-items-center py-5" style="height: 390px;">
-      <div class="col-md-6 mb-5">
+    <div class="row align-items-center py-5" style="height: 380px;">
+      <div class="col-md-6 mb-lg-5 mb-2">
         <h1 class="text-black fw-bold mb-5">Budget Buy</h1>
         <div class="bg-primary p-2 fw-bold fs-3 text-center text-white rounded-pill">Shop By Price</div>
       </div>
 
-      <div class="col-md-6 mb-5">
+      <div class="col-md-6 mb-lg-5 mb-2">
         <h1 class="mb-5" style="color: transparent;">1</h1>
         <select class="form-select p-2 mt-2 fs-4 rounded-pill ms-2" aria-label="Default select example">
           <option class="text-muted px-2" selected>Select Price Range</option>
@@ -198,6 +203,7 @@
 
   </div>
 </section>
+
 <section class="section-box d-block border-0 m-0">
   <div class="container-fluid p-5">
     <div class="row mb-3 text-center ">
@@ -248,6 +254,7 @@
     </div>
   </div>
 </section>
+
 <section class="section-box d-block border-0 m-0" style="background-color: #74228f;">
   <div class="container p-5">
     <div class="row">
@@ -257,6 +264,7 @@
     </div>
   </div>
 </section>
+
 <section class="section-box d-block border-0 m-0">
   <div class="container-fluid p-5">
     <div class="row mb-5">

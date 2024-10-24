@@ -238,7 +238,7 @@ input[type="number"]::-webkit-inner-spin-button,
 <section class="section-box shop-template">
         <div class="container" style="max-width: 1430px;">
           <div class="pt-30 mb-10">
-            <ul class="nav nav-tabs nav-tabs-product" role="tablist">
+            <ul class="nav nav-tabs px-2 nav-tabs-product" role="tablist">
             @if(!empty($product->description))
                     <li class="text-black">
                         <a href="#tab-specification" data-bs-toggle="tab" role="tab" aria-controls="tab-specification" aria-selected="true">Specification</a>
