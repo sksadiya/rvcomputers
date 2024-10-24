@@ -2,10 +2,15 @@
 
 @section('css')
 <style>
+  footer {
+    overflow-x: hidden !important;
+  }
   .swiper-pagination .swiper-pagination-bullet-active {
     background: #000;
   }
-
+.container {
+  max-width: 1500px !important;
+}
   .custom-col {
     width: 20%;
     /* Makes each category take up 20% of the row */
@@ -71,22 +76,19 @@
       <div class="swiper-container swiper-group-1">
         <div class="swiper-wrapper">
           @foreach ($sliders as $slider)
-        <div class="swiper-slide">
-        <div class="banner-slide" style="background: url('{{ $slider->image }}') ; ">
-          <!-- <div class="banner-desc">
-      <label class="lbl-newarrival">Slide {{ $loop->index + 1 }}</label> 
-      <h1 class="color-gray-1000 mb-10">{{ $slider->title }}</h1>
-      <a class="btn btn-gray-1000 btn-shop-now">Shop Now</a>
-      </div> -->
-        </div>
-        </div>
-      @endforeach
+          <div class="swiper-slide">
+            <div class="banner-slide" 
+                 style="background: url('{{ $slider->image }}'); "> 
+            </div>
+          </div>
+          @endforeach
         </div>
         <div class="swiper-pagination swiper-pagination-1"></div>
       </div>
     </div>
   </div>
 </section>
+
 
 <section class="section-box d-block border-0 m-0">
   <div class="container-fluid bg-primary p-3">
@@ -97,7 +99,7 @@
 </section>
 
 <section class="section-box d-block border-0 m-0 ">
-  <div class="container-fluid p-5">
+  <div class="container p-5">
     <div class="row justify-content-center align-items-center mb-3">
       @foreach ($categories as $category)
       <div class="col-lg-2 col-md-4 col-6">
@@ -166,7 +168,7 @@
 </section>
 
 <section class="section-box d-block border-0 m-0 ">
-  <div class="container-fluid p-5">
+  <div class="container p-5">
     <div class="row justify-content-center align-items-center mb-3">
       @foreach ($brands as $brand)
       <div class="col-lg-2 col-md-4 col-6">
@@ -182,7 +184,7 @@
 </section>
 
 <section class="section-box d-block border-0 m-0 "
-  style="background-image:url('{{ asset('assets/front/assets/imgs/RV-down-banners.png')}}'); background-position: center; background-repeat: no-repeat; ">
+  style="background:url('{{ asset('assets/front/assets/imgs/RV-down-banners.png')}}'); background-position: center; background-repeat: no-repeat;">
   <div class="container-fluid px-5 py-5">
     <div class="row align-items-center py-5" style="height: 380px;">
       <div class="col-md-6 mb-lg-5 mb-2">
@@ -205,7 +207,7 @@
 </section>
 
 <section class="section-box d-block border-0 m-0">
-  <div class="container-fluid p-5">
+  <div class="container p-5">
     <div class="row mb-3 text-center ">
       <h2 class="fw-bolder text-black fs-1 ">Reasons, You can’t Say No to RV</h2>
     </div>
@@ -266,7 +268,7 @@
 </section>
 
 <section class="section-box d-block border-0 m-0">
-  <div class="container-fluid p-5">
+  <div class="container p-5">
     <div class="row mb-5">
       <div class="col text-center d-flex justify-content-center align-items-center fw-bolder fs-1 text-black">
         Most Popular Products
@@ -274,7 +276,7 @@
     </div>
     <div class="row justify-content-center align-items-center">
       @foreach ($products as $product)
-      <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
+      <div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-4">
         <div class="card-grid-style-1 bg-white p-4 card" style="border-radius: 20px; overflow: hidden;">
           <div class="image-box card-img-top">
             <img src="{{ $product->image }}" alt="Ecom" class="img-fluid">
@@ -309,7 +311,8 @@
       </div>
     </div>
   </div>
-  <div class="container-fluid overflow-hidden">
+
+  <div class="container-fluid" >
     <div class="row">
       <img src="{{ asset('assets/front/assets/imgs/lower-rv-banner.png')}}" alt="">
     </div>

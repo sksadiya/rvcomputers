@@ -1,6 +1,9 @@
 @extends('front.layouts.master')
 @section('css')
 <style>
+    footer {
+    overflow-x: hidden !important;
+  }
   #tab-specification .card ,#tab-additional .card{
     border-radius: 30px;
   }
