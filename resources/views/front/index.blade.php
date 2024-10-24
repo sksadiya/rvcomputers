@@ -183,26 +183,27 @@
   </div>
 </section>
 
-<section class="section-box d-block border-0 m-0 "
-  style="background:url('{{ asset('assets/front/assets/imgs/RV-down-banners.png')}}'); background-position: center; background-repeat: no-repeat;">
-  <div class="container-fluid px-5 py-5">
-    <div class="row align-items-center py-5" style="height: 380px;">
-      <div class="col-md-6 mb-lg-5 mb-2">
-        <h1 class="text-black fw-bold mb-5">Budget Buy</h1>
-        <div class="bg-primary p-2 fw-bold fs-3 text-center text-white rounded-pill">Shop By Price</div>
-      </div>
-
-      <div class="col-md-6 mb-lg-5 mb-2">
-        <h1 class="mb-5" style="color: transparent;">1</h1>
-        <select class="form-select p-2 mt-2 fs-4 rounded-pill ms-2" aria-label="Default select example">
-          <option class="text-muted px-2" selected>Select Price Range</option>
-          <option value="1">One</option>
-          <option value="2">Two</option>
-          <option value="3">Three</option>
-        </select>
-      </div>
+<section class="container-fluid d-flex align-items-center" 
+         style="background: url('{{ asset('assets/front/assets/imgs/RV-down-banners.png')}}') no-repeat center center; 
+                background-size: cover; 
+                background-attachment: fixed; 
+                height: 70vh; /* Adjust height as per your design */
+                min-height: 400px;"> <!-- Ensure it doesn't get too small -->
+  <div class="row w-100 px-lg-5 px-3">
+    <div class="col-md-6 mb-lg-5 mb-2 d-flex flex-column justify-content-center align-items-start">
+      <h1 class="text-black fw-bold mb-5">Budget Buy</h1>
+      <div class="bg-primary p-2 w-100 fw-bold fs-3 text-center text-white rounded-pill">Shop By Price</div>
     </div>
 
+    <div class="col-md-6 mb-lg-5 mb-2 d-flex flex-column justify-content-center align-items-start">
+      <h1 class="mb-5" style="color: transparent;">1</h1>
+      <select class="form-select p-2 mt-2 fs-4 rounded-pill ms-2" aria-label="Default select example">
+        <option class="text-muted px-2" selected>Select Price Range</option>
+        <option value="1">One</option>
+        <option value="2">Two</option>
+        <option value="3">Three</option>
+      </select>
+    </div>
   </div>
 </section>
 
