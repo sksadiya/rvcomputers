@@ -250,8 +250,6 @@
           <button type="submit" class="btn btn-dark">Apply Filters</button>
       </div>
 </form>
-
-
           <form action="{{ route('product.shop') }}" method="GET" id="filter-form">
               <h6 class="text-black fw-bold fs-3 mt-20 mb-10">Brands</h6>
               <ul class="list-checkbox">
