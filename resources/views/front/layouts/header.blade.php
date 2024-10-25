@@ -5,18 +5,21 @@
         <div class="header-logo"><a href="index.html"><img alt="Ecom" src="{{ $companySettings['company_logo'] }}"></a></div>
         <div class="header-search">
           <div class="box-header-search bg-white">
-            <form class="form-search" method="post" action="#">
+            <form class="form-search" method="get" action="{{ route('product.shop')}}">
               <div class="box-category">
-                <select class="select-active select2-hidden-accessible" data-select2-id="1" tabindex="-1"
+                <select class="select-active select2-hidden-accessible" name="category" data-select2-id="1" tabindex="-1"
                   aria-hidden="true">
                   <option class="text-dark">All categories</option>
                   @foreach ($categories as $category)
-                  <option class="text-dark" value="{{ $category->id }}">{{ $category->name }}</option>
+                  <option class="text-dark" value="{{ $category->slug }}">{{ $category->name }}</option>
                   @endforeach
                 </select>
               </div>
-              <div class="box-keysearch">
-                <input class="form-control font-xs" type="text" value="" placeholder="Search for items">
+              <div class="box-keysearch" style="position: relative;">
+                  <input class="form-control font-xs" type="text" name="search" value="" placeholder="Search for items">
+                  <button type="submit" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer;">
+                      <i class="bx bx-search-alt fs-4"></i> 
+                  </button>
               </div>
             </form>
           </div>

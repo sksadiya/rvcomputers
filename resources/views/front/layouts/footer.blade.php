@@ -47,7 +47,7 @@
                 <li><a href="{{ route('customer.register' )}}" class="text-white"><i class="bx bx-chevron-right me-2"></i>Register</a></li>
                 <li><a href="{{ route('customer.login')}}" class="text-white"><i class="bx bx-chevron-right me-2"></i>Login</a></li>
                 <li><a href="{{ route('welcome') }}" class="text-white"><i class="bx bx-chevron-right me-2"></i>Home</a></li>
-                <li><a href="#" class="text-white"><i class="bx bx-chevron-right me-2"></i>Shop</a></li>
+                <li><a href="{{ route('product.shop') }}" class="text-white"><i class="bx bx-chevron-right me-2"></i>Shop</a></li>
               </ul>
             </div>
             <div class="col-lg-3 width-23">
