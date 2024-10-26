@@ -26,6 +26,9 @@ footer a , li a{
 .footer .menu-footer li a { 
   background: none !important;
 }
+#scrollUp {
+  background-color: #000 !important;
+}
 </style>
 
 @yield('css')

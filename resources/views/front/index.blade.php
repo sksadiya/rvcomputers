@@ -10,9 +10,9 @@
   max-width: 100%; /* Ensures container fits screen width */
 }
 
-  body, html {
-  overflow-x: hidden; /* Disables horizontal scrolling */
-}
+  /* body, html {
+  overflow-x: hidden;
+} */
   @media (min-width: 766px) and (max-width: 1024px) {
     .banner-slide {
       min-height: 290px !important;
