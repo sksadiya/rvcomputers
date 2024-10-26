@@ -6,6 +6,9 @@
 body {
   background-color: #f7f7f9;
 }
+footer {
+  overflow-x: hidden !important;
+}
 .icon-cart {
   background-image: none;
 }

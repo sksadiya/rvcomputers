@@ -29,7 +29,7 @@
               <h4 class="mb-30 text-white">Categories</h4>
               <ul class="menu-footer p-0">
                 @foreach ($categories as $category)
-                <li><a href="#" class="text-white"><i class="bx bx-chevron-right me-2"></i>{{ $category->name }}</a></li>
+                <li><a href="{{ route('product.shop',  ['category' => $category->slug]) }}" class="text-white"><i class="bx bx-chevron-right me-2"></i>{{ $category->name }}</a></li>
                 @endforeach
               </ul>
             </div>
@@ -37,7 +37,7 @@
               <h4 class="mb-30 text-white">Popular products</h4>
               <ul class="menu-footer p-0">
                 @foreach ($products as $product)
-                <li><a href="#" class="text-white"><i class="bx bx-chevron-right me-2"></i>{{ $product->name }}</a></li>
+                <li><a href="{{ route('product.show' ,$product->slug) }}" class="text-white"><i class="bx bx-chevron-right me-2"></i>{{ $product->name }}</a></li>
                 @endforeach
               </ul>
             </div>

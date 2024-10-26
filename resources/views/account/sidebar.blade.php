@@ -1,5 +1,5 @@
 
-<nav id="sidebar" class="p-4 d-md-block sidebar collapse">
+<!-- <nav id="sidebar" class="p-4 d-md-block sidebar collapse"> -->
 <div class="position-sticky">
                 <ul class="nav flex-column">
                     <!-- Dashboard Button -->
@@ -38,4 +38,4 @@
                     </li>
                 </ul>
             </div>
-        </nav>
+        <!-- </nav> -->

@@ -39,13 +39,13 @@
 @endsection
 @section('content')
 @include('layout.session')
-<section class="section-box shop-template mt-30 p-5">
-    <div class="container-fluid px-5">
+<section class="section-box shop-template mt-30 p-lg-5 p-2">
+    <div class="container-fluid px-lg-5 p-2">
         <div class="row">
-            <div class="col-md-3 me-3 border-end border-black">
+            <div class="col-lg-3 col-12 me-3 border-end border-black">
                 @include('account.sidebar')
             </div>
-            <div class="col-md-8 p-3">
+            <div class="col-lg-8 col-12 p-3">
                 <form action="{{ route('update.address')}}" id="update-addresses" method="post">
                     @csrf
                     <input type="hidden" name="customer" value="{{ $customer->id }}">

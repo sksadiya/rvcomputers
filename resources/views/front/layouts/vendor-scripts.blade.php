@@ -8,7 +8,7 @@
     <script src="{{ asset('assets/front/assets/js/vendors/perfect-scrollbar.min.js') }}"></script>
     <script src="{{ asset('assets/front/assets/js/vendors/select2.min.js') }}"></script>
     <script src="{{ asset('assets/front/assets/js/vendors/isotope.js') }}"></script>
-    <script src="{{ asset('assets/front/assets/js/vendors/scrollup.js') }}"></script>
+    <!-- <script src="{{ asset('assets/front/assets/js/vendors/scrollup.js') }}"></script> -->
     <script src="{{ asset('assets/front/assets/js/vendors/swiper-bundle.min.js') }}"></script>
     <script src="{{ asset('assets/front/assets/js/vendors/noUISlider.js') }}"></script>
     <script src="{{ asset('assets/front/assets/js/vendors/slider.js') }}"></script>

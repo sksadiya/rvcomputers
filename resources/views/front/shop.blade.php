@@ -253,12 +253,15 @@
           <form action="{{ route('product.shop') }}" method="GET" id="filter-form">
               <h6 class="text-black fw-bold fs-3 mt-20 mb-10">Brands</h6>
               <ul class="list-checkbox">
+              @php
+                  $selectedBrands = explode(',', request('brand', ''));
+              @endphp
                   @foreach ($brands as $brand)
                       <li>
                           <label class="">
                               <input type="checkbox" class="brand-checkbox me-2" data-brand-slug="{{ $brand->slug }}"
                                     name="brands[]" value="{{ $brand->id }}"
-                                    {{ in_array($brand->id, request('brands', [])) ? 'checked' : '' }}>
+                                    {{ in_array($brand->slug, $selectedBrands) ? 'checked' : '' }}>
                               <span class="text-small text-black">{{ $brand->name }}</span>
                           </label>
                           <span class="number-item">{{ $brand->products_count }}</span>
@@ -345,13 +348,30 @@
 @endsection
 @section('script')
 <script>
-
   $(document).ready(function () {
     window.filterByColor = function(colorId) {
         const url = new URL(window.location.href);
         url.searchParams.set('color', colorId);
         window.location.href = url;  // Navigate to the updated URL
     }
+    document.getElementById('filter-form').addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent default form submission
+
+    // Get all checked checkboxes
+    const checkedBrands = Array.from(document.querySelectorAll('.brand-checkbox:checked'))
+        .map(checkbox => checkbox.getAttribute('data-brand-slug'));
+
+    // Construct the new URL with selected brand slugs
+    const url = new URL(this.action);
+    if (checkedBrands.length) {
+        url.searchParams.set('brand', checkedBrands.join(','));
+    } else {
+        url.searchParams.delete('brand');
+    }
+
+    // Redirect to the new decoded URL for readability
+    window.location.href = decodeURIComponent(url.toString());
+});
 
     $('#grid-view').show();
     $('#list-view').hide();

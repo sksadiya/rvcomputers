@@ -2,43 +2,30 @@
 
 @section('css')
 <style>
-  footer {
-    overflow-x: hidden !important;
-  }
   .swiper-pagination .swiper-pagination-bullet-active {
     background: #000;
   }
+ 
 .container {
-  max-width: 1500px !important;
+  max-width: 100%; /* Ensures container fits screen width */
 }
-  .custom-col {
-    width: 20%;
-    /* Makes each category take up 20% of the row */
-  }
+
+  body, html {
+  overflow-x: hidden; /* Disables horizontal scrolling */
+}
   @media (min-width: 766px) and (max-width: 1024px) {
-  .banner-slide {
-    min-height: 290px !important;
-  }
-}
-@media (max-width: 500px) {
     .banner-slide {
-        min-height: 163px !important;
-    }
-    .swiper-pagination-bullet {
-      display: none !important;
-    }
-}
-  @media (max-width: 768px) {
-    .custom-col {
-      width: 50%;
-      /* Adjust for smaller screens, 2 per row */
+      min-height: 290px !important;
     }
   }
 
-  @media (max-width: 576px) {
-    .custom-col {
-      width: 100%;
-      /* Stack categories on smaller screens */
+  @media (max-width: 500px) {
+    .banner-slide {
+      min-height: 163px !important;
+    }
+
+    .swiper-pagination-bullet {
+      display: none !important;
     }
   }
 
@@ -76,19 +63,17 @@
       <div class="swiper-container swiper-group-1">
         <div class="swiper-wrapper">
           @foreach ($sliders as $slider)
-          <div class="swiper-slide">
-            <div class="banner-slide" 
-                 style="background: url('{{ $slider->image }}'); "> 
-            </div>
-          </div>
-          @endforeach
+        <div class="swiper-slide">
+        <div class="banner-slide" style="background: url('{{ $slider->image }}'); ">
+        </div>
+        </div>
+      @endforeach
         </div>
         <div class="swiper-pagination swiper-pagination-1"></div>
       </div>
     </div>
   </div>
 </section>
-
 
 <section class="section-box d-block border-0 m-0">
   <div class="container-fluid bg-primary p-3">
@@ -103,12 +88,15 @@
     <div class="row justify-content-center align-items-center mb-3">
       @foreach ($categories as $category)
       <div class="col-lg-2 col-md-4 col-6">
-      <div class="card card-category p-3 bg-white border-0">
+      <a href="{{ route('product.shop', ['category' => $category->slug])}}">
+        <div class="card card-category p-3 bg-white border-0">
         <div class="card-img image-box">
-        <img src="{{ $category->logo }}" alt="{{ $category->name }}" class="img-fluid">
+          <img src="{{ $category->logo }}" alt="{{ $category->name }}" class="img-fluid">
         </div>
-      </div>
-      <h5 class="text-center m-2 fw-bold text-dark">{{ $category->name }}</h5>
+        </div>
+      </a>
+      <h5 class="text-center m-2 fw-bold text-dark"><a
+        href="{{ route('product.shop', ['category' => $category->slug])}}">{{ $category->name }}</a></h5>
       </div>
     @endforeach
     </div>
@@ -139,30 +127,34 @@
             <div class="swiper-container swiper-group-rv">
               <div class="swiper-wrapper pt-5">
                 @foreach ($products as $product)
-          <div class="swiper-slide">
-            <div class="card-grid-style-1 bg-white p-4 card" style="border-radius: 20px;">
-            <div class="image-box card-img-top"><img src="{{ $product->image }}" alt="Ecom"></div>
-            <div class="mb-2">
-              @if ($product->current_stock > 1)
+            <div class="swiper-slide">
+              <a href="{{ route('product.show', $product->slug)}}">
+              <div class="card-grid-style-1 bg-white p-4 card" style="border-radius: 20px;">
+                <div class="image-box card-img-top"><img src="{{ $product->image }}" alt="Ecom"></div>
+                <div class="mb-2">
+                @if ($product->current_stock > 1)
           <span class="badge badge-soft-success">In Stock ({{ $product->current_stock }} Units)</span>
         @else
-        <span class="badge badge-soft-danger">Out of Stock</span>
-      @endif
-            </div>
-            <h4 class="text-dark fw-bold">{{ $product->name }}</h4></a>
-            <div class="mt-20"><span class="color-black-500  mr-30">₹ {{ $product->unit_price}}</span><span
-              class="color-black-500"><span class="text-decoration-line-through">₹
-                {{ $product->old_price }}</span></span></div>
-            </div>
-          </div>
-        @endforeach
-
+      <span class="badge badge-soft-danger">Out of Stock</span>
+    @endif
+                </div>
+                <h4 class="text-dark fw-bold">{{ $product->name }}</h4>
+              </a>
+              <div class="mt-20"><span class="color-black-500  mr-30">₹ {{ $product->unit_price}}</span><span
+                class="color-black-500"><span class="text-decoration-line-through">₹
+                {{ $product->old_price }}</span></span>
               </div>
+            </div>
+            </a>
+            </div>
+          @endforeach
+
             </div>
           </div>
         </div>
       </div>
     </div>
+  </div>
   </div>
 
 </section>
@@ -172,19 +164,20 @@
     <div class="row justify-content-center align-items-center mb-3">
       @foreach ($brands as $brand)
       <div class="col-lg-2 col-md-4 col-6">
-      <div class="card card-category p-3 bg-white border-0">
+      <a href="{{ route('product.shop', ['brand' => $brand->slug])}}">
+        <div class="card card-category p-3 bg-white border-0">
         <div class="card-img image-box">
-        <img src="{{ $brand->logo }}" alt="{{ $brand->name }}" class="img-fluid">
+          <img src="{{ $brand->logo }}" alt="{{ $brand->name }}" class="img-fluid">
         </div>
-      </div>
+        </div>
+      </a>
       </div>
     @endforeach
     </div>
   </div>
 </section>
 
-<section class="container-fluid d-flex align-items-center" 
-         style="background: url('{{ asset('assets/front/assets/imgs/RV-down-banners.png')}}') no-repeat center center; 
+<section class="container-fluid d-flex align-items-center" style="background: url('{{ asset('assets/front/assets/imgs/RV-down-banners.png')}}') no-repeat center center; 
                 background-size: cover; 
                 background-attachment: fixed; 
                 height: 70vh; /* Adjust height as per your design */
@@ -278,27 +271,29 @@
     <div class="row justify-content-center align-items-center">
       @foreach ($products as $product)
       <div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-4">
+      <a href="{{ route('product.show', $product->slug)}}">
         <div class="card-grid-style-1 bg-white p-4 card" style="border-radius: 20px; overflow: hidden;">
-          <div class="image-box card-img-top">
-            <img src="{{ $product->image }}" alt="Ecom" class="img-fluid">
-          </div>
-          <div class="mb-2">
-            @if ($product->current_stock > 1)
-            <span class="badge badge-soft-success">In Stock ({{ $product->current_stock }} Units)</span>
-            @else
-            <span class="badge badge-soft-danger">Out of Stock</span>
-            @endif
-          </div>
-          <h4 class="text-dark fw-bold">{{ $product->name }}</h4>
-          <div class="mt-20">
-            <span class="color-black-500 mr-30">₹ {{ $product->unit_price }}</span>
-            <span class="color-black-500">
-              <span class="text-decoration-line-through">₹ {{ $product->old_price }}</span>
-            </span>
-          </div>
+        <div class="image-box card-img-top">
+          <img src="{{ $product->image }}" alt="Ecom" class="img-fluid">
         </div>
+        <div class="mb-2">
+          @if ($product->current_stock > 1)
+        <span class="badge badge-soft-success">In Stock ({{ $product->current_stock }} Units)</span>
+      @else
+      <span class="badge badge-soft-danger">Out of Stock</span>
+    @endif
+        </div>
+        <h4 class="text-dark fw-bold">{{ $product->name }}</h4>
+        <div class="mt-20">
+          <span class="color-black-500 mr-30">₹ {{ $product->unit_price }}</span>
+          <span class="color-black-500">
+          <span class="text-decoration-line-through">₹ {{ $product->old_price }}</span>
+          </span>
+        </div>
+        </div>
+      </a>
       </div>
-      @endforeach
+    @endforeach
     </div>
   </div>
 </section>
@@ -308,12 +303,12 @@
     <div class="row">
       <div class="col text-center d-flex justify-content-center align-items-center fw-bolder fs-3 text-black">
         The Insiders Story <br>
-      11 Steps that Makes Our Products Epic!
+        11 Steps that Makes Our Products Epic!
       </div>
     </div>
   </div>
 
-  <div class="container-fluid" >
+  <div class="container-fluid">
     <div class="row">
       <img src="{{ asset('assets/front/assets/imgs/lower-rv-banner.png')}}" alt="">
     </div>

@@ -1,8 +1,17 @@
+<style>
+  .mobile-header-wrapper-style 
+  .mobile-header-wrapper-inner
+   .mobile-header-content-area
+    .mobile-menu-wrap nav 
+    .mobile-menu li.has-children .menu-expand i {
+color: #000 !important;
+  }
+</style>
 <header class="header header-container sticky-bar bg-black">
   <div class="container p-3">
     <div class="main-header">
       <div class="header-left justify-content-between">
-        <div class="header-logo"><a href="index.html"><img alt="Ecom" src="{{ $companySettings['company_logo'] }}"></a></div>
+        <div class="header-logo"><a href="{{ route('welcome') }}"><img alt="Ecom" src="{{ $companySettings['company_logo'] }}"></a></div>
         <div class="header-search">
           <div class="box-header-search bg-white">
             <form class="form-search" method="get" action="{{ route('product.shop')}}">
@@ -16,7 +25,7 @@
                 </select>
               </div>
               <div class="box-keysearch" style="position: relative;">
-                  <input class="form-control font-xs" type="text" name="search" value="" placeholder="Search for items">
+                  <input class="form-control font-xs" type="text" name="search" value="" placeholder="Search...">
                   <button type="submit" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer;">
                       <i class="bx bx-search-alt fs-4"></i> 
                   </button>
@@ -78,103 +87,46 @@
 <div class="mobile-header-active mobile-header-wrapper-style perfect-scrollbar">
   <div class="mobile-header-wrapper-inner">
     <div class="mobile-header-content-area">
-      <div class="mobile-logo"><a class="d-flex" href="index.html"><img alt="Ecom"
-            src="assets/imgs/template/logo.svg"></a></div>
+      <div class="mobile-logo"><a class="d-flex" href="{{ route('welcome') }}"><img alt="Ecom"
+            src="{{ $companySettings['company_logo'] }}"></a></div>
       <div class="perfect-scroll">
         <div class="mobile-menu-wrap mobile-header-border">
           <nav class="mt-15">
-            <ul class="mobile-menu font-heading">
-              <li class="has-children"><a class="active" href="index.html">Home</a>
+            <ul class="mobile-menu font-heading text-black">
+              <li class=""><i class="bx bx-chevron-right me-2 fs-3 align-middle"></i><a class="active text-black" href="{{ route('welcome') }}">Home</a></li>
+              <li class=""><i class="bx bx-chevron-right me-2 fs-3 align-middle"></i><a class="active text-black" href="{{ route('product.shop') }}">Shop</a></li>
+              <li class="has-children"><i class="bx bx-chevron-right me-2 fs-3 align-middle"></i><a class=" text-black" href="shop-vendor-list.html">Vendors</a>
                 <ul class="sub-menu">
-                  <li><a href="index.html">Homepage - 1</a></li>
-                  <li><a href="index-2.html">Homepage - 2</a></li>
-                  <li><a href="index-3.html">Homepage - 3</a></li>
-                  <li><a href="index-4.html">Homepage - 4</a></li>
-                  <li><a href="index-5.html">Homepage - 5</a></li>
-                  <li><a href="index-6.html">Homepage - 6</a></li>
-                  <li><a href="index-7.html">Homepage - 7</a></li>
-                  <li><a href="index-8.html">Homepage - 8</a></li>
-                  <li><a href="index-9.html">Homepage - 9</a></li>
-                  <li><a href="index-10.html">Homepage - 10</a></li>
+                  <li><a class="text-black" href="shop-vendor-list.html">Vendors Listing</a></li>
+                  <li><a class="text-black" href="shop-vendor-single.html">Vendor Single</a></li>
                 </ul>
               </li>
-              <li class="has-children"><a href="shop-grid.html">Shop</a>
-                <ul class="sub-menu">
-                  <li><a href="shop-grid.html">Shop Grid</a></li>
-                  <li><a href="shop-grid-2.html">Shop Grid 2</a></li>
-                  <li><a href="shop-list.html">Shop List</a></li>
-                  <li><a href="shop-list-2.html">Shop List 2</a></li>
-                  <li><a href="shop-fullwidth.html">Shop Fullwidth</a></li>
-                  <li><a href="shop-single-product.html">Single Product</a></li>
-                  <li><a href="shop-single-product-2.html">Single Product 2</a></li>
-                  <li><a href="shop-single-product-3.html">Single Product 3</a></li>
-                  <li><a href="shop-single-product-4.html">Single Product 4</a></li>
-                  <li><a href="shop-cart.html">Shop Cart</a></li>
-                  <li><a href="shop-checkout.html">Shop Checkout</a></li>
-                  <li><a href="shop-compare.html">Shop Compare</a></li>
-                  <li><a href="shop-wishlist.html">Shop Wishlist</a></li>
-                </ul>
-              </li>
-              <li class="has-children"><a href="shop-vendor-list.html">Vendors</a>
-                <ul class="sub-menu">
-                  <li><a href="shop-vendor-list.html">Vendors Listing</a></li>
-                  <li><a href="shop-vendor-single.html">Vendor Single</a></li>
-                </ul>
-              </li>
-              <li class="has-children"><a href="#">Pages</a>
-                <ul class="sub-menu">
-                  <li><a href="page-about-us.html">About Us</a></li>
-                  <li><a href="page-contact.html">Contact Us</a></li>
-                  <li><a href="page-careers.html">Careers</a></li>
-                  <li><a href="page-term.html">Term and Condition</a></li>
-                  <li><a href="page-register.html">Register</a></li>
-                  <li><a href="page-login.html">Login</a></li>
-                  <li><a href="page-404.html">Error 404</a></li>
-                </ul>
-              </li>
-              <li class="has-children"><a href="blog.html">Blog</a>
-                <ul class="sub-menu">
-                  <li><a href="blog.html">Blog Grid</a></li>
-                  <li><a href="blog-2.html">Blog Grid 2</a></li>
-                  <li><a href="blog-list.html">Blog List</a></li>
-                  <li><a href="blog-big.html">Blog Big</a></li>
-                  <li><a href="blog-single.html">Blog Single - Left sidebar</a></li>
-                  <li><a href="blog-single-2.html">Blog Single - Right sidebar</a></li>
-                  <li><a href="blog-single-3.html">Blog Single - No sidebar</a></li>
-                </ul>
-              </li>
-              <li><a href="page-contact.html">Contact</a></li>
+              <li><i class="bx bx-chevron-right me-2 fs-3 align-middle"></i><a class="text-black" href="page-contact.html">Contact</a></li>
             </ul>
           </nav>
         </div>
         <div class="mobile-account">
+          @if(Auth::guard('customer')->check())
           <div class="mobile-header-top">
-            <div class="user-account"><a href="page-account.html"><img src="assets/imgs/template/ava_1.png"
+            <div class="user-account"><a href="{{ route('customer.dashboard') }}"><img src="{{ Auth::guard('customer')->user()->avatar }}"
                   alt="Ecom"></a>
               <div class="content">
-                <h6 class="user-name">Hello<span class="text-brand"> Steven !</span></h6>
-                <p class="font-xs text-muted">You have 3 new messages</p>
+                <h6 class="user-name text-black me-2">Hello<span class="text-black ms-2">{{ Auth::guard('customer')->user()->name }}!</span></h6>
               </div>
             </div>
           </div>
+          @endif
+          @if(Auth::guard('customer')->check())
           <ul class="mobile-menu">
-            <li><a href="page-account.html">My Account</a></li>
-            <li><a href="page-account.html">Order Tracking</a></li>
-            <li><a href="page-account.html">My Orders</a></li>
-            <li><a href="page-account.html">My Wishlist</a></li>
-            <li><a href="page-account.html">Setting</a></li>
-            <li><a href="page-login.html">Sign out</a></li>
+            <li><i class="bx bx-chevron-right me-2 fs-3 align-middle"></i><a class="text-black" href="{{ route('customer.dashboard') }}">My Account</a></li>
+            <li><i class="bx bx-chevron-right me-2 fs-3 align-middle"></i><a class="text-black" href="{{ route('customer.address') }}">Adresses</a></li>
+            <li><i class="bx bx-chevron-right me-2 fs-3 align-middle"></i><a class="text-black" href="{{ route('customer.orders') }}">orders</a></li>
+            <li><i class="bx bx-chevron-right me-2 fs-3 align-middle"></i><a class="text-black" href="{{ route('customer.settings') }}">Setting</a></li>
+            <li><i class="bx bx-chevron-right me-2 fs-3 align-middle"></i><a class="text-black" href="{{ route('customer.logout') }}">Sign out</a></li>
           </ul>
+          @endif
         </div>
-        <div class="mobile-banner">
-          <div class="bg-5 block-iphone"><span class="color-brand-3 font-sm-lh32">Starting from $899</span>
-            <h3 class="font-xl mb-10">iPhone 12 Pro 128Gb</h3>
-            <p class="font-base color-brand-3 mb-10">Special Sale</p><a class="btn btn-arrow"
-              href="shop-grid.html">learn more</a>
-          </div>
-        </div>
-        <div class="site-copyright color-gray-400 mt-30">Copyright 2022 &copy; Ecom - Marketplace Template.<br>Designed
-          by<a href="http://alithemes.com" target="_blank">&nbsp; AliThemes</a></div>
+        <div class="col-md-12 text-center"><span class="text-black fs-5"> &copy; {{ date('Y') }} {{ $companySettings['organization_name'] }} | {!! $companySettings['copyright'] !!}</span></div>
       </div>
     </div>
   </div>

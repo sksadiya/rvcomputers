@@ -14,26 +14,25 @@ class shopController extends Controller
     $sortOrder = $request->input('sort_order', 'latest'); 
     $categorySlug = $request->input('category'); 
     $colorId = $request->input('color');
-    $brandsArray = [];
     $priceRanges = $request->input('price', []);
     $query = Product::query();
-
     if ($categorySlug) {
         $query->whereHas('categories', function($q) use ($categorySlug) {
             $q->where('slug', $categorySlug); // Assuming your category has a slug
         });
     }
-   
     if ($request->has('tag')) {
         $tagId = $request->get('tag');
         $query->whereHas('tags', function ($q) use ($tagId) {
             $q->where('tags.slug', $tagId);
         });
     }
-
-    if ($request->has('brands') && !empty($request->input('brands'))) {
-        $brandsArray = $request->input('brands'); // Get brands directly as an array
-        $query->whereIn('brand_id', $brandsArray);
+    if ($request->has('brand') && !empty($request->input('brand'))) {
+        $brandSlugs = explode(',', $request->input('brand'));
+        $brandIds = Brand::whereIn('slug', $brandSlugs)->pluck('id')->toArray();
+        if (!empty($brandIds)) {
+            $query->whereIn('brand_id', $brandIds);
+        }
     }
      // Filter by color
      if ($colorId) {
@@ -57,6 +56,6 @@ class shopController extends Controller
     }
     $shopProducts = $query->paginate($perPage);
     $colors = Color::all();
-        return view('front.shop' ,compact('shopProducts','colors','brandsArray'));
+        return view('front.shop' ,compact('shopProducts','colors'));
    }
 }
