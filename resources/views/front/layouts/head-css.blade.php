@@ -4,7 +4,7 @@
 <link href="{{ URL::asset('assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
 <style>
 body {
-  background-color: #f7f7f9;
+  background-color: #cacacb;
 }
 footer {
   overflow-x: hidden !important;

@@ -10,9 +10,9 @@
   max-width: 100%; /* Ensures container fits screen width */
 }
 
-  /* body, html {
+ body, html {
   overflow-x: hidden;
-} */
+} 
   @media (min-width: 766px) and (max-width: 1024px) {
     .banner-slide {
       min-height: 290px !important;
@@ -21,7 +21,7 @@
 
   @media (max-width: 500px) {
     .banner-slide {
-      min-height: 163px !important;
+      min-height: 150px !important;
     }
 
     .swiper-pagination-bullet {
@@ -95,7 +95,7 @@
         </div>
         </div>
       </a>
-      <h5 class="text-center m-2 fw-bold text-dark"><a
+      <h5 class="text-center m-2 fw-bold text-dark"><a class="text-black"
         href="{{ route('product.shop', ['category' => $category->slug])}}">{{ $category->name }}</a></h5>
       </div>
     @endforeach
