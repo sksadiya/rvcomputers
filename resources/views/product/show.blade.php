@@ -155,16 +155,39 @@
           <span class="color-gray-500 text-black fw-bolder font-xl line-througt">₹ {{ $product->old_price }}</span>
         @endif
             </div>
+            <div class="container">
+              <div class="row mb-3">
+                <label for="">Color</label>
+                <select name="color" id="color" class="form-control">
+                  <option value="">Choose Option</option>
+                  @foreach ($product->colors as $color)
+            <option value="{{ $color->id }}">{{ $color->name }}</option>
+          @endforeach
+                </select>
+              </div>
+              @foreach ($groupedAttributes as $attributeName => $attributeValues)
+          <div class="row mb-3">
+          <label for="">{{ ucfirst($attributeName) }}</label>
+          <select name="{{ strtolower($attributeName) }}" id="{{ strtolower($attributeName) }}"
+            class="form-control">
+            <option value="">Choose Option</option>
+            @foreach (array_unique($attributeValues) as $value)
+        <option value="{{ $value }}">{{ $value }}</option>
+      @endforeach
+          </select>
+          </div>
+        @endforeach
+            </div>
             <div class="box-product-price">
               @if($product->colors->isNotEmpty())
-          <div class="box-product-color">
-          <p class="font-sm text-black fw-bold">Color</p>
-          <div class="d-inline-flex ">
-            @foreach ($product->colors as $color)
-        <h2><span class="badge bg-white text-bg-transparent text-black fw-bold px-3 py-2 me-2"
-          title="{{ $color->name }}">{{ $color->name }}</span></h2>
-      @endforeach
-          </div>
+                <div class="box-product-color">
+                <p class="font-sm text-black fw-bold">Color</p>
+                <div class="d-inline-flex ">
+                  @foreach ($product->colors as $color)
+              <h2><span class="badge bg-white text-bg-transparent text-black fw-bold px-3 py-2 me-2"
+                title="{{ $color->name }}">{{ $color->name }}</span></h2>
+            @endforeach
+                </div>
           </div>
         @endif
               <div class="box-product-color mt-20">
@@ -307,20 +330,20 @@
           </tr>
         @endif
               @if(!empty($groupedAttributes) && count($groupedAttributes) > 0)
-            @foreach ($groupedAttributes as $attributeName => $attributeValues)
-          <tr>
-          <td class="fs-5 fw-bold">{{ ucfirst($attributeName) }}</td>
-          <td>
-          @php
-      // Exploding attribute value if it's comma-separated and removing duplicates
-      $valuesArray = array_unique(explode(',', implode(',', $attributeValues)));
-    @endphp
+              @foreach ($groupedAttributes as $attributeName => $attributeValues)
+            <tr>
+            <td class="fs-5 fw-bold">{{ ucfirst($attributeName) }}</td>
+            <td>
+            @php
+          // Exploding attribute value if it's comma-separated and removing duplicates
+          $valuesArray = array_unique(explode(',', implode(',', $attributeValues)));
+        @endphp
 
-          <!-- Output comma-separated values -->
-          {{ implode(', ', $valuesArray) }}
-          </td>
-          </tr>
-      @endforeach
+            <!-- Output comma-separated values -->
+            {{ implode(', ', $valuesArray) }}
+            </td>
+            </tr>
+        @endforeach
         @endif
             </tbody>
             </table>
@@ -344,32 +367,32 @@
     <div class="row px-lg-5">
       @foreach ($products as $product)
       <div class="col-12 col-md-6 col-lg-3 mb-4">
-        <div class="card-grid-style-3 bg-white p-4 card" style="border-radius: 20px; overflow: hidden;">
+      <div class="card-grid-style-3 bg-white p-4 card" style="border-radius: 20px; overflow: hidden;">
         <div class="card-grid-inner border-0">
-          <div class="tools">
+        <div class="tools">
           <a class="btn btn-wishlist btn-tooltip mb-10" href="shop-wishlist.html" aria-label="Add To Cart"></a>
-          </div>
-          <div class="image-box card-img-top">
+        </div>
+        <div class="image-box card-img-top">
           <img src="{{ $product->image }}" alt="Ecom" class="img-fluid">
-          </div>
-          <div class="mb-2">
+        </div>
+        <div class="mb-2">
           @if ($product->current_stock > 1)
         <span class="badge badge-soft-success">In Stock ({{ $product->current_stock }} Units)</span>
       @else
       <span class="badge badge-soft-danger">Out of Stock</span>
     @endif
-          </div>
-          <h4 class="text-dark fw-bold">{{ $product->name }}</h4>
-          <div class="mt-20">
+        </div>
+        <h4 class="text-dark fw-bold">{{ $product->name }}</h4>
+        <div class="mt-20">
           <span class="color-black-500 mr-30">₹ {{ $product->unit_price }}</span>
           <span class="color-black-500">
-            @if ($product->old_price)
+          @if ($product->old_price)
         <span class="text-decoration-line-through">₹ {{ $product->old_price }}</span>
       @endif
           </span>
-          </div>
         </div>
         </div>
+      </div>
       </div>
     @endforeach
     </div>
@@ -400,4 +423,6 @@
     }
   });
 </script>
+
+
 @endsection

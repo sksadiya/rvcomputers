@@ -17,10 +17,23 @@ class ProductVariant extends Model
         'variant_sku', 
         'variant_qty', 
         'variant_image',
+        'color_id'
     ]; // Allow mass assignment for these fields
 
     public function product()
     {
         return $this->belongsTo(Product::class ,'product_id'); // Define relationship to Product model
     }
+
+     // Relation to product colors
+     public function colors()
+     {
+         return $this->product->colors();
+     }
+ 
+     // Relation to product attributes (multiple attribute values)
+     public function attributes()
+     {
+         return $this->hasMany(productAttribute::class, 'product_id', 'product_id');
+     }
 }

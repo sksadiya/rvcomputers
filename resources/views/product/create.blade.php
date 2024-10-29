@@ -129,16 +129,6 @@
                         @enderror
                     </div>
                 </div>
-                <div class="row mb-3">
-                    <label class="col-md-3 col-form-label">Status <span class="text-danger">*</span>
-                    </label>
-                    <div class="col-md-8">
-                    <select name="status" id="product_status" class="form-select select2" style="width: 100%;" required="required"  tabindex="-1" aria-hidden="true">
-                            <option value="1">Active</option>
-                            <option value="0">In-Active</option>
-                    </select>
-                    </div>
-                </div>
                 <div class="form-group row mb-3">
                     <label class="col-md-3 col-form-label">Meta Title</label>
                     <div class="col-md-8">
