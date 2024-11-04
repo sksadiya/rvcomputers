@@ -314,6 +314,49 @@
     </div>
   </div>
 </section>
+<section class="section-box d-block border-0 m-0">
+  <div class="container p-5">
+    <div class="row">
+      <div class="col-12 text-center fw-bolder mb-3 fs-1 text-black">
+        What our customers say
+      </div>
+      <div class="col-12 text-center fw-bolder fs-1 text-black">
+        {{ $averageRating }} Ratings
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row justify-content-center">
+      @foreach ($reviews->take(7) as $review)
+      @php
+                // Randomly select a color for the current review from the colors array
+                $randomColor = $colors[array_rand($colors)];
+           @endphp
+      <div class="col-md-8 col-lg-12 mb-2 ">
+        <div class="card p-4 w-50 mx-auto border-30 " style="border-radius: 30px;">
+          <!-- Review content here -->
+          <div class="d-flex align-items-center mb-3">
+            <div class="initial-circle text-white d-flex justify-content-center align-items-center me-3" 
+                style="width: 40px; height: 40px; border-radius: 50%; background-color:  {{ $randomColor }};">
+              <span class="fs-3">{{ strtoupper(substr($review->name, 0, 1)) }}</span>
+            </div>
+            <h5 class="card-title text-black fs-3 mb-0">{{ ucfirst($review->name) }}</h5>
+          </div>
+          <div class="text-warning mb-3">
+            @for ($i = 1; $i <= 5; $i++)
+              <i class="fas fa-star{{ $i <= $review->rating ? '' : '-o' }}"></i>
+            @endfor
+            <span class="text-muted fs-6">{{ $review->created_at->diffForHumans() }}</span>
+          </div>
+          <p class="card-text fs-4">{{ $review->comment }}</p>
+        </div>
+      </div>
+      @endforeach
+    </div>
+  </div>
+</section>
+
 @endsection
 @section('script')
 <script>
