@@ -637,8 +637,16 @@ class productController extends Controller
 
         $groupedAttributes[$attributeName][] = $attributeValue;
     }
+    $averageRating = $product->reviews()->average('rating');
 
+    // Rating summary calculation (e.g., 5-star, 4-star counts)
+    $ratingSummary = [];
+    for ($i = 5; $i >= 1; $i--) {
+        $count = $product->reviews()->where('rating', $i)->count();
+        $percentage = ($product->reviews->count() > 0) ? ($count / $product->reviews->count()) * 100 : 0;
+        $ratingSummary[$i] = $percentage;
+    }
 
-    return view('product.show', compact('product' ,'allImages' ,'groupedAttributes'));
+    return view('product.show', compact('product' ,'allImages' ,'groupedAttributes','averageRating' ,'ratingSummary'));
 }
 }

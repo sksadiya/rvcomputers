@@ -1,6 +1,24 @@
 @extends('front.layouts.master')
 @section('css')
+<link href="{{ asset('assets/libs/bootstrap-rating/bootstrap-rating.css') }}" rel="stylesheet" type="text/css" />
 <style>
+  .star {
+    cursor: pointer;
+    color: #ccc;
+    /* Default color */
+  }
+
+  .star:hover,
+  .star:hover~.star {
+    color: #ffcc00;
+    /* Color on hover */
+  }
+
+  .star.selected {
+    color: #ffcc00;
+    /* Color for selected stars */
+  }
+
   .progress {
     display: flex;
     height: 1rem;
@@ -8,16 +26,22 @@
     font-size: .75rem;
     background-color: #e9ecef;
     border-radius: .25rem;
-}
-.progress span {
-  background: none;
-}
+  }
+
+  .progress-bar {
+    background-color: #000 !important;
+  }
+
+  .progress span {
+    background: none;
+  }
+
   footer {
     overflow-x: hidden !important;
   }
 
   #tab-specification .card,
-  #tab-additional .card ,
+  #tab-additional .card,
   #tab-reviews .card {
     border-radius: 30px;
   }
@@ -305,7 +329,7 @@
     @endif
         <li class="text-black">
           <a href="#tab-reviews" data-bs-toggle="tab" role="tab" aria-controls="tab-reviews" aria-selected="true"
-            class="{{ (empty($product->description) && empty($product->colors->isNotEmpty() && $groupedAttributes)) ? 'active' : '' }}">Reviews(10)</a>
+            class="{{ (empty($product->description) && empty($product->colors->isNotEmpty() && $groupedAttributes)) ? 'active' : '' }}">Reviews({{ $product->reviews->count() }})</a>
         </li>
       </ul>
       <div class="tab-content px-2">
@@ -366,91 +390,130 @@
           </div>
         </div>
     @endif
-    <div class="tab-pane fade" id="tab-reviews" role="tabpanel" aria-labelledby="tab-reviews">
-                <div class="comments-area">
-                  <div class="row">
-                    <div class="col-lg-8">
-                      <div class="comment-list">
-                        <div class="single-comment justify-content-between d-flex mb-30 hover-up">
-                          <div class="user justify-content-between d-flex">
-                            <div class="thumb text-center"><img src="assets/imgs/page/product/author-2.png" alt="Ecom"><a class="font-heading text-brand" href="#">Sienna</a></div>
-                            <div class="desc">
-                              <div class="d-flex justify-content-between mb-10">
-                                <div class="d-flex align-items-center"><span class="font-xs color-gray-700">December 4, 2022 at 3:12 pm</span></div>
-                                <div class="product-rate d-inline-block">
-                                  <div class="product-rating" style="width: 100%"></div>
-                                </div>
-                              </div>
-                              <p class="mb-10 font-sm color-gray-900">
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Delectus, suscipit exercitationem accusantium obcaecati quos voluptate nesciunt facilis itaque modi commodi dignissimos sequi
-                                repudiandae minus ab deleniti totam officia id incidunt?<a class="reply" href="#"> Reply</a>
-                              </p>
-                            </div>
+        <div class="tab-pane fade" id="tab-reviews" role="tabpanel" aria-labelledby="tab-reviews">
+          <div class="card p-5">
+            <div class="card-body">
+              <div class="comments-area">
+                <form action="{{ route('review.add') }}" method="post" id="add-review-form">
+                  @csrf
+                <div class="row">
+                  <div class="col-lg-8">
+                    <div class="row mb-4">
+                      <input type="hidden" name="product" value="{{ $product->id }}">
+                      @if(Auth::guard('customer')->check())
+                        <input type="hidden" name="customer" value="{{ Auth::guard('customer')->user()->id }}">
+                      @else
+                  <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="review">Name</label>
+                    <input type="text" name="name" id="name"
+                    class="form-control @error('name') is-invalid @enderror" placeholder="Your Name">
+                    @error('name')
+                <div class="invalid-feedback">
+                {{ $message }}
+                </div>
+              @enderror
+                  </div>
+                  </div>
+          <div class="col-md-6">
+          <div class="form-group">
+            <label for="review">Email</label>
+            <input type="text" name="email" id="email"
+            class="form-control @error('email') is-invalid @enderror" placeholder="Your Email">
+            @error('email')
+        <div class="invalid-feedback">
+        {{ $message }}
+        </div>
+      @enderror
+          </div>
+          </div>
+        @endif
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label for="review">Rating</label>
+                          <div class="rating-star" style="font-size: 1.5rem;">
+                            <input type="hidden" name="rating" id="rating" value="0" />
+                            <span class="star" data-value="1">&#9733;</span>
+                            <span class="star" data-value="2">&#9733;</span>
+                            <span class="star" data-value="3">&#9733;</span>
+                            <span class="star" data-value="4">&#9733;</span>
+                            <span class="star" data-value="5">&#9733;</span>
                           </div>
                         </div>
-                        <div class="single-comment justify-content-between d-flex mb-30 ml-30 hover-up">
-                          <div class="user justify-content-between d-flex">
-                            <div class="thumb text-center"><img src="assets/imgs/page/product/author-3.png" alt="Ecom"><a class="font-heading text-brand" href="#">Brenna</a></div>
-                            <div class="desc">
-                              <div class="d-flex justify-content-between mb-10">
-                                <div class="d-flex align-items-center"><span class="font-xs color-gray-700">December 4, 2022 at 3:12 pm</span></div>
-                                <div class="product-rate d-inline-block">
-                                  <div class="product-rating" style="width: 80%"></div>
-                                </div>
-                              </div>
-                              <p class="mb-10 font-sm color-gray-900">
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Delectus, suscipit exercitationem accusantium obcaecati quos voluptate nesciunt facilis itaque modi commodi dignissimos sequi
-                                repudiandae minus ab deleniti totam officia id incidunt?<a class="reply" href="#"> Reply</a>
-                              </p>
-                            </div>
-                          </div>
+                      </div>
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label for="review">Review</label>
+                          <textarea name="comment" id="comment" rows="5"
+                            class="form-control @error('comment') is-invalid @enderror"
+                            placeholder="Your Review"></textarea>
+                          @error('comment')
+                <div class="invalid-feedback">
+                {{ $message }}
+                </div>
+              @enderror
                         </div>
-                        <div class="single-comment justify-content-between d-flex hover-up">
-                          <div class="user justify-content-between d-flex">
-                            <div class="thumb text-center"><img src="assets/imgs/page/product/author-4.png" alt="Ecom"><a class="font-heading text-brand" href="#">Gemma</a></div>
-                            <div class="desc">
-                              <div class="d-flex justify-content-between mb-10">
-                                <div class="d-flex align-items-center"><span class="font-xs color-gray-700">December 4, 2022 at 3:12 pm</span></div>
-                                <div class="product-rate d-inline-block">
-                                  <div class="product-rating" style="width: 80%"></div>
-                                </div>
-                              </div>
-                              <p class="mb-10 font-sm color-gray-900">
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Delectus, suscipit exercitationem accusantium obcaecati quos voluptate nesciunt facilis itaque modi commodi dignissimos sequi
-                                repudiandae minus ab deleniti totam officia id incidunt?<a class="reply" href="#"> Reply</a>
-                              </p>
-                            </div>
-                          </div>
-                        </div>
+                      </div>
+                      <div class="form-group mt-3">
+                        <button type="submit" id="btn-save" class="btn btn-dark">
+                          <span class="spinner-border spinner-border-sm" id="btn-spinner" style="display: none;"></span>
+                          <span id="btn-text">Submit</span>
+                        </button>
                       </div>
                     </div>
-                    <div class="col-lg-4">
-                      <h4 class="mb-30 title-question">Customer reviews</h4>
-                      <div class="d-flex mb-30">
-                        <div class="product-rate d-inline-block mr-15">
-                          <div class="product-rating" style="width: 90%"></div>
-                        </div>
-                        <h6>4.8 out of 5</h6>
-                      </div>
-                      <div class="progress"><span>5 star</span>
-                        <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">50%</div>
-                      </div>
-                      <div class="progress"><span>4 star</span>
-                        <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
-                      </div>
-                      <div class="progress"><span>3 star</span>
-                        <div class="progress-bar" role="progressbar" style="width: 45%" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100">45%</div>
-                      </div>
-                      <div class="progress"><span>2 star</span>
-                        <div class="progress-bar" role="progressbar" style="width: 65%" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100">65%</div>
-                      </div>
-                      <div class="progress mb-30"><span>1 star</span>
-                        <div class="progress-bar" role="progressbar" style="width: 85%" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100">85%</div>
-                      </div><a class="font-xs text-muted" href="#">How are ratings calculated?</a>
-                    </div>
+                    <div class="comment-list">
+                      @foreach ($product->reviews as $review)
+              <div class="single-comment justify-content-between d-flex mb-30 border-black">
+              <div class="user justify-content-between d-flex">
+                <div class="thumb text-center">
+                <img src="{{  asset('assets/images/users/user-dummy-img.jpg') }}" alt="{{ $review->name }}">
+                <a class="font-heading text-black" href="#">{{ $review->name }}</a>
+                </div>
+                <div class="desc">
+                <div class="d-flex justify-content-between mb-10">
+                  <div class="d-flex align-items-center">
+                  <span
+                    class="font-xs text-muted me-5">{{ \Carbon\Carbon::parse($review->created_at)->format('F j, Y \a\t h:i A') }}</span>
+                  </div>
+                  <div class="product-rate d-inline-block">
+                  <div class="product-rating" style="width: {{ ($review->rating / 5) * 100 }}%"></div>
                   </div>
                 </div>
+                <p class="mb-10 font-sm text-black">
+                  {{ $review->comment }}
+                </p>
+                </div>
               </div>
+              </div>
+
+            @endforeach
+
+                    </div>
+                  </div>
+                  <div class="col-lg-4">
+                    <h4 class="mb-30 title-question text-black ">Customer reviews</h4>
+                    <div class="d-flex mb-30">
+                      <div class="product-rate d-inline-block mr-15">
+                        <div class="product-rating " style="width: {{ ($averageRating / 5) * 100 }}%"></div>
+                      </div>
+                      <h6 class="text-black">{{ number_format($averageRating, 1) }} out of 5</h6>
+                    </div>
+                    @foreach ($ratingSummary as $stars => $percentage)
+            <div class="progress">
+              <span>{{ $stars }} star</span>
+              <div class="progress-bar" role="progressbar" style="width: {{ $percentage }}%"
+              aria-valuenow="{{ $percentage }}" aria-valuemin="0" aria-valuemax="100">
+              {{ number_format($percentage, 0) }}%
+              </div>
+            </div>
+          @endforeach
+                  </div>
+                </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="border-bottom pt-30 mb-50"></div>
       </div>
     </div>
@@ -500,6 +563,8 @@
 </section>
 @endsection
 @section('script')
+<script src="{{ asset('assets/js/pages/rating-init.js') }}"></script>
+
 <script>
   $(document).ready(function () {
     const quantityInput = document.querySelector('.product-quantity');
@@ -521,6 +586,30 @@
     if (table) {
       table.classList.add('table', 'table-striped');
     }
+    const stars = $('.star');
+    const ratingInput = $('#rating');
+
+    stars.on('click', function () {
+      const value = $(this).data('value');
+
+      // Update hidden input
+      ratingInput.val(value);
+
+      // Clear previous selections
+      stars.removeClass('selected');
+
+      // Set selected stars
+      stars.each(function (index) {
+        if (index < value) {
+          $(this).addClass('selected');
+        }
+      });
+    });
+    $('#add-review-form').on('submit', function() {
+            $('#btn-save').prop('disabled', true);
+            $('#btn-spinner').show();
+            $('#btn-text').text('Saving...');
+        });
   });
 </script>
 

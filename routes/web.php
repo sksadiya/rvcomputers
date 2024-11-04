@@ -13,6 +13,7 @@ use App\Http\Controllers\CustomerForgotPasswordController;
 use App\Http\Controllers\CustomerResetPasswordController;
 use App\Http\Controllers\googleReviewController;
 use App\Http\Controllers\paymentSettingController;
+use App\Http\Controllers\reviewController;
 use App\Http\Controllers\shopController;
 use App\Http\Controllers\sliderController;
 use Illuminate\Support\Facades\Route;
@@ -145,6 +146,13 @@ Route::delete('/products/{id}', [productController::class, 'destroy'])->name('pr
 Route::post('/product/status-change', [productController::class, 'changeStatus'])->name('product.changeStatus');
 Route::post('/variants/delete', [productController::class, 'deleteVariant'])->name('variants.delete');
 
+//reviews
+Route::delete('/review/{id}', [reviewController::class, 'destroy'])->name('reviews.destroy');
+Route::get('/review/show/{id}', [reviewController::class, 'show'])->name('reviews.show');
+Route::get('reviews/data', [reviewController::class, 'getData'])->name('reviews.data');
+Route::get('/review', [reviewController::class, 'index'])->name('reviews.index');
+Route::post('/review/status-change', [reviewController::class, 'changeStatus'])->name('review.changeStatus');
+
 //slider
 Route::get('/slider', [sliderController::class, 'index'])->name('slider.index');
   Route::get('/slider/create', [sliderController::class, 'create'])->name('slider.create');
@@ -232,3 +240,4 @@ Route::get('/cities/{stateId}', [countryController::class, 'getCities'])->name('
 
 Route::get('product/show/{slug}', [productController::class, 'show'])->name('product.show');
 Route::get('product/shop', [shopController::class, 'index'])->name('product.shop');
+Route::post('product/review', [reviewController::class, 'store'])->name('review.add');

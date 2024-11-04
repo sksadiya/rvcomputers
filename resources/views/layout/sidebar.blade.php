@@ -77,9 +77,9 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('review.index')}}" class="waves-effect">
+                    <a href="{{ route('reviews.index')}}" class="waves-effect">
                         <i class="bx bx-star"></i>
-                        <span>Google reviews</span>
+                        <span>Reviews</span>
                     </a>
                 </li>
                 <li>
