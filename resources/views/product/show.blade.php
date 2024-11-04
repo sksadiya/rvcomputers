@@ -1,12 +1,24 @@
 @extends('front.layouts.master')
 @section('css')
 <style>
+  .progress {
+    display: flex;
+    height: 1rem;
+    overflow: hidden;
+    font-size: .75rem;
+    background-color: #e9ecef;
+    border-radius: .25rem;
+}
+.progress span {
+  background: none;
+}
   footer {
     overflow-x: hidden !important;
   }
 
   #tab-specification .card,
-  #tab-additional .card {
+  #tab-additional .card ,
+  #tab-reviews .card {
     border-radius: 30px;
   }
 
@@ -180,14 +192,14 @@
             </div>
             <div class="box-product-price">
               @if($product->colors->isNotEmpty())
-                <div class="box-product-color">
-                <p class="font-sm text-black fw-bold">Color</p>
-                <div class="d-inline-flex ">
-                  @foreach ($product->colors as $color)
-              <h2><span class="badge bg-white text-bg-transparent text-black fw-bold px-3 py-2 me-2"
-                title="{{ $color->name }}">{{ $color->name }}</span></h2>
-            @endforeach
-                </div>
+          <div class="box-product-color">
+          <p class="font-sm text-black fw-bold">Color</p>
+          <div class="d-inline-flex ">
+            @foreach ($product->colors as $color)
+        <h2><span class="badge bg-white text-bg-transparent text-black fw-bold px-3 py-2 me-2"
+          title="{{ $color->name }}">{{ $color->name }}</span></h2>
+      @endforeach
+          </div>
           </div>
         @endif
               <div class="box-product-color mt-20">
@@ -285,13 +297,16 @@
         aria-selected="true">Specification</a>
       </li>
     @endif
-
         @if($product->colors->isNotEmpty() || !empty($groupedAttributes))
       <li class="text-black">
         <a href="#tab-additional" data-bs-toggle="tab" role="tab" aria-controls="tab-additional"
         aria-selected="true">Additional Information</a>
       </li>
     @endif
+        <li class="text-black">
+          <a href="#tab-reviews" data-bs-toggle="tab" role="tab" aria-controls="tab-reviews" aria-selected="true"
+            class="{{ (empty($product->description) && empty($product->colors->isNotEmpty() && $groupedAttributes)) ? 'active' : '' }}">Reviews(10)</a>
+        </li>
       </ul>
       <div class="tab-content px-2">
         @if(!empty($product->description))
@@ -330,20 +345,20 @@
           </tr>
         @endif
               @if(!empty($groupedAttributes) && count($groupedAttributes) > 0)
-              @foreach ($groupedAttributes as $attributeName => $attributeValues)
-            <tr>
-            <td class="fs-5 fw-bold">{{ ucfirst($attributeName) }}</td>
-            <td>
-            @php
-          // Exploding attribute value if it's comma-separated and removing duplicates
-          $valuesArray = array_unique(explode(',', implode(',', $attributeValues)));
-        @endphp
+            @foreach ($groupedAttributes as $attributeName => $attributeValues)
+          <tr>
+          <td class="fs-5 fw-bold">{{ ucfirst($attributeName) }}</td>
+          <td>
+          @php
+      // Exploding attribute value if it's comma-separated and removing duplicates
+      $valuesArray = array_unique(explode(',', implode(',', $attributeValues)));
+    @endphp
 
-            <!-- Output comma-separated values -->
-            {{ implode(', ', $valuesArray) }}
-            </td>
-            </tr>
-        @endforeach
+          <!-- Output comma-separated values -->
+          {{ implode(', ', $valuesArray) }}
+          </td>
+          </tr>
+      @endforeach
         @endif
             </tbody>
             </table>
@@ -351,6 +366,91 @@
           </div>
         </div>
     @endif
+    <div class="tab-pane fade" id="tab-reviews" role="tabpanel" aria-labelledby="tab-reviews">
+                <div class="comments-area">
+                  <div class="row">
+                    <div class="col-lg-8">
+                      <div class="comment-list">
+                        <div class="single-comment justify-content-between d-flex mb-30 hover-up">
+                          <div class="user justify-content-between d-flex">
+                            <div class="thumb text-center"><img src="assets/imgs/page/product/author-2.png" alt="Ecom"><a class="font-heading text-brand" href="#">Sienna</a></div>
+                            <div class="desc">
+                              <div class="d-flex justify-content-between mb-10">
+                                <div class="d-flex align-items-center"><span class="font-xs color-gray-700">December 4, 2022 at 3:12 pm</span></div>
+                                <div class="product-rate d-inline-block">
+                                  <div class="product-rating" style="width: 100%"></div>
+                                </div>
+                              </div>
+                              <p class="mb-10 font-sm color-gray-900">
+                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Delectus, suscipit exercitationem accusantium obcaecati quos voluptate nesciunt facilis itaque modi commodi dignissimos sequi
+                                repudiandae minus ab deleniti totam officia id incidunt?<a class="reply" href="#"> Reply</a>
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="single-comment justify-content-between d-flex mb-30 ml-30 hover-up">
+                          <div class="user justify-content-between d-flex">
+                            <div class="thumb text-center"><img src="assets/imgs/page/product/author-3.png" alt="Ecom"><a class="font-heading text-brand" href="#">Brenna</a></div>
+                            <div class="desc">
+                              <div class="d-flex justify-content-between mb-10">
+                                <div class="d-flex align-items-center"><span class="font-xs color-gray-700">December 4, 2022 at 3:12 pm</span></div>
+                                <div class="product-rate d-inline-block">
+                                  <div class="product-rating" style="width: 80%"></div>
+                                </div>
+                              </div>
+                              <p class="mb-10 font-sm color-gray-900">
+                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Delectus, suscipit exercitationem accusantium obcaecati quos voluptate nesciunt facilis itaque modi commodi dignissimos sequi
+                                repudiandae minus ab deleniti totam officia id incidunt?<a class="reply" href="#"> Reply</a>
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="single-comment justify-content-between d-flex hover-up">
+                          <div class="user justify-content-between d-flex">
+                            <div class="thumb text-center"><img src="assets/imgs/page/product/author-4.png" alt="Ecom"><a class="font-heading text-brand" href="#">Gemma</a></div>
+                            <div class="desc">
+                              <div class="d-flex justify-content-between mb-10">
+                                <div class="d-flex align-items-center"><span class="font-xs color-gray-700">December 4, 2022 at 3:12 pm</span></div>
+                                <div class="product-rate d-inline-block">
+                                  <div class="product-rating" style="width: 80%"></div>
+                                </div>
+                              </div>
+                              <p class="mb-10 font-sm color-gray-900">
+                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Delectus, suscipit exercitationem accusantium obcaecati quos voluptate nesciunt facilis itaque modi commodi dignissimos sequi
+                                repudiandae minus ab deleniti totam officia id incidunt?<a class="reply" href="#"> Reply</a>
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-4">
+                      <h4 class="mb-30 title-question">Customer reviews</h4>
+                      <div class="d-flex mb-30">
+                        <div class="product-rate d-inline-block mr-15">
+                          <div class="product-rating" style="width: 90%"></div>
+                        </div>
+                        <h6>4.8 out of 5</h6>
+                      </div>
+                      <div class="progress"><span>5 star</span>
+                        <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">50%</div>
+                      </div>
+                      <div class="progress"><span>4 star</span>
+                        <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+                      </div>
+                      <div class="progress"><span>3 star</span>
+                        <div class="progress-bar" role="progressbar" style="width: 45%" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100">45%</div>
+                      </div>
+                      <div class="progress"><span>2 star</span>
+                        <div class="progress-bar" role="progressbar" style="width: 65%" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100">65%</div>
+                      </div>
+                      <div class="progress mb-30"><span>1 star</span>
+                        <div class="progress-bar" role="progressbar" style="width: 85%" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100">85%</div>
+                      </div><a class="font-xs text-muted" href="#">How are ratings calculated?</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
         <div class="border-bottom pt-30 mb-50"></div>
       </div>
     </div>
