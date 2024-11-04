@@ -328,8 +328,7 @@
       </li>
     @endif
         <li class="text-black">
-          <a href="#tab-reviews" data-bs-toggle="tab" role="tab" aria-controls="tab-reviews" aria-selected="true"
-            class="{{ (empty($product->description) && empty($product->colors->isNotEmpty() && $groupedAttributes)) ? 'active' : '' }}">Reviews({{ $product->reviews->count() }})</a>
+          <a href="#tab-reviews" data-bs-toggle="tab" role="tab" aria-controls="tab-reviews" aria-selected="true">Reviews({{ $product->reviews->count() }})</a>
         </li>
       </ul>
       <div class="tab-content px-2">
@@ -348,7 +347,7 @@
       </div>
     @endif
         @if($product->colors->isNotEmpty() || !empty($groupedAttributes))
-        <div class="tab-pane  fade {{ empty($product->description) ? 'active show' : '' }}" id="tab-additional"
+        <div class="tab-pane  fade {{ empty($product->description) ? 'active show' : '' }} " id="tab-additional"
           role="tabpanel" aria-labelledby="tab-additional">
           <div class="card p-5">
           <div class="justify-content-center align-items-center">
@@ -390,7 +389,7 @@
           </div>
         </div>
     @endif
-        <div class="tab-pane fade" id="tab-reviews" role="tabpanel" aria-labelledby="tab-reviews">
+        <div class="tab-pane fade active show" id="tab-reviews" role="tabpanel" aria-labelledby="tab-reviews">
           <div class="card p-5">
             <div class="card-body">
               <div class="comments-area">

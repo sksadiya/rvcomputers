@@ -5,7 +5,16 @@
   .swiper-pagination .swiper-pagination-bullet-active {
     background: #000;
   }
- 
+  .custom-review-card {
+    width: 50%;
+}
+
+@media (max-width: 991.98px) { /* Bootstrap's lg breakpoint */
+    .custom-review-card {
+        width: 100%;
+    }
+}
+
 .container {
   max-width: 100%; /* Ensures container fits screen width */
 }
@@ -333,8 +342,8 @@
                 // Randomly select a color for the current review from the colors array
                 $randomColor = $colors[array_rand($colors)];
            @endphp
-      <div class="col-md-8 col-lg-12 mb-2 ">
-        <div class="card p-4 w-50 mx-auto border-30 " style="border-radius: 30px;">
+      <div class="col-md-8 col-lg-12 mb-2 px-3">
+        <div class="card p-4 custom-review-card mx-auto border-30 " style="border-radius: 30px;">
           <!-- Review content here -->
           <div class="d-flex align-items-center mb-3">
             <div class="initial-circle text-white d-flex justify-content-center align-items-center me-3" 
