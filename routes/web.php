@@ -6,6 +6,7 @@ use App\Http\Controllers\AttributeVal;
 use App\Http\Controllers\AttributeValue;
 use App\Http\Controllers\Auth\registerController;
 use App\Http\Controllers\BrandController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\ColorController;
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\customerCrud;
@@ -242,3 +243,7 @@ Route::get('product/show/{slug}', [productController::class, 'show'])->name('pro
 Route::get('product/shop', [shopController::class, 'index'])->name('product.shop');
 Route::post('product/review', [reviewController::class, 'store'])->name('review.add');
 Route::post('/check-variant', [ProductController::class, 'checkVariant'])->name('product.checkVariant');
+Route::post('/addToCart', [CartController::class, 'add'])->name('cart.add');
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+Route::post('/cart-remove', [CartController::class, 'remove'])->name('cart.remove');
+Route::post('/cart/update-quantity', [CartController::class, 'updateQuantity'])->name('cart.updateQuantity');

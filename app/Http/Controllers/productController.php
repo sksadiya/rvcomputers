@@ -646,8 +646,17 @@ class productController extends Controller
         $percentage = ($product->reviews->count() > 0) ? ($count / $product->reviews->count()) * 100 : 0;
         $ratingSummary[$i] = $percentage;
     }
-
-    return view('product.show', compact('product' ,'allImages' ,'groupedAttributes','averageRating' ,'ratingSummary'));
+    if ($product->discount > 0) {
+        if ($product->discount_type == 'percentage') {
+            $discountAmount = ($product->unit_price * $product->discount) / 100;
+        } elseif ($product->discount_type == 'fixed') {
+            $discountAmount = $product->discount;
+        }
+        $finalPrice = max(0, $product->unit_price - $discountAmount); // Ensures no negative price
+    } else {
+        $finalPrice = $product->unit_price;
+    }
+    return view('product.show', compact('product' ,'allImages' ,'groupedAttributes','averageRating' ,'ratingSummary','finalPrice'));
 }
 
 public function checkVariant(Request $request)
@@ -682,7 +691,11 @@ public function checkVariant(Request $request)
                     ->first();
 
         if ($variant && $variant->variant_qty > 0) {
-            return response()->json(['status' => 'available', 'stock' => $variant->variant_qty ,'variant_name' => $variantName]);
+            return response()->json(['status' => 'available', 
+            'stock' => $variant->variant_qty ,                                                                                                                                                                                                                                                  
+            'variant_name' => $variantName ,
+            'variant_id' => $variant->id ,
+            'price' => $variant->variant_price]);
         }
     }
 

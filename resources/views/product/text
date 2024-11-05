@@ -1,0 +1,29 @@
+ <div class="box-product-price">
+              @if($product->colors->isNotEmpty())
+          <div class="box-product-color">
+          <p class="font-sm text-black fw-bold">Color</p>
+          <div class="d-inline-flex ">
+            @foreach ($product->colors as $color)
+        <h2><span class="badge bg-white text-bg-transparent text-black fw-bold px-3 py-2 me-2"
+          title="{{ $color->name }}">{{ $color->name }}</span></h2>
+      @endforeach
+          </div>
+          </div>
+        @endif
+              <div class="box-product-color mt-20">
+                <div class="row">
+                  @foreach ($groupedAttributes as $attributeName => $attributeValues)
+            <div class="col-lg-12 mb-20">
+            <p class="font-sm text-black fw-bold">{{ ucfirst($attributeName) }}
+            </p>
+
+            <div class="d-inline-flex list-{{$attributeName}}"> <!-- Using list-colors for all attributes -->
+              @foreach (array_unique($attributeValues) as $value)
+          <h2><span class="badge bg-white text-bg-transparent text-black fw-bold px-3 py-2 me-2"
+          title="{{ $value }}">{{ $value }}</span></h2>
+        @endforeach
+            </div>
+            </div>
+          @endforeach
+                </div>
+              </div>

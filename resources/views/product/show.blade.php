@@ -186,13 +186,39 @@
         <div class="row">
           <div class="container">
             <div class="box-product-price mb-3">
-              <h3 class="color-brand-3 text-black fw-bolder d-inline-block mr-10">₹ {{ $product->unit_price }}</h3>
-              @if($product->old_price)
-          <span class="color-gray-500 text-black fw-bolder font-xl line-througt">₹ {{ $product->old_price }}</span>
+              <h3 class="color-brand-3 text-black fw-bolder product-variant-price d-inline-block mr-10"
+                id="product-variant-price">₹ {{ $finalPrice }}</h3>
+              @if($product->old_price && $product->old_price > $finalPrice)
+          <span class="color-gray-500 text-black fw-bolder font-xl line-through">
+          ₹ {{ $product->old_price }}
+          </span>
+        @endif
+              @php
+        $discountAmount = 0;
+        if ($product->discount > 0) {
+          if ($product->discount_type === 'percentage') {
+          // Calculate the discount in rupees based on the product price
+          $discountAmount = ($product->unit_price * $product->discount) / 100;
+          } elseif ($product->discount_type === 'fixed') {
+          // Use the fixed discount amount directly
+          $discountAmount = $product->discount;
+          }
+        }
+        @endphp
+              @if($discountAmount > 0)
+          <div class="text-black fw-bold" id="product-discount">
+          Discount:
+          @if ($product->discount_type === 'percentage')
+        ₹{{ number_format($discountAmount, 2) }} ({{ $product->discount }}%)
+      @else
+      ₹{{ number_format($discountAmount, 2) }}
+    @endif
+          </div>
         @endif
             </div>
             <div class="container">
               <div class="row mb-3">
+                <input type="hidden" id="product-id" name="product-id" value="{{ $product->id }}">
                 <label for="">Color</label>
                 <select name="color" id="color" class="form-control">
                   <option value="">Choose Option</option>
@@ -202,68 +228,36 @@
                 </select>
               </div>
               @foreach ($groupedAttributes as $attributeName => $attributeValues)
-              <div class="row mb-3">
-                  <label for="">{{ ucfirst($attributeName) }}</label>
-                  <select name="{{ strtolower($attributeName) }}" 
-                          id="{{ strtolower($attributeName) }}" 
-                          class="form-control attribute-select" 
-                          data-attribute-name="{{ strtolower($attributeName) }}">
-                      <option value="">Choose Option</option>
-                      @foreach (array_unique($attributeValues) as $value)
-                          <option value="{{ $value }}">{{ $value }}</option>
-                      @endforeach
-                  </select>
-              </div>
-        @endforeach
-            </div>
-            <div class="box-product-price">
-              @if($product->colors->isNotEmpty())
-          <div class="box-product-color">
-          <p class="font-sm text-black fw-bold">Color</p>
-          <div class="d-inline-flex ">
-            @foreach ($product->colors as $color)
-        <h2><span class="badge bg-white text-bg-transparent text-black fw-bold px-3 py-2 me-2"
-          title="{{ $color->name }}">{{ $color->name }}</span></h2>
+          <div class="row mb-3">
+          <label for="">{{ ucfirst($attributeName) }}</label>
+          <select name="{{ strtolower($attributeName) }}" id="{{ strtolower($attributeName) }}"
+            class="form-control attribute-select" data-attribute-name="{{ strtolower($attributeName) }}">
+            <option value="">Choose Option</option>
+            @foreach (array_unique($attributeValues) as $value)
+        <option value="{{ $value }}">{{ $value }}</option>
       @endforeach
+          </select>
           </div>
-          </div>
-        @endif
-        <input type="hidden" id="product-id" name="product-id" value="{{ $product->id }}" >
-              <div class="box-product-color mt-20">
-                <div class="row">
-                  @foreach ($groupedAttributes as $attributeName => $attributeValues)
-            <div class="col-lg-12 mb-20">
-            <p class="font-sm text-black fw-bold">{{ ucfirst($attributeName) }}
-            </p>
-
-            <div class="d-inline-flex list-{{$attributeName}}"> <!-- Using list-colors for all attributes -->
-              @foreach (array_unique($attributeValues) as $value)
-          <h2><span class="badge bg-white text-bg-transparent text-black fw-bold px-3 py-2 me-2"
-          title="{{ $value }}">{{ $value }}</span></h2>
         @endforeach
             </div>
-            </div>
-          @endforeach
-                </div>
-              </div>
 
-              <div class="buy-product mt-10 d-flex">
-                <div class="fs-3 text-quantity me-3 text-black">Quantity</div>
-                <div class="box-quantity text-black">
-                  <div class="input-step">
-                    <button type="button" class="minus material-shadow">–</button>
-                    <input type="number" class="product-quantity" value="1" min="1" max="100">
-                    <button type="button" class="plus material-shadow">+</button>
-                  </div>
+            <div class="buy-product mt-10 d-flex">
+              <div class="fs-3 text-quantity me-3 text-black">Quantity</div>
+              <div class="box-quantity text-black">
+                <div class="input-step">
+                  <button type="button" class="minus material-shadow">–</button>
+                  <input type="number" class="product-quantity" value="1" min="1" max="100">
+                  <button type="button" class="plus material-shadow">+</button>
                 </div>
               </div>
-              <div class="btn-buy mt-5"><button id="addToCartButton" class="btn btn-buy mb-15 fs-4">Add to cart</button>
-              </div>
+            </div>
+            <div class="btn-buy mt-5"><button id="addToCartButton" class="btn btn-buy mb-15 fs-4">Add to cart</button>
             </div>
           </div>
         </div>
       </div>
     </div>
+  </div>
 </section>
 
 <section class="section-box d-block border-0 m-0">
@@ -331,7 +325,8 @@
       </li>
     @endif
         <li class="text-black">
-          <a href="#tab-reviews" data-bs-toggle="tab" role="tab" aria-controls="tab-reviews" aria-selected="true">Reviews({{ $product->reviews->count() }})</a>
+          <a href="#tab-reviews" data-bs-toggle="tab" role="tab" aria-controls="tab-reviews"
+            aria-selected="true">Reviews({{ $product->reviews->count() }})</a>
         </li>
       </ul>
       <div class="tab-content px-2">
@@ -371,20 +366,20 @@
           </tr>
         @endif
               @if(!empty($groupedAttributes) && count($groupedAttributes) > 0)
-            @foreach ($groupedAttributes as $attributeName => $attributeValues)
-          <tr>
-          <td class="fs-5 fw-bold">{{ ucfirst($attributeName) }}</td>
-          <td>
-          @php
-      // Exploding attribute value if it's comma-separated and removing duplicates
-      $valuesArray = array_unique(explode(',', implode(',', $attributeValues)));
-    @endphp
+              @foreach ($groupedAttributes as $attributeName => $attributeValues)
+            <tr>
+            <td class="fs-5 fw-bold">{{ ucfirst($attributeName) }}</td>
+            <td>
+            @php
+          // Exploding attribute value if it's comma-separated and removing duplicates
+          $valuesArray = array_unique(explode(',', implode(',', $attributeValues)));
+        @endphp
 
-          <!-- Output comma-separated values -->
-          {{ implode(', ', $valuesArray) }}
-          </td>
-          </tr>
-      @endforeach
+            <!-- Output comma-separated values -->
+            {{ implode(', ', $valuesArray) }}
+            </td>
+            </tr>
+        @endforeach
         @endif
             </tbody>
             </table>
@@ -398,119 +393,121 @@
               <div class="comments-area">
                 <form action="{{ route('review.add') }}" method="post" id="add-review-form">
                   @csrf
-                <div class="row">
-                  <div class="col-lg-8">
-                    <div class="row mb-4">
-                      <input type="hidden" name="product" value="{{ $product->id }}">
-                      @if(Auth::guard('customer')->check())
-                        <input type="hidden" name="customer" value="{{ Auth::guard('customer')->user()->id }}">
-                      @else
-                  <div class="col-md-6">
-                  <div class="form-group">
-                    <label for="review">Name</label>
-                    <input type="text" name="name" id="name"
-                    class="form-control @error('name') is-invalid @enderror" placeholder="Your Name">
-                    @error('name')
-                <div class="invalid-feedback">
-                {{ $message }}
-                </div>
-              @enderror
-                  </div>
-                  </div>
-          <div class="col-md-6">
+                  <div class="row">
+                    <div class="col-lg-8">
+                      <div class="row mb-4">
+                        <input type="hidden" name="product" value="{{ $product->id }}">
+                        @if(Auth::guard('customer')->check())
+              <input type="hidden" name="customer" value="{{ Auth::guard('customer')->user()->id }}">
+            @else
+        <div class="col-md-6">
           <div class="form-group">
-            <label for="review">Email</label>
-            <input type="text" name="email" id="email"
-            class="form-control @error('email') is-invalid @enderror" placeholder="Your Email">
-            @error('email')
+          <label for="review">Name</label>
+          <input type="text" name="name" id="name"
+            class="form-control @error('name') is-invalid @enderror" placeholder="Your Name">
+          @error('name')
         <div class="invalid-feedback">
         {{ $message }}
         </div>
       @enderror
           </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+          <label for="review">Email</label>
+          <input type="text" name="email" id="email"
+            class="form-control @error('email') is-invalid @enderror" placeholder="Your Email">
+          @error('email')
+        <div class="invalid-feedback">
+        {{ $message }}
+        </div>
+      @enderror
           </div>
-        @endif
-                      <div class="col-md-12">
-                        <div class="form-group">
-                          <label for="review">Rating</label>
-                          <div class="rating-star" style="font-size: 1.5rem;">
-                            <input type="hidden" name="rating" id="rating" value="0" />
-                            <span class="star" data-value="1">&#9733;</span>
-                            <span class="star" data-value="2">&#9733;</span>
-                            <span class="star" data-value="3">&#9733;</span>
-                            <span class="star" data-value="4">&#9733;</span>
-                            <span class="star" data-value="5">&#9733;</span>
+        </div>
+      @endif
+                        <div class="col-md-12">
+                          <div class="form-group">
+                            <label for="review">Rating</label>
+                            <div class="rating-star" style="font-size: 1.5rem;">
+                              <input type="hidden" name="rating" id="rating" value="0" />
+                              <span class="star" data-value="1">&#9733;</span>
+                              <span class="star" data-value="2">&#9733;</span>
+                              <span class="star" data-value="3">&#9733;</span>
+                              <span class="star" data-value="4">&#9733;</span>
+                              <span class="star" data-value="5">&#9733;</span>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                      <div class="col-md-12">
-                        <div class="form-group">
-                          <label for="review">Review</label>
-                          <textarea name="comment" id="comment" rows="5"
-                            class="form-control @error('comment') is-invalid @enderror"
-                            placeholder="Your Review"></textarea>
-                          @error('comment')
+                        <div class="col-md-12">
+                          <div class="form-group">
+                            <label for="review">Review</label>
+                            <textarea name="comment" id="comment" rows="5"
+                              class="form-control @error('comment') is-invalid @enderror"
+                              placeholder="Your Review"></textarea>
+                            @error('comment')
                 <div class="invalid-feedback">
-                {{ $message }}
+                  {{ $message }}
                 </div>
               @enderror
+                          </div>
+                        </div>
+                        <div class="form-group mt-3">
+                          <button type="submit" id="btn-save" class="btn btn-dark">
+                            <span class="spinner-border spinner-border-sm" id="btn-spinner"
+                              style="display: none;"></span>
+                            <span id="btn-text">Submit</span>
+                          </button>
                         </div>
                       </div>
-                      <div class="form-group mt-3">
-                        <button type="submit" id="btn-save" class="btn btn-dark">
-                          <span class="spinner-border spinner-border-sm" id="btn-spinner" style="display: none;"></span>
-                          <span id="btn-text">Submit</span>
-                        </button>
-                      </div>
-                    </div>
-                    <div class="comment-list">
-                      @foreach ($product->reviews as $review)
+                      <div class="comment-list">
+                        @foreach ($product->reviews as $review)
               <div class="single-comment justify-content-between d-flex mb-30 border-black">
-              <div class="user justify-content-between d-flex">
+                <div class="user justify-content-between d-flex">
                 <div class="thumb text-center">
-                <img src="{{  asset('assets/images/users/user-dummy-img.jpg') }}" alt="{{ $review->name }}">
-                <a class="font-heading text-black" href="#">{{ $review->name }}</a>
+                  <img src="{{  asset('assets/images/users/user-dummy-img.jpg') }}"
+                  alt="{{ $review->name }}">
+                  <a class="font-heading text-black" href="#">{{ $review->name }}</a>
                 </div>
                 <div class="desc">
-                <div class="d-flex justify-content-between mb-10">
+                  <div class="d-flex justify-content-between mb-10">
                   <div class="d-flex align-items-center">
-                  <span
+                    <span
                     class="font-xs text-muted me-5">{{ \Carbon\Carbon::parse($review->created_at)->format('F j, Y \a\t h:i A') }}</span>
                   </div>
                   <div class="product-rate d-inline-block">
-                  <div class="product-rating" style="width: {{ ($review->rating / 5) * 100 }}%"></div>
+                    <div class="product-rating" style="width: {{ ($review->rating / 5) * 100 }}%"></div>
                   </div>
-                </div>
-                <p class="mb-10 font-sm text-black">
+                  </div>
+                  <p class="mb-10 font-sm text-black">
                   {{ $review->comment }}
-                </p>
+                  </p>
                 </div>
-              </div>
+                </div>
               </div>
 
             @endforeach
 
-                    </div>
-                  </div>
-                  <div class="col-lg-4">
-                    <h4 class="mb-30 title-question text-black ">Customer reviews</h4>
-                    <div class="d-flex mb-30">
-                      <div class="product-rate d-inline-block mr-15">
-                        <div class="product-rating " style="width: {{ ($averageRating / 5) * 100 }}%"></div>
                       </div>
-                      <h6 class="text-black">{{ number_format($averageRating, 1) }} out of 5</h6>
                     </div>
-                    @foreach ($ratingSummary as $stars => $percentage)
-            <div class="progress">
+                    <div class="col-lg-4">
+                      <h4 class="mb-30 title-question text-black ">Customer reviews</h4>
+                      <div class="d-flex mb-30">
+                        <div class="product-rate d-inline-block mr-15">
+                          <div class="product-rating " style="width: {{ ($averageRating / 5) * 100 }}%"></div>
+                        </div>
+                        <h6 class="text-black">{{ number_format($averageRating, 1) }} out of 5</h6>
+                      </div>
+                      @foreach ($ratingSummary as $stars => $percentage)
+              <div class="progress">
               <span>{{ $stars }} star</span>
               <div class="progress-bar" role="progressbar" style="width: {{ $percentage }}%"
-              aria-valuenow="{{ $percentage }}" aria-valuemin="0" aria-valuemax="100">
-              {{ number_format($percentage, 0) }}%
+                aria-valuenow="{{ $percentage }}" aria-valuemin="0" aria-valuemax="100">
+                {{ number_format($percentage, 0) }}%
               </div>
-            </div>
-          @endforeach
+              </div>
+            @endforeach
+                    </div>
                   </div>
-                </div>
                 </form>
               </div>
             </div>
@@ -578,7 +575,7 @@
     });
     plusButton.addEventListener('click', function () {
       let currentValue = parseInt(quantityInput.value);
-      if (currentValue < 100) {
+      if (currentValue < 6) {
         quantityInput.value = currentValue + 1;
       }
     });
@@ -605,80 +602,110 @@
         }
       });
     });
-    $('#add-review-form').on('submit', function() {
-            $('#btn-save').prop('disabled', true);
-            $('#btn-spinner').show();
-            $('#btn-text').text('Saving...');
-        });
+    $('#add-review-form').on('submit', function () {
+      $('#btn-save').prop('disabled', true);
+      $('#btn-spinner').show();
+      $('#btn-text').text('Saving...');
+    });
   });
 </script>
 <script>
-$(document).ready(function () {
+  $(document).ready(function () {
     const colorSelect = $('#color');
     const attributeSelects = $('.attribute-select');
     const addToCartButton = $('#addToCartButton');
 
     function getSelectedAttributes() {
-        let attributes = {};
-        if (colorSelect.val()) {
-            attributes['color'] = colorSelect.find('option:selected').text().trim();
+      let attributes = {};
+      if (colorSelect.val()) {
+        attributes['color'] = colorSelect.find('option:selected').text().trim();
+      }
+
+      attributeSelects.each(function () {
+        if ($(this).val()) {
+          const attributeName = $(this).data('attribute-name');
+          attributes[attributeName] = $(this).find('option:selected').text().trim();
         }
+      });
 
-        attributeSelects.each(function () {
-            if ($(this).val()) {
-                const attributeName = $(this).data('attribute-name');
-                attributes[attributeName] = $(this).find('option:selected').text().trim();
-            }
-        });
-
-        return attributes;
+      return attributes;
     }
 
     function checkVariantAvailability() {
-        const attributes = getSelectedAttributes();
-        productId = $('#product-id').val();
-        if (Object.keys(attributes).length === 0) {
-            addToCartButton.prop('disabled', true);
-            return;
-        }
+      const attributes = getSelectedAttributes();
+      productId = $('#product-id').val();
+      if (Object.keys(attributes).length === 0) {
+        addToCartButton.prop('disabled', true);
+        return;
+      }
 
-        $.ajax({
-            url: "{{ route('product.checkVariant') }}",
-            method: "POST",
-            data: {
-                product_id: productId,
-                attributes: attributes,
-                _token: "{{ csrf_token() }}"
-            },
-            success: function (response) {
-                if (response.status === 'available') {
-                    addToCartButton.prop('disabled', false);
-                } else {
-                    addToCartButton.prop('disabled', true);
-                    alert("Selected variation is not available or out of stock.");
-                }
-            },
-            error: function () {
-                alert("Error checking variant availability.");
-            }
-        });
+      $.ajax({
+        url: "{{ route('product.checkVariant') }}",
+        method: "POST",
+        data: {
+          product_id: productId,
+          attributes: attributes,
+          _token: "{{ csrf_token() }}"
+        },
+        success: function (response) {
+          if (response.status === 'available') {
+            addToCartButton.prop('disabled', false);
+            $('#product-discount').text('');
+            $('#product-variant-price').text('₹ ' + response.price);
+            addToCartButton.data('variant-id', response.variant_id);
+            addToCartButton.data('price', response.price);
+          } else {
+            addToCartButton.prop('disabled', true);
+            alert("Selected variation is not available or out of stock.");
+          }
+        },
+        error: function () {
+          alert("Error checking variant availability.");
+        }
+      });
     }
 
     colorSelect.change(checkVariantAvailability);
     attributeSelects.change(checkVariantAvailability);
-    addToCartButton.on('click', function (event) {
-        const attributes = getSelectedAttributes();
-        if (Object.keys(attributes).length === 0) {
-            event.preventDefault(); // Prevent default action
-            alert("Please select options before adding to cart."); // Alert user
-        } else {
-            // Proceed with add to cart functionality
-            // Here you can add any additional logic needed for adding the item to the cart
-            alert("Item added to cart!"); // Placeholder for the success message
-        }
-    });
-});
-</script>
 
+    addToCartButton.on('click', function (event) {
+      const variants = getSelectedAttributes();
+      const productId = $('#product-id').val();
+      const variantId = addToCartButton.data('variant-id');
+      const price = addToCartButton.data('price');
+      const quantity = $('.product-quantity').val();
+
+      console.log(variants);
+      if (Object.keys(variants).length === 0) {
+        event.preventDefault(); // Prevent default action
+        alert("Please select options before adding to cart."); // Alert user
+      } else {
+        $.ajax({
+          url: "{{ route('cart.add') }}", // Update with your add to cart route
+          method: "POST",
+          data: {
+            product_id: productId,
+            variant_id: variantId,
+            price: price,
+            quantity: quantity,
+            variants: variants,
+            _token: "{{ csrf_token() }}"
+          },
+          success: function (response) {
+            if (response.success) {
+              alert("Item added to cart!"); // Show success message
+              // Optionally update cart count or other UI elements here
+            } else {
+              alert("Failed to add item to cart. Please try again."); // Show error message
+            }
+          },
+          error: function () {
+            alert("Error adding item to cart."); // Show error message
+          }
+        });
+      }
+    });
+  });
+</script>
 
 @endsection
