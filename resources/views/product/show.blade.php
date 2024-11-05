@@ -202,16 +202,18 @@
                 </select>
               </div>
               @foreach ($groupedAttributes as $attributeName => $attributeValues)
-          <div class="row mb-3">
-          <label for="">{{ ucfirst($attributeName) }}</label>
-          <select name="{{ strtolower($attributeName) }}" id="{{ strtolower($attributeName) }}"
-            class="form-control">
-            <option value="">Choose Option</option>
-            @foreach (array_unique($attributeValues) as $value)
-        <option value="{{ $value }}">{{ $value }}</option>
-      @endforeach
-          </select>
-          </div>
+              <div class="row mb-3">
+                  <label for="">{{ ucfirst($attributeName) }}</label>
+                  <select name="{{ strtolower($attributeName) }}" 
+                          id="{{ strtolower($attributeName) }}" 
+                          class="form-control attribute-select" 
+                          data-attribute-name="{{ strtolower($attributeName) }}">
+                      <option value="">Choose Option</option>
+                      @foreach (array_unique($attributeValues) as $value)
+                          <option value="{{ $value }}">{{ $value }}</option>
+                      @endforeach
+                  </select>
+              </div>
         @endforeach
             </div>
             <div class="box-product-price">
@@ -226,6 +228,7 @@
           </div>
           </div>
         @endif
+        <input type="hidden" id="product-id" name="product-id" value="{{ $product->id }}" >
               <div class="box-product-color mt-20">
                 <div class="row">
                   @foreach ($groupedAttributes as $attributeName => $attributeValues)
@@ -254,7 +257,7 @@
                   </div>
                 </div>
               </div>
-              <div class="btn-buy mt-5"><a class="btn btn-buy mb-15 fs-4" href="shop-cart.html">Add to cart</a>
+              <div class="btn-buy mt-5"><button id="addToCartButton" class="btn btn-buy mb-15 fs-4">Add to cart</button>
               </div>
             </div>
           </div>
@@ -562,8 +565,6 @@
 </section>
 @endsection
 @section('script')
-<script src="{{ asset('assets/js/pages/rating-init.js') }}"></script>
-
 <script>
   $(document).ready(function () {
     const quantityInput = document.querySelector('.product-quantity');
@@ -610,6 +611,73 @@
             $('#btn-text').text('Saving...');
         });
   });
+</script>
+<script>
+$(document).ready(function () {
+    const colorSelect = $('#color');
+    const attributeSelects = $('.attribute-select');
+    const addToCartButton = $('#addToCartButton');
+
+    function getSelectedAttributes() {
+        let attributes = {};
+        if (colorSelect.val()) {
+            attributes['color'] = colorSelect.find('option:selected').text().trim();
+        }
+
+        attributeSelects.each(function () {
+            if ($(this).val()) {
+                const attributeName = $(this).data('attribute-name');
+                attributes[attributeName] = $(this).find('option:selected').text().trim();
+            }
+        });
+
+        return attributes;
+    }
+
+    function checkVariantAvailability() {
+        const attributes = getSelectedAttributes();
+        productId = $('#product-id').val();
+        if (Object.keys(attributes).length === 0) {
+            addToCartButton.prop('disabled', true);
+            return;
+        }
+
+        $.ajax({
+            url: "{{ route('product.checkVariant') }}",
+            method: "POST",
+            data: {
+                product_id: productId,
+                attributes: attributes,
+                _token: "{{ csrf_token() }}"
+            },
+            success: function (response) {
+                if (response.status === 'available') {
+                    addToCartButton.prop('disabled', false);
+                } else {
+                    addToCartButton.prop('disabled', true);
+                    alert("Selected variation is not available or out of stock.");
+                }
+            },
+            error: function () {
+                alert("Error checking variant availability.");
+            }
+        });
+    }
+
+    colorSelect.change(checkVariantAvailability);
+    attributeSelects.change(checkVariantAvailability);
+    addToCartButton.on('click', function (event) {
+        const attributes = getSelectedAttributes();
+        if (Object.keys(attributes).length === 0) {
+            event.preventDefault(); // Prevent default action
+            alert("Please select options before adding to cart."); // Alert user
+        } else {
+            // Proceed with add to cart functionality
+            // Here you can add any additional logic needed for adding the item to the cart
+            alert("Item added to cart!"); // Placeholder for the success message
+        }
+    });
+});
 </script>
 
 

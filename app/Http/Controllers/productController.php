@@ -649,4 +649,69 @@ class productController extends Controller
 
     return view('product.show', compact('product' ,'allImages' ,'groupedAttributes','averageRating' ,'ratingSummary'));
 }
+
+public function checkVariant(Request $request)
+{
+    $productId =  $request->input('product_id');
+    $attributes = $request->input('attributes'); // an associative array of attributes
+
+    // Sort attributes by key to ensure consistency in order
+    ksort($attributes);
+
+    // Prepare an array to hold all possible variant names
+    $possibleVariants = [];
+
+    // Get only the attribute values for the base variant name
+    $baseVariantName = implode(' - ', array_values($attributes));
+    $possibleVariants[] = $baseVariantName;
+
+    // Now generate possible combinations (considering all orderings)
+    $attributeValues = array_values($attributes);
+    $attributeNames = array_keys($attributes);
+    
+    // Using combinations of attribute values to generate all possible variants
+    $this->generateCombinations($attributeValues, $possibleVariants);
+
+    // Debugging: Display all generated combinations
+    // dd($possibleVariants); 
+
+    // Check each variant in the database
+    foreach ($possibleVariants as $variantName) {
+        $variant = ProductVariant::where('product_id', $productId)
+                    ->where('variant_name', $variantName)
+                    ->first();
+
+        if ($variant && $variant->variant_qty > 0) {
+            return response()->json(['status' => 'available', 'stock' => $variant->variant_qty ,'variant_name' => $variantName]);
+        }
+    }
+
+    return response()->json(['status' => 'unavailable', 'variant_name' => $baseVariantName]);
+}
+
+// Helper function to generate all combinations of attributes
+private function generateCombinations($values, &$combinations) {
+    // Generate different arrangements of the values
+    $this->permutate($values, 0, count($values) - 1, $combinations);
+}
+
+private function permutate(&$array, $l, $r, &$combinations) {
+    if ($l == $r) {
+        // Create a variant name from this permutation using only values
+        $variantName = implode(' - ', $array);
+        $combinations[] = $variantName;
+    } else {
+        for ($i = $l; $i <= $r; $i++) {
+            $this->swap($array, $l, $i);
+            $this->permutate($array, $l + 1, $r, $combinations);
+            $this->swap($array, $l, $i); // backtrack
+        }
+    }
+}
+
+private function swap(&$array, $i, $j) {
+    $temp = $array[$i];
+    $array[$i] = $array[$j];
+    $array[$j] = $temp;
+}
 }

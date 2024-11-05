@@ -241,3 +241,4 @@ Route::get('/cities/{stateId}', [countryController::class, 'getCities'])->name('
 Route::get('product/show/{slug}', [productController::class, 'show'])->name('product.show');
 Route::get('product/shop', [shopController::class, 'index'])->name('product.shop');
 Route::post('product/review', [reviewController::class, 'store'])->name('review.add');
+Route::post('/check-variant', [ProductController::class, 'checkVariant'])->name('product.checkVariant');
