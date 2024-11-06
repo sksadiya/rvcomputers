@@ -217,8 +217,9 @@
         @endif
             </div>
             <div class="container">
+            <input type="hidden" id="product-id" name="product-id" value="{{ $product->id }}">
+            @if($product->colors->isNotEmpty())
               <div class="row mb-3">
-                <input type="hidden" id="product-id" name="product-id" value="{{ $product->id }}">
                 <label for="">Color</label>
                 <select name="color" id="color" class="form-control">
                   <option value="">Choose Option</option>
@@ -227,6 +228,7 @@
           @endforeach
                 </select>
               </div>
+            @endif
               @foreach ($groupedAttributes as $attributeName => $attributeValues)
           <div class="row mb-3">
           <label for="">{{ ucfirst($attributeName) }}</label>
@@ -634,6 +636,13 @@
     function checkVariantAvailability() {
       const attributes = getSelectedAttributes();
       productId = $('#product-id').val();
+
+       // If no attributes or colors are selected, disable the add-to-cart button
+       if (!colorSelect.length && attributeSelects.length === 0) {
+        addToCartButton.prop('disabled', false); // Enable if no options to select
+        return;
+      }
+
       if (Object.keys(attributes).length === 0) {
         addToCartButton.prop('disabled', true);
         return;
@@ -671,40 +680,46 @@
     addToCartButton.on('click', function (event) {
       const variants = getSelectedAttributes();
       const productId = $('#product-id').val();
-      const variantId = addToCartButton.data('variant-id');
-      const price = addToCartButton.data('price');
+      const variantId = addToCartButton.data('variant-id') || null;
+      const price = addToCartButton.data('price') || $('#product-variant-price').text().replace('₹ ', '');
       const quantity = $('.product-quantity').val();
 
-      console.log(variants);
-      if (Object.keys(variants).length === 0) {
-        event.preventDefault(); // Prevent default action
-        alert("Please select options before adding to cart."); // Alert user
+      if (!colorSelect.length && attributeSelects.length === 0) {
+        // Directly add to cart if no attributes are required
+        addToCart(productId, variantId, price, quantity, variants);
+      } else if (Object.keys(variants).length === 0) {
+        event.preventDefault();
+        alert("Please select options before adding to cart.");
       } else {
-        $.ajax({
-          url: "{{ route('cart.add') }}", // Update with your add to cart route
-          method: "POST",
-          data: {
-            product_id: productId,
-            variant_id: variantId,
-            price: price,
-            quantity: quantity,
-            variants: variants,
-            _token: "{{ csrf_token() }}"
-          },
-          success: function (response) {
-            if (response.success) {
-              alert("Item added to cart!"); // Show success message
-              // Optionally update cart count or other UI elements here
-            } else {
-              alert("Failed to add item to cart. Please try again."); // Show error message
-            }
-          },
-          error: function () {
-            alert("Error adding item to cart."); // Show error message
-          }
-        });
+        addToCart(productId, variantId, price, quantity, variants);
       }
     });
+
+    function addToCart(productId, variantId, price, quantity, variants) {
+      $.ajax({
+        url: "{{ route('cart.add') }}",
+        method: "POST",
+        data: {
+          product_id: productId,
+          variant_id: variantId,
+          price: price,
+          quantity: quantity,
+          variants: variants,
+          _token: "{{ csrf_token() }}"
+        },
+        success: function (response) {
+          if (response.success) {
+            alert("Item added to cart!");
+            // Optionally update cart count or other UI elements here
+          } else {
+            alert("Failed to add item to cart. Please try again.");
+          }
+        },
+        error: function () {
+          alert("Error adding item to cart.");
+        }
+      });
+    }
   });
 </script>
 

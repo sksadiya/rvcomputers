@@ -66,7 +66,7 @@
                         </div>
                         <div class="content-wishlist mb-20">
                             @foreach($cartProducts as $item)
-                                <div class="item-wishlist border-black cart-item-{{ $item['variant_id'] }}">
+                                <div class="item-wishlist border-black cart-item-{{ $item['variant_id'] ?? $item['product']->id }}">
                                     <div class="wishlist-product">
                                         <div class="product-wishlist">
                                             <div class="product-image">
@@ -97,7 +97,7 @@
                                                     <button type="button" class="minus material-shadow"
                                                         data-id="{{ $item['product']->id }}">–</button>
                                                     <input type="number" class="product-quantity" data-variant-id="{{ $item['variant_id'] }}"
-                                                        value="{{ $item['quantity'] }}" min="1" max="100">
+                                                    data-product-id="{{ $item['product']->id }}" value="{{ $item['quantity'] }}" min="1" max="100">
                                                     <button type="button" class="plus material-shadow"
                                                         data-id="{{ $item['product']->id }}">+</button>
                                                 </div>
@@ -109,7 +109,7 @@
                                         {{ $item['price'] * $item['quantity'] }}</h4>
                                     </div>
                                     <div class="wishlist-remove ">
-                                    <a class="text-danger remove-from-cart" href="#" data-variant-id="{{ $item['variant_id']}}">
+                                    <a class="text-danger remove-from-cart" href="#" data-variant-id="{{ $item['variant_id']}}" data-product-id="{{ $item['product']->id}}">
                                         <i class="bx bx-trash-alt fs-4"></i>
                                     </a>
                                     </div>
@@ -202,36 +202,40 @@
 
     // Function to update the quantity via AJAX
     function updateQuantity(quantityInput) {
-        const newQuantity = quantityInput.val(); // Get the updated quantity
-        const variantId = quantityInput.data('variant-id'); // Get the variant ID
+    const newQuantity = quantityInput.val(); // Get the updated quantity
+    const variantId = quantityInput.data('variant-id'); // Get the variant ID
+    const productId = quantityInput.data('product-id'); // Get the product ID
 
-        $.ajax({
-            url: "{{ route('cart.updateQuantity') }}",
-            method: "POST",
-            data: {
-                variant_id: variantId,
-                quantity: newQuantity,
-                _token: "{{ csrf_token() }}"
-            },
-            success: function (response) {
-                if (response.success) {
-                    // Update the item subtotal
-                    $(`.cart-item-${variantId} .item-subtotal`).text(`₹ ${response.itemSubtotal}`);
-                    // Update the cart total
-                    $('.cart-total-amount').text(`₹ ${response.cartTotal}`);
-                }
-            },
-            error: function () {
-                alert("Failed to update quantity.");
+    // Send only variantId if it exists, else send productId for products without variants
+    $.ajax({
+        url: "{{ route('cart.updateQuantity') }}",
+        method: "POST",
+        data: {
+        variant_id: variantId,
+        product_id: productId,
+        quantity: newQuantity,
+        _token: "{{ csrf_token() }}"
+    },
+        success: function (response) {
+            if (response.success) {
+                const itemKey = variantId ? variantId : `${productId}`;
+                $(`.cart-item-${itemKey} .item-subtotal`).text(`₹ ${response.itemSubtotal}`);
+                $('.cart-total-amount').text(`₹ ${response.cartTotal}`);
             }
-        });
-    }
+        },
+        error: function () {
+            alert("Failed to update quantity.");
+        }
+    });
+}
+
         
 
         $(document).on('click', '.remove-from-cart', function (event) {
     event.preventDefault();
 
     const variantId = $(this).data('variant-id');
+    const productId = $(this).data('product-id');
     
     // Show a confirmation prompt
     if (!confirm("Are you sure you want to remove this item from the cart?")) {
@@ -243,15 +247,18 @@
         method: "POST",
         data: {
             variant_id: variantId,
+            product_id: productId,
             _token: "{{ csrf_token() }}"
         },
         success: function (response) {
             if (response.success) {
-                $(`.cart-item-${variantId}`).fadeOut(300, function() {
-                    $(this).remove();
-                });
+                const itemKey = variantId ? variantId : `${productId}`;
+            $(`.cart-item-${itemKey}`).fadeOut(300, function() {
+                $(this).remove();  // Remove the item from the DOM after fading out
+            });
                 $('.cart-total-amount').text(`₹ ${response.cartTotal}`);
                 alert("Item removed from cart!");
+                location.reload();
             } else {
                 alert("Failed to remove item from cart.");
             }

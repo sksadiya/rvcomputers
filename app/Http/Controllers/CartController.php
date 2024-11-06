@@ -34,90 +34,103 @@ class CartController extends Controller
     
 
     public function add(Request $request)
-{
-    $request->validate([
-        'product_id' => 'required|integer',
-        'variant_id' => 'required|integer',
-        'quantity' => 'required|integer|min:1',
-        'price' => 'required|numeric',
-        'variants' => 'required|array', 
-    ]);
-
-    $product_id = $request->input('product_id');
-    $variant_id = $request->input('variant_id');
-    $quantity = $request->input('quantity');
-    $price = $request->input('price');
-    $attributes = $request->all()['variants'];
-
-    $cart = session()->get('cart', []);
-
-    if (isset($cart[$variant_id])) {
-        $cart[$variant_id]['quantity'] += $quantity;
-    } else {
-        $cart[$variant_id] = [
-            'product_id' => $product_id,
-            'variant_id' => $variant_id,
-            'quantity' => $quantity,
-            'attributes' => $attributes,
-            'price' => $price,
-        ];
-    }
-    session()->put('cart', $cart);
-    \Log::info('Updated Cart:', session()->get('cart'));
-    return response()->json(['success' => true, 'message' => 'Item added to cart']);
-}
-public function remove(Request $request)
-{
-    $request->validate([
-        'variant_id' => 'required|integer',
-    ]);
-
-    $variantId = $request->input('variant_id');
-    $cart = session()->get('cart', []);
-
-    // Check if the item exists in the cart
-    if (isset($cart[$variantId])) {
-        unset($cart[$variantId]); // Remove the item from the cart
-        session()->put('cart', $cart); // Update the session
-
-        // Calculate the new total price
-        $totalPrice = 0;
-        foreach ($cart as $item) {
-            // Assuming each item in the cart has 'price' and 'quantity'
-            $totalPrice += $item['price'] * $item['quantity'];
-        }
-
-        return response()->json([
-            'success' => true,
-            'cartTotal' => number_format($totalPrice, 2), // Return the updated cart total
-            'message' => 'Item removed from cart'
+    {
+        $request->validate([
+            'product_id' => 'required|integer',
+            'variant_id' => 'nullable|integer', // Allow variant_id to be nullable
+            'quantity' => 'required|integer|min:1',
+            'price' => 'required|numeric',
+            'variants' => 'nullable|array', // Make variants optional for products without variants
         ]);
+    
+        $product_id = $request->input('product_id');
+        $variant_id = $request->input('variant_id');
+        $quantity = $request->input('quantity');
+        $price = $request->input('price');
+        $attributes = $request->input('variants', []);
+    
+        // If there is no variant_id, use product_id as the key in the cart
+        $cartKey = $variant_id ?? $product_id;
+        $cart = session()->get('cart', []);
+    
+        if (isset($cart[$cartKey])) {
+            $cart[$cartKey]['quantity'] += $quantity;
+        } else {
+            $cart[$cartKey] = [
+                'product_id' => $product_id,
+                'variant_id' => $variant_id,
+                'quantity' => $quantity,
+                'attributes' => $attributes,
+                'price' => $price,
+            ];
+        }
+    
+        session()->put('cart', $cart);
+        \Log::info('Updated Cart:', session()->get('cart'));
+        return response()->json(['success' => true, 'message' => 'Item added to cart']);
     }
-
-    return response()->json(['success' => false, 'message' => 'Item not found in cart']);
-}
+    
+    public function remove(Request $request)
+    {
+        $request->validate([
+            'product_id' => 'required|integer',
+            'variant_id' => 'nullable|integer',
+        ]);
+    
+        $productId = $request->input('product_id');
+        $variantId = $request->input('variant_id');
+        $cart = session()->get('cart', []);
+    
+        // Find the item in the cart
+        $itemKey = $variantId ? $variantId : $productId;
+    
+        if (isset($cart[$itemKey])) {
+            unset($cart[$itemKey]); // Remove the item from the cart
+            session()->put('cart', $cart); // Update the session
+    
+            // Calculate the new total price
+            $totalPrice = array_reduce($cart, function ($sum, $item) {
+                return $sum + ($item['price'] * $item['quantity']);
+            }, 0);
+    
+            return response()->json([
+                'success' => true,
+                'cartTotal' => number_format($totalPrice, 2),
+                'message' => 'Item removed from cart',
+            ]);
+        }
+    
+        return response()->json(['success' => false, 'message' => 'Item not found in cart']);
+    }
+    
 
 public function updateQuantity(Request $request)
 {
     $request->validate([
-        'variant_id' => 'required|integer',
+        'product_id' => 'required|integer',
+        'variant_id' => 'nullable|integer', // variant_id is now nullable
         'quantity' => 'required|integer|min:1'
     ]);
 
+    $productId = $request->input('product_id');
     $variantId = $request->input('variant_id');
     $newQuantity = $request->input('quantity');
-    
+
+    // Determine cart key: use variant_id if present, otherwise use product_id
+    $cartKey = $variantId ?? $productId;
+
     // Get the cart from the session
     $cart = session()->get('cart', []);
-    
+
     // Check if the item exists in the cart
-    if (isset($cart[$variantId])) {
+    if (isset($cart[$cartKey])) {
         // Update the quantity
-        $cart[$variantId]['quantity'] = $newQuantity;
-        // Calculate new subtotal for the item
-        $itemSubtotal = $cart[$variantId]['price'] * $newQuantity;
-        $cart[$variantId]['subtotal'] = $itemSubtotal;
+        $cart[$cartKey]['quantity'] = $newQuantity;
         
+        // Calculate new subtotal for the item
+        $itemSubtotal = $cart[$cartKey]['price'] * $newQuantity;
+        $cart[$cartKey]['subtotal'] = $itemSubtotal;
+
         // Update the cart in the session
         session()->put('cart', $cart);
 
@@ -135,5 +148,6 @@ public function updateQuantity(Request $request)
         return response()->json(['success' => false, 'message' => 'Item not found in cart'], 404);
     }
 }
+
 
 }
