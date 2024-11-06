@@ -26,6 +26,7 @@ class paymentSettingController extends Controller
             'razorpay_customer_identifier' => 'required',
             'razorpay_webhook_id' => 'nullable|string',
             'cod_payment' => 'nullable|boolean',
+            'shipping_charges' => 'nullable|numeric'
         ]);
         if ($validator->fails()) {
             return redirect()->route('payment.index')->withErrors($validator);

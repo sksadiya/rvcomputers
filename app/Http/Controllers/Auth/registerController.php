@@ -91,7 +91,7 @@ class registerController extends Controller
         if (Auth::guard('customer')->attempt($credentials)) {
             $user = Auth::guard('customer')->user();
             if ($user->status) {
-                return redirect()->route('customer.dashboard');
+                return redirect()->intended(route('customer.dashboard'));
             } else {
                 Auth::guard('customer')->logout();
                 return redirect()->back()->withErrors(['email' => 'Your account is inactive. Please contact support.']);

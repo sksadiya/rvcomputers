@@ -7,6 +7,7 @@ use App\Http\Controllers\AttributeValue;
 use App\Http\Controllers\Auth\registerController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\checkoutController;
 use App\Http\Controllers\ColorController;
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\customerCrud;
@@ -217,6 +218,9 @@ Route::group(['middleware' => ['customer']], function () {
   Route::get('/customer/orders', [accountController::class, 'orders'])->name('customer.orders');
   Route::get('/customer/profile', [accountController::class, 'settings'])->name('customer.settings');
   Route::post('/customer/profile', [accountController::class, 'updateProfile'])->name('update.settings');
+  Route::get('/customer/checkout', [checkoutController::class, 'index'])->name('checkout');
+  Route::post('/apply-coupon', [CheckoutController::class, 'applyCoupon'])->name('apply.coupon');
+
 });
 //customer auth
 // Forgot Password

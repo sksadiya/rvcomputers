@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Brand;
+use App\Models\paymentSettings;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\Slider;
@@ -53,5 +54,7 @@ class AppServiceProvider extends ServiceProvider
         view()->share('brands', value: $brands);
         $tags = Tag::all();
         view()->share('tags', $tags);
+        $paymentSettings = paymentSettings::pluck('value', 'key')->toArray();
+        view()->share('paymentSettings', $paymentSettings);
     }
 }

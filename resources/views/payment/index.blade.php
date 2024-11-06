@@ -122,6 +122,18 @@
                 @enderror
             </div>
         </div>
+        <div class="form-group row mb-3">
+            <label class="col-sm-2 col-form-label">Shipping Charges (₹)<small class="text-danger">*</small>
+            </label>
+            <div class="col-sm-10">
+                <input type="number" name="shipping_charges" min="0" class="form-control @error('shipping_charges') is-invalid @enderror" placeholder="Charges" value="{{ isset($settings['shipping_charges']) ? $settings['shipping_charges'] : '' }}" >
+                @error('shipping_charges')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+        </div>
     </div>
     <div class="card-footer">
         <div class="form-group row mb-3">

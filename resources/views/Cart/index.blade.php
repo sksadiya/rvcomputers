@@ -133,7 +133,7 @@
             </div>
             <div class="col-lg-3">
                 <div class="summary-cart">
-                @if(count($cartProducts) > 0)
+                <!-- @if(count($cartProducts) > 0)
                 <div class="row mb-50">
                     <div class="col">
                         <div class="box-cart-right p-20">
@@ -146,20 +146,12 @@
                         </div>
                     </div>
                 </div>
-                @endif
+                @endif -->
                     <div class="border-bottom mb-10">
                         <div class="row">
                             <div class="col-6"><span class="font-md-bold text-black">Subtotal</span></div>
                             <div class="col-6 text-end">
                                 <h4 class="cart-total-amount">₹ {{ number_format($totalPrice, 2) }}</h4>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="border-bottom mb-10">
-                        <div class="row">
-                            <div class="col-6"><span class="font-md-bold text-black">Shipping</span></div>
-                            <div class="col-6 text-end">
-                                <h4> Free</h4>
                             </div>
                         </div>
                     </div>
@@ -171,7 +163,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="box-button"><a class="btn btn-buy" href="shop-checkout.html">Proceed To CheckOut</a>
+                    <div class="box-button"><a class="btn btn-buy" href="{{ route('checkout') }}">Proceed To CheckOut</a>
                     </div>
                 </div>
             </div>
