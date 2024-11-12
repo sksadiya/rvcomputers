@@ -340,7 +340,7 @@
       @foreach ($reviews->take(7) as $review)
       @php
                 // Randomly select a color for the current review from the colors array
-                $randomColor = $colors[array_rand($colors)];
+                $randomColor = !empty($colors) ? $colors[array_rand($colors)] : 'black';
            @endphp
       <div class="col-md-8 col-lg-12 mb-2 px-3">
         <div class="card p-4 custom-review-card mx-auto border-30 " style="border-radius: 30px;">
