@@ -452,13 +452,12 @@ class productController extends Controller
                 }
             }
         }
-
         // Generate combinations
         $combinations = $this->generateCombination($options);
 
         // Return the HTML
         return response()->json([
-            'html' => $this->combinationHtml($combinations, $price, $product_name)
+            'html' => $this->combinationHtml($combinations, $price, $product_name),
         ]);
     }
     private function generateCombination($arrays, $i = 0)
