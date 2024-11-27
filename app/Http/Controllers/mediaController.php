@@ -162,7 +162,7 @@ public function handleDisplay(Request $request)
         $inputType = ($selectableType === 'radio') ? 'radio' : 'checkbox'; // Determine input type
         $nameAttribute = ($selectableType === 'radio') ? 'media_id' : 'media_id[]'; 
         $html .= '
-        <div class="col-sm-2 col-md-2 col-lg-2 col-6 mb-3" for="media_id' . $mediaId . '" id="media-item' . $mediaId . '">
+        <div class="col-sm-2 col-md-2 col-lg-2 col-6 mb-3 media-item" for="media_id' . $mediaId . '" id="media-item' . $mediaId . '">
             <style>
                 .media-image' . $mediaId . ' {
                     background-image: url("' . $backgroundImageUrl . '");

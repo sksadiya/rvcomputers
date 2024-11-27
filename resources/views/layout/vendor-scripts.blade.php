@@ -109,6 +109,17 @@ $(document).ready(function () {
         });
     }
 
+    $("body").on("click", ".media-item", function (e) {
+        // Prevent triggering the click on the actual input itself
+        if (!$(e.target).is("input")) {
+            const input = $(this).find("input");
+            if (input.attr("type") === "radio") {
+                input.prop("checked", true).trigger("change"); // For radio
+            } else if (input.attr("type") === "checkbox") {
+                input.prop("checked", !input.prop("checked")).trigger("change"); // For checkbox
+            }
+        }
+    });
     // "Add Selected Image" Button Click Handler
     $('#selectImage').click(function() {
         let selectedMediaId = $('input[name="media_id"]:checked').val();
