@@ -133,7 +133,7 @@
       @endif
           </div>
           <div class="mt-20 box-btn-cart">
-            <a class="btn btn-cart" href="">Add To Cart</a>
+            <a class="btn btn-cart" href="{{ route('product.show' ,$product->slug)}}">Select Options</a>
           </div>
           </div>
         </div>
