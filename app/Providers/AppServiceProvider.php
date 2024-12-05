@@ -8,6 +8,8 @@ use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\Slider;
 use App\Models\Tag;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use App\Models\mailSetting;
 use App\Models\Setting;
@@ -56,5 +58,22 @@ class AppServiceProvider extends ServiceProvider
         view()->share('tags', $tags);
         $paymentSettings = paymentSettings::pluck('value', 'key')->toArray();
         view()->share('paymentSettings', $paymentSettings);
+         // Share cart data with all views
+         View::composer('*', function ($view) {
+            $cart = Session::get('cart', []);
+        
+            $cartItems = array_map(function ($item) {
+                $product = Product::find($item['product_id']);
+                $item['product'] = $product ? $product->toArray() : null;
+                return $item;
+            }, $cart);
+        
+            $cartItemCount = array_reduce($cart, fn($count, $item) => $count + $item['quantity'], 0);
+            $cartTotalPrice = array_reduce($cart, fn($total, $item) => $total + ($item['price'] * $item['quantity']), 0);
+        
+            $view->with('cartItems', $cartItems)
+                 ->with('cartItemCount', $cartItemCount)
+                 ->with('cartTotalPrice', number_format($cartTotalPrice, 2));
+        });
     }
 }

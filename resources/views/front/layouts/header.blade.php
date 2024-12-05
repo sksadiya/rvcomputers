@@ -49,31 +49,24 @@ color: #000 !important;
         ">
         </a>
           <div class="d-inline-block box-dropdown-cart"><span class="font-lg icon-list icon-cart bx bx-cart text-white"><span>Cart</span><span
-                class="number-item font-xs">2</span></span>
+                class="number-item font-xs">{{ $cartItemCount }}</span></span>
             <div class="dropdown-cart">
+            @foreach ($cartItems as $item)
               <div class="item-cart mb-20">
-                <div class="cart-image"><img src="assets/imgs/page/homepage1/imgsp5.png" alt="Ecom"></div>
-                <div class="cart-info"><a class="font-sm-bold color-brand-3" href="shop-single-product.html">2022 Apple
-                    iMac with Retina 5K Display 8GB RAM, 256GB SSD</a>
-                  <p><span class="color-brand-2 font-sm-bold">1 x $2856.4</span></p>
+                <div class="cart-image"><img src="{{ $item['product']['image'] }}" alt="Ecom"></div>
+                <div class="cart-info"><a class="font-sm-bold color-brand-3" href="{{ route('product.show', $item['product']['slug']) }}">{{ $item['product']['name'] }}</a>
+                  <p><span class="color-brand-2 font-sm-bold">{{ $item['quantity'] }} x ₹{{ number_format($item['price'], 2) }}</span></p>
                 </div>
               </div>
-              <div class="item-cart mb-20">
-                <div class="cart-image"><img src="assets/imgs/page/homepage1/imgsp4.png" alt="Ecom"></div>
-                <div class="cart-info"><a class="font-sm-bold color-brand-3" href="shop-single-product-2.html">2022
-                    Apple iMac with Retina 5K Display 8GB RAM, 256GB SSD</a>
-                  <p><span class="color-brand-2 font-sm-bold">1 x $2856.4</span></p>
-                </div>
-              </div>
+              @endforeach
               <div class="border-bottom pt-0 mb-15"></div>
               <div class="cart-total">
                 <div class="row">
                   <div class="col-6 text-start"><span class="font-md-bold color-brand-3">Total</span></div>
-                  <div class="col-6"><span class="font-md-bold color-brand-1">$2586.3</span></div>
+                  <div class="col-6"><span class="font-md-bold color-brand-1">₹ {{ $cartTotalPrice }}</span></div>
                 </div>
                 <div class="row mt-15">
                   <div class="col-6 text-start"><a class="btn btn-cart w-auto" href="{{ route('cart.index') }}">View cart</a></div>
-                  <div class="col-6"><a class="btn btn-buy w-auto" href="#">Checkout</a></div>
                 </div>
               </div>
             </div>
