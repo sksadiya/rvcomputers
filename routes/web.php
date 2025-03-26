@@ -206,6 +206,7 @@ Route::delete('/cities/{id}', [cityController::class, 'destroy'])->name('cities.
 Route::post('/city/status-change', [cityController::class, 'changeStatus'])->name('city.changeStatus');
 });
 
+
 Route::get('/admin/login', [adminAuthController::class, 'index'])->name('admin.login');
 Route::post('/admin/login', [adminAuthController::class, 'processLogin'])->name('admin.processLogin');
 Route::get('/send-test-email', [mailSettingsController::class, 'sendTestEmail']);
@@ -222,6 +223,8 @@ Route::group(['middleware' => ['customer']], function () {
   Route::post('/apply-coupon', [CheckoutController::class, 'applyCoupon'])->name('apply.coupon');
 
 });
+
+
 //customer auth
 // Forgot Password
 Route::get('customer/password/reset', [CustomerForgotPasswordController::class, 'showLinkRequestForm'])->name('customer.password.request');

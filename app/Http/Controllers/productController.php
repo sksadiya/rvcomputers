@@ -271,7 +271,7 @@ class productController extends Controller
             'discount' => 'nullable|numeric',
             'discount_type' => 'in:fixed,percentage',
             'current_stock' => 'required|integer',
-            'sku' => 'nullable|string|unique:products,sku',
+            'sku' => 'nullable|string|unique:products,sku,' . $id,
             'short_description' => 'nullable|string',
             'description' => 'nullable|string',
             'low_stock_quantity' => 'nullable|integer',
